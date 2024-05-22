@@ -115,16 +115,22 @@
 <body class="d-flex align-items-center py-4 bg-body-tertiary text-center" dir="rtl">
 
   <div class="form-signin w-100 m-auto">
-    <form class="">
+    {% if form.errors %}
+    <p>نام کاربری یا رمز عبور شما اشتباه است</p>
+    {% endif %}
+    <form class="" action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
       <img class="mb-4" src="{% static 'logo.jpg' %}" alt="" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">ورود</h1>
 
       <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username"
+          required>
         <label for="floatingInput">نام کاربری</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
+          required>
         <label for="floatingPassword">رمز عبور</label>
       </div>
 
