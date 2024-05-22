@@ -80,10 +80,41 @@
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate="">
+            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" method="POST">
                 <div class="row g-3">
 
                     <div class="col-md-12">
+                        <label for="country" class="form-label">انتخاب پرسنل</label>
+                        <select class="form-select" id="country" required="">
+                            <option value="">انتخاب کنید</option>
+                            {% for user in users %}
+                            <option>علی مولایی</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="country" class="form-label">نوع شاخص</label>
+                        <select class="form-select" id="country" required="">
+                            <option value="">انتخاب کنید</option>
+                            <option>غیبت</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="country" class="form-label">شاخص</label>
+                        <select class="form-select" id="country" required="">
+                            <option value="">انتخاب کنید</option>
+                            <option>کارای بد</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="country" class="form-label">امتیاز</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                    </div>
+
+                    <div class="col-md-6">
                         <label for="country" class="form-label">انتخاب پرسنل</label>
                         <select class="form-select" id="country" required="">
                             <option value="">انتخاب کنید</option>
@@ -92,18 +123,22 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">شاخص</label>
+                        <label for="country" class="form-label">انتخاب پرسنل</label>
                         <select class="form-select" id="country" required="">
                             <option value="">انتخاب کنید</option>
-                            <option>غیبت</option>
+                            {% for occure_date in occure_dates %}
+                            <option>علی مولایی</option>
+                            {% endfor %}
                         </select>
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">دسته بندی</label>
+                        <label for="country" class="form-label">انتخاب پرسنل</label>
                         <select class="form-select" id="country" required="">
                             <option value="">انتخاب کنید</option>
-                            <option>کارای بد</option>
+                            {% for occure_time in occure_ %}
+                            <option>علی مولایی</option>
+                            {% endfor %}
                         </select>
                     </div>
 

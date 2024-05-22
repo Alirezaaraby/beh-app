@@ -6,11 +6,14 @@ urlpatterns = [
     
     path("daily-evaluation/", daily_evaluation , name="daily-evaluation"),
     path("daily-evaluation/create", daily_evaluation_create , name="daily-evaluation-create"),
+
     path("editor", editor , name="editor"),
 
     path("personnel/", personnel , name="personnel"),
-    path("groups/", groups , name="groups"),
-    path("indicators/", indicators , name="indicators"),
+    path("groups/", include("groups.urls")),
+
+    path("indicators/", include("indicators.urls")),
+
     path("substitute/", substitute , name="substitute"),
     path("logs/", logs , name="logs"),
     path("reports/", reports , name="reports"),

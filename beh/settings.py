@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'home',
     'users',
     'dashboard',
+    'indicators',
+    'groups',
+    'overheads',
 ]
 
 MIDDLEWARE = [
