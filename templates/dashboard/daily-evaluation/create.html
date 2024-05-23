@@ -72,79 +72,111 @@
                     </label>
                     <input id="files" name="files[]" type="file" class="file-input" />
                 </div>
-                
+
                 <button type="button" class="btn btn-outline-primary w-100 mt-2">ذخیره</button>
-                
+
             </div>
 
         </div>
 
         <div class="col-md-7 col-lg-8">
             <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" method="POST">
+                {%csrf_token%}
                 <div class="row g-3">
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">انتخاب پرسنل</label>
-                        <select class="form-select" id="country" required="">
+                        <label for="pid" class="form-label">ارزیابی شونده</label>
+                        <select class="form-select" id="pid" required="" name="pid" required>
                             <option value="">انتخاب کنید</option>
                             {% for user in users %}
-                            <option>علی مولایی</option>
+                            <option value="{{user.first_name}} {{user.last_name}}">{{user.first_name}} {{user.last_name}}</option>
                             {% endfor %}
                         </select>
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">نوع شاخص</label>
-                        <select class="form-select" id="country" required="">
+                        <label for="in_id" class="form-label">نوع شاخص</label>
+                        <select class="form-select" id="in_id" name="in_id" required>
                             <option value="">انتخاب کنید</option>
-                            <option>غیبت</option>
+                            {% for in in indicators %}
+                            <option value="{{in.item_type}}">{{in.item_type}}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">شاخص</label>
-                        <select class="form-select" id="country" required="">
+                        <label for="it_id" class="form-label">شاخص</label>
+                        <select class="form-select" id="it_id" name="it_id" required>
                             <option value="">انتخاب کنید</option>
-                            <option>کارای بد</option>
+                            {% for it in indicatoritems %}
+                            <option value="{{it.item}}">{{it.item}}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="country" class="form-label">امتیاز</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                        <label for="score" class="form-label">امتیاز</label>
+                        <input type="number" class="form-control" id="score" placeholder="" value="" name="score"
+                            required>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="country" class="form-label">انتخاب پرسنل</label>
-                        <select class="form-select" id="country" required="">
+                        <label for="record_id" class="form-label">کد پرسنلی ثبت کننده</label>
+                        <input type="text" class="form-control" id="record_id" placeholder="" value="" name="record_id"
+                            required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="occure_date" class="form-label">تاریخ وقوع</label>
+                        <input type="text" class="form-control" id="occure_date" placeholder="" value=""
+                            name="occure_date" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="occure_time" class="form-label">زمان وقوع</label>
+                        <input type="text" class="form-control" id="occure_time" placeholder="" value=""
+                            name="occure_time" required>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="country" class="form-label">پیش بینی زمان تاثیر</label>
+                        <select class="form-select" id="country" name="forecast_effect_time" required>
                             <option value="">انتخاب کنید</option>
-                            <option>علی مولایی</option>
+
+                            <option value="1">فروردین</option>
+                            <option value="2">اردیبهشت</option>
+                            <option value="3">خرداد</option>
+                            <option value="4">تیر</option>
+                            <option value="5">مرداد</option>
+                            <option value="6">شهریور</option>
+                            <option value="7">مهر</option>
+                            <option value="8">آبان</option>
+                            <option value="9">آذر</option>
+                            <option value="10">دی</option>
+                            <option value="11">بهمن</option>
+                            <option value="12">اسفند</option>
                         </select>
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">انتخاب پرسنل</label>
-                        <select class="form-select" id="country" required="">
+                        <label for="country" class="form-label">زمان تاثر واقعی</label>
+                        <select class="form-select" id="country" name="real_effect_time" required>
                             <option value="">انتخاب کنید</option>
-                            {% for occure_date in occure_dates %}
-                            <option>علی مولایی</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="country" class="form-label">انتخاب پرسنل</label>
-                        <select class="form-select" id="country" required="">
-                            <option value="">انتخاب کنید</option>
-                            {% for occure_time in occure_ %}
-                            <option>علی مولایی</option>
-                            {% endfor %}
+                            <option value="1">فروردین</option>
+                            <option value="2">اردیبهشت</option>
+                            <option value="3">خرداد</option>
+                            <option value="4">تیر</option>
+                            <option value="5">مرداد</option>
+                            <option value="6">شهریور</option>
+                            <option value="7">مهر</option>
+                            <option value="8">آبان</option>
+                            <option value="9">آذر</option>
+                            <option value="10">دی</option>
+                            <option value="11">بهمن</option>
+                            <option value="12">اسفند</option>
                         </select>
                     </div>
 
                     <div class="col-md-12">
                         <label for="country" class="form-label">توضیح</label>
-                        <textarea id="tiny"></textarea>
+                        <textarea id="tiny" name="body"></textarea>
                     </div>
                 </div>
 

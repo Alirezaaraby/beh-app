@@ -22,30 +22,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for i in data %}
                 <tr>
-                    <td>1</td>
-                    <td>غیبت</td>
-                    <td>-3</td>
-                    <td>2024/5/22</td>
-                    <td>تایید نشده</td>
+                    <td>{{forloop.counter }}</td>
+                    <td>{{i.it_id}}</td>
+                    <td>{{i.in_id}}</td>
+                    <td>{{i.record_date}}</td>
+                    <td>{{i.status}}</td>
                     <td></td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>غیبت</td>
-                    <td>-3</td>
-                    <td>2024/5/22</td>
-                    <td>تایید نشده</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>غیبت</td>
-                    <td>-3</td>
-                    <td>2024/5/22</td>
-                    <td>تایید نشده</td>
-                    <td></td>
-                </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>

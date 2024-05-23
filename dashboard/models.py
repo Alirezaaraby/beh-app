@@ -23,17 +23,7 @@ class Assessments(models.Model):
     forecastEffectTime = models.CharField(max_length=10)
     realeffect_time = models.CharField(max_length=10)
 
-class Group(models.Model):
-    g_code = models.CharField(max_length=10)
-    description = models.TextField()
-
-class GroupMembers(models.Model):
-    pid = models.ForeignKey(User, on_delete=models.CASCADE)
-    g_code = models.CharField(max_length=100)
-    from_date = models.CharField(max_length=10)
-    from_time = models.CharField(max_length=10)
-    to_date = models.CharField(max_length=10)
-    to_time = models.CharField(max_length=10)
+    body = models.TextField(default="3")
 
 class Overheads(models.Model):    
     p_id = models.CharField(max_length=10)
