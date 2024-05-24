@@ -82,7 +82,19 @@
                     <td>{{ it.item }}</td>
                     <td>{{ it.in_id }}</td>
                     <td>{{ it.default_effect }}</td>
-                    <td></td>
+                    <td>                            <div class="dropdown">
+                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-light bg-light">
+                            <li><a class="dropdown-item" href="{% url 'indicator-items-edit' it.id %}">ویرایش</a></li>
+                            <!-- <li><a class="dropdown-item text-warning" href="#">report</a></li> -->
+                            <li><hr class="dropdown-divider border-top border-secondary"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'indicator-items-delete' it.id %}">حذف</a></li>
+                        </ul>
+                    </div></td>
                 </tr>
                 {%endfor%}
             </tbody>

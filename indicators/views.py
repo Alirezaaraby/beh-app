@@ -45,8 +45,32 @@ def indicators_edit(request,id):
     
     return render(request, 'dashboard/indicators/edit.html', context)
 
+def indicator_items_edit(request,id):
+
+    indicatoritems = IndicatorItems.objects.get(id=id)
+    
+    form = IndicatorItemsForm(instance=indicatoritems)
+    
+    if request.method == "POST":
+        form = IndicatorItemsForm(request.POST, instance=indicatoritems)
+        if form.is_valid():
+            form.save()
+            return redirect("indicators")
+    
+    context = {
+        'form': form
+    }
+    
+    return render(request, 'dashboard/indicators/items/edit.html', context)
+
 def indicators_delete(request, id):
 
     item = get_object_or_404(Indicators, pk=id)
+    item.delete()
+    return redirect("indicators")
+
+def indicator_items_delete(request, id):
+
+    item = get_object_or_404(IndicatorItems, pk=id)
     item.delete()
     return redirect("indicators")
