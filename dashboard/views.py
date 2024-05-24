@@ -3,6 +3,7 @@ from datetime import datetime
 from .models import Assessments
 from indicators.models import Indicators, IndicatorItems
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -11,7 +12,7 @@ def index(request):
     # return redirect("dashboard")
     return render(request, "dashboard/index.html")
 
-
+@login_required
 def daily_evaluation(request):
     data = Assessments.objects.all()
     return render(request, "dashboard/daily-evaluation/index.html", {"data": data})
