@@ -6,13 +6,22 @@
         <a href="{% url 'indicators-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
     </div>
 
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">نوع شاخص</h5>
-            <p class="card-text">توضیحات نوع شاخص</p>
-            <a href="#" class="btn btn-primary">مشاهده شاخص های موجود</a>
+    <div class="container">
+        <div class="row">
+            {% for in in indicators %}
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ in.item_type }}</h5>
+                        <p class="card-text">{{ in.description }}</p>
+                        <a href="#" class="btn btn-primary">مشاهده شاخص های موجود</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
+    
 
     <div class="shadow p-3 mb-5 bg-body rounded ml-3 mt-5">شاخص ها
         <a href="{% url 'indicator-items-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
@@ -30,13 +39,15 @@
                 </tr>
             </thead>
             <tbody>
+                {%for it in indicatoritems %}
                 <tr>
-                    <td>1</td>
-                    <td>عدم حضور بموقع در هنگام کار</td>
-                    <td>حضور و غیاب</td>
-                    <td>-1</td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ it.item }}</td>
+                    <td>{{ it.in_id }}</td>
+                    <td>{{ it.default_effect }}</td>
                     <td></td>
                 </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>
