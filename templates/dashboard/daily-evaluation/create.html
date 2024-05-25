@@ -53,12 +53,36 @@
         line-height: 0px;
         margin: 0px 8px;
     }
+
+    .messages {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .messages .error {
+        color: red;
+    }
+
+    .messages .success {
+        color: green;
+    }
 </style>
 {%endblock%}
 
 {% block content %}
 <div class="container">
     <div class="shadow p-3 mb-5 bg-body rounded">ارزیابی روزانه جدید</div>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
     <div class="row g-3">
         <div class="col-md-5 col-lg-4 order-md-last">
@@ -127,8 +151,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="occure_date" class="form-label">تاریخ وقوع</label>
-                        <input class="form-control" id="occure_date" placeholder="" value=""
-                            name="occure_date" required data-jdp>
+                        <input class="form-control" id="occure_date" placeholder="" value="" name="occure_date" required
+                            data-jdp>
                     </div>
                     <div class="col-md-6">
                         <label for="occure_time" class="form-label">زمان وقوع</label>
@@ -179,7 +203,7 @@
                         <textarea id="description" class="form-control" name="body"></textarea>
                     </div>
                 </div>
-                
+
                 <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
 
             </form>

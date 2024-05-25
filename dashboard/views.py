@@ -5,6 +5,7 @@ from indicators.models import Indicators, IndicatorItems
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib import messages
 
 # Create your views here.
 
@@ -69,6 +70,7 @@ def daily_evaluation_create(request):
             realeffect_time=real_effect_time,
         )
         assessment.save()
+        messages.success(request, 'با موفقیت ذخیره شد')
         # return redirect("dashboard")
     return render(
         request,
