@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from users.models import users
 from .models import Assessments
 
 
@@ -8,7 +8,7 @@ from .models import Assessments
 
 class IndicatorItemsForm(forms.ModelForm):
     pid = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=users.objects.all(),
         widget=forms.Select(
             attrs={"class": "form-select", "placeholder": "انتخاب نوع شاخص"}
         ),

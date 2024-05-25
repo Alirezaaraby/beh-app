@@ -1,6 +1,6 @@
 from django import forms
 from .models import Groups, GroupMembers
-from django.contrib.auth.models import User
+from users.models import users
 
 
 class GroupsForm(forms.ModelForm):
@@ -32,7 +32,7 @@ class GroupsForm(forms.ModelForm):
 
 class GroupMembersForm(forms.ModelForm):
     pid = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=users.objects.all(),
         widget=forms.Select(
             attrs={"class": "form-select", "placeholder": "انتخاب نوع شاخص"}
         ),

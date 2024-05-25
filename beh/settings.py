@@ -144,3 +144,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "daily-evaluation"
+
+AUTH_USER_MODEL = "users.users"

@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import users
 # Create your models here.
 
 class Assessments(models.Model):
     pid = models.CharField(max_length=10)
-    assessor_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    assessor_id = models.ForeignKey(users, on_delete=models.CASCADE)
 
     occure_date = models.CharField(max_length=25)
     occure_time = models.CharField(max_length=25)

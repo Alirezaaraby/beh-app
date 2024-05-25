@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from datetime import datetime
 from .models import Assessments
 from indicators.models import Indicators, IndicatorItems
-from django.contrib.auth.models import User
+from users.models import users
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
@@ -22,8 +22,8 @@ def daily_evaluation(request):
 
 
 def daily_evaluation_create(request):
-
-    users = User.objects.all()
+    # TODO
+    all_users = users.objects.all()
 
     indicators = Indicators.objects.all()
     indicatoritems = IndicatorItems.objects.all()
@@ -75,7 +75,7 @@ def daily_evaluation_create(request):
     return render(
         request,
         "dashboard/daily-evaluation/create.html",
-        {"user": request.user ,"users": users, "indicators": indicators, "indicatoritems": indicatoritems},
+        {"user": request.user ,"users": all_users, "indicators": indicators, "indicatoritems": indicatoritems},
     )
 
 

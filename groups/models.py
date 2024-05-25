@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import users
 
 # Create your models here.
 
@@ -14,7 +14,7 @@ class Groups(models.Model):
 
 
 class GroupMembers(models.Model):
-    pid = models.ForeignKey(User, on_delete=models.CASCADE)
+    pid = models.ForeignKey(users, on_delete=models.CASCADE)
     g_code = models.ForeignKey(Groups, on_delete=models.CASCADE)
     from_date = models.CharField(max_length=10)
     from_time = models.CharField(max_length=10)
