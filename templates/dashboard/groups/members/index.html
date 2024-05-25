@@ -60,26 +60,6 @@
     <div class="shadow p-3 mb-5 bg-body rounded">افزودن اعضای گروه</div>
 
     <div class="row">
-        <!-- <div class="col-md-5 col-lg-4 order-md-last">
-            <div class="bg-white p-5 rounded shadow-sm border">
-                <p>تصویر</p>
-                <div class="dropzone d-block">
-                    <label for="files" class="dropzone-container">
-                        <div class="file-icon"><i class="fa-solid fa-file-circle-plus text-primary"></i></div>
-                        <div class="text-center pt-3 px-5">
-                            <p class="w-80 h5 text-dark fw-bold">انتخاب تصویر</p>
-                        </div>
-                    </label>
-                    <input id="files" name="files[]" type="file" class="file-input" />
-                </div>
-                
-                <button type="button" class="btn btn-outline-primary w-100 mt-2">ذخیره</button>
-                
-            </div> -->
-
-        <!-- </div> -->
-
-        <!-- <div class="col-md-7 col-lg-8"> -->
 
         <form class="needs-validation" novalidate="" method="POST">
             {%csrf_token%}
@@ -119,9 +99,16 @@
                 <label for="id_description" class="form-label">توضیحات </label>
                 {{form.description}}
             </div>
-            <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">ذخیره</button>
+            <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
         </form>
     </div>
-    <!-- </div> -->
 </div>
+
+{%block script%}
+<script>
+    jalaliDatepicker.startWatch();
+</script>
 {%endblock%}
+
+{%endblock%}
+

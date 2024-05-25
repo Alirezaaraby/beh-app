@@ -48,7 +48,7 @@ class GroupMembersForm(forms.ModelForm):
     from_date = forms.CharField(
         max_length=10,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "شماره شاخص"}
+            attrs={"class": "form-control", "placeholder": "شماره شاخص", "data-jdp": ""}
         ),
     )
 
@@ -62,7 +62,7 @@ class GroupMembersForm(forms.ModelForm):
     to_date = forms.CharField(
         max_length=10,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "شماره شاخص"}
+            attrs={"class": "form-control", "placeholder": "شماره شاخص", "data-jdp":""}
         ),
     )
 

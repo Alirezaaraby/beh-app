@@ -73,7 +73,7 @@ def daily_evaluation_create(request):
     return render(
         request,
         "dashboard/daily-evaluation/create.html",
-        {"users": users, "indicators": indicators, "indicatoritems": indicatoritems},
+        {"user": request.user ,"users": users, "indicators": indicators, "indicatoritems": indicatoritems},
     )
 
 

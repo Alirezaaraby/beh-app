@@ -24,7 +24,7 @@ def group_members_create(request):
         if form.is_valid():
             form.save()
             return redirect('groups')
-    return render(request, 'dashboard/groups/members/create.html', {'form': form})
+    return render(request, 'dashboard/groups/members/index.html', {'form': form})
 
 def groups_edit(request,id):
 
@@ -60,7 +60,7 @@ def group_members_edit(request,id):
         'form': form
     }
     
-    return render(request, 'dashboard/groups/members/edit.html', context)
+    return render(request, 'dashboard/groups/members/index.html', context)
 
 def groups_delete(request, id):
 

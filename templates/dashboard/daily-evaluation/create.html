@@ -1,4 +1,5 @@
 {% extends 'dashboard/base.html'%}
+{%load static%}
 {% block style %}
 <style>
     .dropzone {
@@ -80,7 +81,9 @@
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm" data-indicators-url="{% url 'ajax-load-indicator-items' %}" data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
+            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm"
+                data-indicators-url="{% url 'ajax-load-indicator-items' %}"
+                data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
                 {%csrf_token%}
                 <div class="row g-3">
 
@@ -113,8 +116,8 @@
 
                     <div class="col-md-6">
                         <label for="score" class="form-label">امتیاز</label>
-                        <input type="number" class="form-control" id="score" min="1" placeholder="" value="" name="score"
-                            required>
+                        <input type="number" class="form-control" id="score" min="1" placeholder="" value=""
+                            name="score" required>
                     </div>
 
                     <div class="col-md-6">
@@ -124,8 +127,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="occure_date" class="form-label">تاریخ وقوع</label>
-                        <input type="date" class="form-control" id="occure_date" placeholder="" value=""
-                            name="occure_date" required>
+                        <input class="form-control" id="occure_date" placeholder="" value=""
+                            name="occure_date" required data-jdp>
                     </div>
                     <div class="col-md-6">
                         <label for="occure_time" class="form-label">زمان وقوع</label>
@@ -176,8 +179,9 @@
                         <textarea id="description" class="form-control" name="body"></textarea>
                     </div>
                 </div>
-
+                
                 <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
+
             </form>
         </div>
     </div>
@@ -185,8 +189,7 @@
 
 {%block script%}
 
-
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script>
     $("#in_id").change(function () {
         const url = $("#mainForm").attr("data-indicators-url");
@@ -206,30 +209,32 @@
         });
     });
     $("#it_id").change(function () {
-    const url = $("#mainForm").attr("data-indicator-range-url");
-    const indicatorId = $(this).val();
-    $.ajax({
-        url: url,
-        data: {
-            'it_id': indicatorId
-        },
-        success: function (data) {
-            if (data.length > 0) {
-                const item = data[0];
-                const minEffect = item.min_effect;
-                const maxEffect = item.max_effect;
-                const defaultEffect = item.default_effect;
-                
-                $("#score").attr("min", minEffect);
-                $("#score").attr("max", maxEffect);
-                $("#score").val(defaultEffect);
+        const url = $("#mainForm").attr("data-indicator-range-url");
+        const indicatorId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'it_id': indicatorId
+            },
+            success: function (data) {
+                if (data.length > 0) {
+                    const item = data[0];
+                    const minEffect = item.min_effect;
+                    const maxEffect = item.max_effect;
+                    const defaultEffect = item.default_effect;
+
+                    $("#score").attr("min", minEffect);
+                    $("#score").attr("max", maxEffect);
+                    $("#score").val(defaultEffect);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-        }
+        });
     });
-});
+
+    jalaliDatepicker.startWatch();
 
 </script>
 
