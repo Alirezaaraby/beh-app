@@ -112,13 +112,8 @@
                 <div class="row g-3">
 
                     <div class="col-md-12">
-                        <label for="pid" class="form-label">ارزیابی شونده</label>
-                        <select class="form-select" id="pid" required="" name="pid" required>
-                            <option value="">انتخاب کنید</option>
-                            {% for user in users %}
-                            <option value="{{user.id}}">{{user.first_name}} {{user.last_name}}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="personnel" class="form-label">ارزیابی شونده</label>
+                        <input class="form-control" id="personnel" required="" name="pid" required>
                     </div>
 
                     <div class="col-md-12">
@@ -214,6 +209,7 @@
 {%block script%}
 
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script>
     $("#in_id").change(function () {
         const url = $("#mainForm").attr("data-indicators-url");
@@ -259,7 +255,12 @@
     });
 
     jalaliDatepicker.startWatch();
-
+    
+    $(function () {
+            $("#personnel").autocomplete({
+                source: "{% url 'autocomplete' %}"
+            });
+        });
 </script>
 
 {%endblock%}

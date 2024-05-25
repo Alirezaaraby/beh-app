@@ -11,6 +11,7 @@ urlpatterns = [
 
     path("personnel/", personnel , name="personnel"),
     path("groups/", include("groups.urls")),
+    path("test/", test),
 
     path("indicators/", include("indicators.urls")),
 
@@ -20,6 +21,7 @@ urlpatterns = [
 
     path('ajax/load-indicator-items/', load_indicator_items, name='ajax-load-indicator-items'),
     path('ajax/load-indicator-item-range/', load_indicator_item_range, name='ajax-load-indicator-item-range'),
+    path('ajax/autocomplete/', autocomplete, name='autocomplete'),
     # path("", index, name="home")
     # path('', include('django.contrib.auth.urls'))
 ]

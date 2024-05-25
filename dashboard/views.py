@@ -82,7 +82,8 @@ def daily_evaluation_create(request):
 def editor(request):
     return render(request, "dashboard/daily-evaluation/editor.html")
 
-
+def test(request):
+    return render(request, "dashboard/test.html")
 def personnel(request):
     return render(request, "dashboard/personnel/index.html")
 
@@ -106,8 +107,14 @@ def load_indicator_items(request):
 
 def load_indicator_item_range(request):
     it_id = request.GET.get("it_id")
-
     indicatorItem = IndicatorItems.objects.filter(id=it_id).values("default_effect", "min_effect", "max_effect")
-
     indicatorItem_list = list(indicatorItem)
     return JsonResponse(indicatorItem_list, safe=False)
+
+def autocomplete(request):
+    if 'term' in request.GET:
+        data = User.objects.filter(first_name__startswith = request.GET.get('term'))
+        titles = list()
+        for i in data:
+            titles.append(i.first_name)
+        return JsonResponse(titles, safe=False)
