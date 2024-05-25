@@ -18,6 +18,6 @@ class GroupMembers(models.Model):
     g_code = models.ForeignKey(Groups, on_delete=models.CASCADE)
     from_date = models.CharField(max_length=10)
     from_time = models.CharField(max_length=10)
-    to_date = models.CharField(max_length=10)
-    to_time = models.CharField(max_length=10)
+    to_date = models.CharField(max_length=10, blank=True, null=True)
+    to_time = models.CharField(max_length=10, blank=True, null=True)
     description = models.TextField(default="", blank=True, null=True)

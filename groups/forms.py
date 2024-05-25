@@ -64,6 +64,7 @@ class GroupMembersForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": "شماره شاخص", "data-jdp":""}
         ),
+        required=False
     )
 
     to_time = forms.CharField(
@@ -71,6 +72,7 @@ class GroupMembersForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": "نام شاخص"}
         ),
+        required=False
     )
 
     description = forms.CharField(

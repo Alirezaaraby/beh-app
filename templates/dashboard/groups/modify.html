@@ -74,12 +74,12 @@
             {%csrf_token%}
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="id_in_id" class="form-label">عنوان گروه</label>
+                    <label for="id_in_id" class="form-label">عنوان گروه<span style="color: red;">*</span></label>
                     {{form.name}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_item_type" class="form-label">کد گروه</label>
+                    <label for="id_item_type" class="form-label">کد گروه<span style="color: red;">*</span></label>
                     {{form.g_code}}
                 </div>
 

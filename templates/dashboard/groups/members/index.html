@@ -77,17 +77,17 @@
             {%csrf_token%}
             <div class="row g-3">
                 <div class="col-md-12">
-                    <label for="id_pid" class="form-label">نام عضو جدید</label>
+                    <label for="id_pid" class="form-label">نام عضو جدید<span style="color: red;">*</span></label>
                     {{form.pid}}
                 </div>
 
                 <div class="col-md-12">
-                    <label for="id_g_code" class="form-label">انتخاب گروه</label>
+                    <label for="id_g_code" class="form-label">انتخاب گروه<span style="color: red;">*</span></label>
                     {{form.g_code}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_from_date" class="form-label">از تاریخ</label>
+                    <label for="id_from_date" class="form-label">از تاریخ<span style="color: red;">*</span></label>
                     {{form.from_date}}
                 </div>
 
@@ -98,7 +98,7 @@
 
 
                 <div class="col-md-6">
-                    <label for="id_from_time" class="form-label">از ساعت</label>
+                    <label for="id_from_time" class="form-label">از ساعت<span style="color: red;">*</span></label>
                     {{form.from_time}}
                 </div>
 
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="col-md-12 mt-3">
-                <label for="id_description" class="form-label">توضیحات </label>
+                <label for="id_description" class="form-label">توضیحات</label>
                 {{form.description}}
             </div>
             <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
