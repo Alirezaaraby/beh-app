@@ -80,7 +80,7 @@
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" method="POST">
+            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm" data-indicators-url="{% url 'ajax-load-indicator-items' %}" data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
                 {%csrf_token%}
                 <div class="row g-3">
 
@@ -89,7 +89,7 @@
                         <select class="form-select" id="pid" required="" name="pid" required>
                             <option value="">انتخاب کنید</option>
                             {% for user in users %}
-                            <option value="{{user.first_name}} {{user.last_name}}">{{user.first_name}} {{user.last_name}}</option>
+                            <option value="{{user.id}}">{{user.first_name}} {{user.last_name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -99,7 +99,7 @@
                         <select class="form-select" id="in_id" name="in_id" required>
                             <option value="">انتخاب کنید</option>
                             {% for in in indicators %}
-                            <option value="{{in.item_type}}">{{in.item_type}}</option>
+                            <option value="{{in.id}}">{{in.item_type}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -107,16 +107,13 @@
                     <div class="col-md-12">
                         <label for="it_id" class="form-label">شاخص</label>
                         <select class="form-select" id="it_id" name="it_id" required>
-                            <option value="">انتخاب کنید</option>
-                            {% for it in indicatoritems %}
-                            <option value="{{it.item}}">{{it.item}}</option>
-                            {% endfor %}
+                            <option value="">---------</option>
                         </select>
                     </div>
 
                     <div class="col-md-6">
                         <label for="score" class="form-label">امتیاز</label>
-                        <input type="number" class="form-control" id="score" placeholder="" value="" name="score"
+                        <input type="number" class="form-control" id="score" min="1" placeholder="" value="" name="score"
                             required>
                     </div>
 
@@ -136,8 +133,8 @@
                             name="occure_time" required>
                     </div>
                     <div class="col-md-12">
-                        <label for="country" class="form-label">پیش بینی زمان تاثیر</label>
-                        <select class="form-select" id="country" name="forecast_effect_time" required>
+                        <label for="forecastEffectTime" class="form-label">پیش بینی زمان تاثیر</label>
+                        <select class="form-select" id="forecastEffectTime" name="forecast_effect_time" required>
                             <option value="">انتخاب کنید</option>
 
                             <option value="1">فروردین</option>
@@ -175,14 +172,66 @@
                     </div>
 
                     <div class="col-md-12">
-                        <label for="country" class="form-label">توضیح</label>
-                        <textarea id="tiny" name="body"></textarea>
+                        <label for="description" class="form-label">مصداق</label>
+                        <textarea id="description" class="form-control" name="body"></textarea>
                     </div>
                 </div>
 
-                <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">ذخیره</button>
+                <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
             </form>
         </div>
     </div>
 </div>
+
+{%block script%}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#in_id").change(function () {
+        const url = $("#mainForm").attr("data-indicators-url");
+        const indicatorsId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'in_id': indicatorsId
+            },
+            success: function (data) {
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (indicator) {
+                    html_data += `<option value="${indicator.id}">${indicator.item}</option>`;
+                });
+                $("#it_id").html(html_data);
+            }
+        });
+    });
+    $("#it_id").change(function () {
+    const url = $("#mainForm").attr("data-indicator-range-url");
+    const indicatorId = $(this).val();
+    $.ajax({
+        url: url,
+        data: {
+            'it_id': indicatorId
+        },
+        success: function (data) {
+            if (data.length > 0) {
+                const item = data[0];
+                const minEffect = item.min_effect;
+                const maxEffect = item.max_effect;
+                const defaultEffect = item.default_effect;
+                
+                $("#score").attr("min", minEffect);
+                $("#score").attr("max", maxEffect);
+                $("#score").val(defaultEffect);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+        }
+    });
+});
+
+</script>
+
+{%endblock%}
 {%endblock%}
