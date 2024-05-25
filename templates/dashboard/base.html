@@ -11,9 +11,9 @@
     {% bootstrap_javascript %}
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.css">
+    <link rel="stylesheet" href="{% static 'css/jalalidatepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -79,7 +79,8 @@
     </div>
 
     <script type="text/javascript"
-        src="https://unpkg.com/@majidh1/jalalidatepicker/dist/jalalidatepicker.min.js"></script>
+        src="{% static 'js/jalalidatepicker.min.js' %}">
+    </script>
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 
     {%block script%}
