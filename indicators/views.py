@@ -21,7 +21,7 @@ def indicators_create(request):
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
     else:
         form = IndicatorsForm()
-    return render(request, 'dashboard/indicators/create.html', {'form': form})
+    return render(request, 'dashboard/indicators/modify.html', {'form': form})
 
 def indicator_items_create(request):
     form = IndicatorItemsForm()
@@ -50,12 +50,13 @@ def indicators_edit(request,id):
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
     else:
-            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+        form = IndicatorsForm(instance=indicator)
+
     context = {
         'form': form
     }
     
-    return render(request, 'dashboard/indicators/edit.html', context)
+    return render(request, 'dashboard/indicators/modify.html', context)
 
 def indicator_items_edit(request,id):
 
