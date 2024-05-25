@@ -81,50 +81,44 @@
 
         <!-- <div class="col-md-7 col-lg-8"> -->
 
-        <form class="needs-validation" novalidate="" action="{% url 'indicators-create'%}" method="POST">
+        <form class="needs-validation" novalidate="" method="POST">
+            {%csrf_token%}
             <div class="row g-3">
                 <div class="col-md-12">
-                    <label for="indicatorID" class="form-label">نام عضو جدید</label>
-                    <select class="form-select" id="country" required="">
-                        <option value="">انتخاب کنید</option>
-                        {% for user in users %}
-                        <option></option>
-                        {% endfor %}
-                    </select>
+                    <label for="id_pid" class="form-label">نام عضو جدید</label>
+                    {{form.pid}}
                 </div>
 
                 <div class="col-md-12">
-                    <label for="country" class="form-label">انتخاب گروه</label>
-                    <select class="form-select" id="country" required="">
-                        <option value="">انتخاب کنید</option>
-                        {% for user in users %}
-                        <option></option>
-                        {% endfor %}
-                    </select>
+                    <label for="id_g_code" class="form-label">انتخاب گروه</label>
+                    {{form.g_code}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="indicatorID" class="form-label">از تاریخ</label>
-                    <input type="text" class="form-control" id="indicatorID" placeholder="" value="" required="">
+                    <label for="id_from_date" class="form-label">از تاریخ</label>
+                    {{form.from_date}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="indicatorID" class="form-label">تا تاریخ</label>
-                    <input type="text" class="form-control" id="indicatorID" placeholder="" value="" required="">
+                    <label for="id_to_date" class="form-label">تا تاریخ</label>
+                    {{form.to_date}}
                 </div>
 
 
                 <div class="col-md-6">
-                    <label for="indicatorID" class="form-label">از ساعت</label>
-                    <input type="text" class="form-control" id="indicatorID" placeholder="" value="" required="">
+                    <label for="id_from_time" class="form-label">از ساعت</label>
+                    {{form.from_time}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="indicatorID" class="form-label">تا ساعت</label>
-                    <input type="text" class="form-control" id="indicatorID" placeholder="" value="" required="">
+                    <label for="id_to_time" class="form-label">تا ساعت</label>
+                    {{form.to_time}}
                 </div>
             </div>
-
+            <div class="col-md-12 mt-3">
+                <label for="id_description" class="form-label">توضیحات </label>
+                {{form.description}}
+            </div>
             <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">ذخیره</button>
         </form>
     </div>

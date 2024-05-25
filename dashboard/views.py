@@ -74,7 +74,7 @@ def daily_evaluation_create(request):
             realeffect_time=real_effect_time,
         )
         assessment.save()
-        return redirect("dashboard")
+        # return redirect("dashboard")
     return render(request, "dashboard/daily-evaluation/create.html", {"users": users, "indicators":indicators, "indicatoritems":indicatoritems})
 
 

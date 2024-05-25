@@ -1,21 +1,72 @@
 {% extends 'dashboard/base.html'%}
 
+{%block style%}
+<style>
+    .dropdown>.btn {
+        width: 30px !important;
+        height: 30px !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    .dropdown-menu {
+        min-width: 100px !important;
+    }
+
+    .dropdown-gmem {
+        padding: 0px 5px !important;
+        font-size: 12px !important;
+    }
+</style>
+{%endblock%}
+
 {% block content %}
 <div class="container">
     <div class="shadow p-3 mb-5 bg-body rounded ml-3">گروه ها
         <a href="{% url 'groups-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
     </div>
 
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">نام گروه</h5>
-            <p class="card-text">توضیحات گروه</p>
-            <a href="#" class="btn btn-primary">مشاهده افراد موجود</a>
+    <div class="container">
+        <div class="row">
+            {% for g in groups %}
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="card" style="width: 100%;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-tgmle mb-0">{{ g.name }}</h5>
+
+                            <div class="dropdown">
+                                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                    </svg>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-light bg-light">
+                                    <li><a class="dropdown-gmem" href="{% url 'groups-edit' g.id %}">ویرایش</a></li>
+                                    <!-- <li><a class="dropdown-gmem text-warning" href="#">report</a></li> -->
+                                    <li>
+                                        <hr class="dropdown-divider border-top border-secondary">
+                                    </li>
+                                    <li><a class="dropdown-gmem text-danger"
+                                            href="{% url 'groups-delete' g.id %}">حذف</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <p class="card-text">{{ g.description }}</p>
+                        <a href="#" class="btn btn-primary">مشاهده اعضا</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
+
     <div class="shadow p-3 mb-5 bg-body rounded ml-3 mt-5">اعضای گروه ها
-        <a href="{% url 'group-items-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+        <a href="{% url 'group-members-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
     </div>
 
     <div class="table-responsive small">
@@ -31,14 +82,36 @@
                 </tr>
             </thead>
             <tbody>
+                {%for gm in groupmembers %}
                 <tr>
-                    <td>1</td>
-                    <td>علی استاد</td>
-                    <td>1402/01/01</td>
-                    <td>1402/09/01</td>
-                    <td>فنی</td>
-                    <td></td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ gm.pid }}</td>
+                    <td>{{ gm.from_date }}</td>
+                    <td>{{ gm.to_date }}</td>
+                    <td>{{ gm.g_code }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-light bg-light">
+                                <li><a class="dropdown-gmem" href="{% url 'group-members-edit' gm.id %}">ویرایش</a>
+                                </li>
+                                <!-- <li><a class="dropdown-gmem text-warning" href="#">report</a></li> -->
+                                <li>
+                                    <hr class="dropdown-divider border-top border-secondary">
+                                </li>
+                                <li><a class="dropdown-gmem text-danger"
+                                        href="{% url 'group-members-delete' gm.id %}">حذف</a></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>
