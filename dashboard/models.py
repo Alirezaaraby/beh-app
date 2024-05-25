@@ -4,7 +4,7 @@ from users.models import users
 
 class Assessments(models.Model):
     pid = models.CharField(max_length=10)
-    assessor_id = models.ForeignKey(users, on_delete=models.CASCADE)
+    assessor_id = models.CharField(max_length=10)
 
     occure_date = models.CharField(max_length=25)
     occure_time = models.CharField(max_length=25)

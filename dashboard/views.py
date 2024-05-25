@@ -24,6 +24,7 @@ def daily_evaluation(request):
 def daily_evaluation_create(request):
     # TODO
     all_users = users.objects.all()
+    all_user = users.objects.get(pk=1)
 
     indicators = Indicators.objects.all()
     indicatoritems = IndicatorItems.objects.all()
@@ -34,7 +35,7 @@ def daily_evaluation_create(request):
         date = current_datetime.strftime("%Y-%m-%d")
         time = current_datetime.strftime("%H:%M:%S")
 
-        pid = request.POST.get("pid")
+        pid = all_user.id
 
         assessor_id = request.user
 

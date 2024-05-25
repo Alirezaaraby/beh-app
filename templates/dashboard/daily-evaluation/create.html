@@ -113,7 +113,12 @@
 
                     <div class="col-md-12">
                         <label for="personnel" class="form-label">ارزیابی شونده</label>
-                        <input class="form-control" id="personnel" required="" name="pid" required>
+                        <select class="form-select" id="pid" required="" name="pid" required>
+                            <option value="">انتخاب کنید</option>
+                            {% for user in users %}
+                            <option value="{{user.id}}">{{user.name}} {{user.f_name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
                     <div class="col-md-12">
@@ -134,7 +139,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="score" class="form-label">امتیاز</label>
+                        <label for="score" class="form-label">امتیاز (<span id="range"></span>)</label>
                         <input type="number" class="form-control" id="score" min="1" placeholder="" value=""
                             name="score" required>
                     </div>
@@ -246,6 +251,9 @@
                     $("#score").attr("min", minEffect);
                     $("#score").attr("max", maxEffect);
                     $("#score").val(defaultEffect);
+                    
+                    $("#range").text("از" + minEffect + " تا " + maxEffect);
+
                 }
             },
             error: function (xhr, status, error) {
