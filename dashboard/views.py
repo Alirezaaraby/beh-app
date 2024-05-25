@@ -114,8 +114,8 @@ def load_indicator_item_range(request):
 
 def autocomplete(request):
     if 'term' in request.GET:
-        data = users.objects.filter(first_name__startswith = request.GET.get('term'))
+        data = users.objects.filter(username__startswith = request.GET.get('term'))
         titles = list()
         for i in data:
-            titles.append(i.first_name)
+            titles.append(i.name + " " +i.f_name + " (" + i.username + ")")
         return JsonResponse(titles, safe=False)
