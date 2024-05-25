@@ -50,8 +50,7 @@
                             </div>
 
                         </div>
-                        <p class="card-text">{{ in.description }}</p>
-                        <a href="#" class="btn btn-primary">مشاهده شاخص های موجود</a>
+                        <a href="{% url 'indicator-details' in.id %}" class="btn btn-primary mt-2">مشاهده شاخص های موجود</a>
                     </div>
                 </div>
             </div>
@@ -69,8 +68,8 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">نام</th>
-                    <th scope="col">شاخص</th>
+                    <th scope="col">شاخص (مثبت و منفی)</th>
+                    <th scope="col">نوع شاخص</th>
                     <th scope="col">مقدار پیشفرض</th>
                     <th scope="col"></th>
                 </tr>

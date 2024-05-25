@@ -7,14 +7,14 @@ class GroupsForm(forms.ModelForm):
     g_code = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "نام نوع شاخص"}
+            attrs={"class": "form-control", "placeholder": "کد گروه"}
         ),
     )
 
     name = forms.CharField(
         max_length=250,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "شماره نوع شاخص"}
+            attrs={"class": "form-control", "placeholder": "عنوان گروه"}
         ),
     )
 

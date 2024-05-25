@@ -11,7 +11,7 @@ class IndicatorItems(models.Model):
     in_id = models.ForeignKey(Indicators, on_delete=models.CASCADE)  
     it_id = models.CharField(max_length=25)
     item = models.CharField(max_length=500)
-    min_effect = models.IntegerField()  # Changed to IntegerField
-    default_effect = models.IntegerField()  # Changed to IntegerField
-    max_effect = models.IntegerField(default=0)  # Changed to IntegerField
-    description = models.TextField(default='', blank=True, null=True)  # Changed default to a string
+    min_effect = models.IntegerField()
+    default_effect = models.IntegerField()
+    max_effect = models.IntegerField(default=0)
+    description = models.TextField(default='', blank=True, null=True)

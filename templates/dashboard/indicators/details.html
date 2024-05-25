@@ -1,0 +1,48 @@
+{% extends 'dashboard/base.html'%}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mt-5">
+        <h2>نوع شاخص: {{indicator.item_type}}</h2>
+        <h4>کد نوع: {{indicator.in_id}}</h4>
+        <p>توضیحات: {{indicator.description}}</p>
+    </div>
+    
+    <div class="table-responsive small">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">شاخص (مثبت و منفی)</th>
+                    <th scope="col">نوع شاخص</th>
+                    <th scope="col">مقدار پیشفرض</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for it in indicatoritems %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ it.item }}</td>
+                    <td>{{ it.in_id }}</td>
+                    <td>{{ it.default_effect }}</td>
+                    <td>                            <div class="dropdown">
+                        <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-light bg-light">
+                            <li><a class="dropdown-item" href="{% url 'indicator-items-edit' it.id %}">ویرایش</a></li>
+                            <!-- <li><a class="dropdown-item text-warning" href="#">report</a></li> -->
+                            <li><hr class="dropdown-divider border-top border-secondary"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'indicator-items-delete' it.id %}">حذف</a></li>
+                        </ul>
+                    </div></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}

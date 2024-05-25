@@ -74,3 +74,9 @@ def indicator_items_delete(request, id):
     item = get_object_or_404(IndicatorItems, pk=id)
     item.delete()
     return redirect("indicators")
+
+def indicator_details(request, id):
+    indicator = get_object_or_404(Indicators, pk=id)
+    indicatoritems = IndicatorItems.objects.filter(in_id_id = id)
+
+    return render(request, "dashboard/indicators/details.html", {"indicator": indicator, "indicatoritems": indicatoritems})

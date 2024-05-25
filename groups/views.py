@@ -89,3 +89,9 @@ def group_members_delete(request, id):
     item = get_object_or_404(GroupMembers, pk=id)
     item.delete()
     return redirect("groups")
+
+def groups_details(request, id):
+    group = get_object_or_404(Groups, pk=id)
+    groupmembers = GroupMembers.objects.filter(g_code_id = id)
+
+    return render(request, "dashboard/groups/details.html", {"group": group, "groupmembers":groupmembers})

@@ -7,19 +7,20 @@ class IndicatorsForm(forms.ModelForm):
     in_id = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "نام نوع شاخص"}
+            attrs={"class": "form-control", "placeholder": "کد نوع"}
         ),
     )
 
     item_type = forms.CharField(
         max_length=250,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "شماره نوع شاخص"}
+            attrs={"class": "form-control", "placeholder": "نوع شاخص"}
         ),
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "توضیحات"})
+        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "توضیحات"}),
+        required=False
     )
 
     class Meta:
@@ -71,7 +72,7 @@ class IndicatorItemsForm(forms.ModelForm):
         widget=forms.Textarea(
             attrs={"class": "form-control", "placeholder": "توضیحات"}
         ),
-        required=False,  # Make description field optional
+        required=False,
     )
 
     class Meta:

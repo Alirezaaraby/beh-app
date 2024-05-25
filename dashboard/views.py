@@ -15,7 +15,7 @@ def index(request):
     return render(request, "dashboard/index.html")
 
 
-@login_required
+
 def daily_evaluation(request):
     data = Assessments.objects.all()
     return render(request, "dashboard/daily-evaluation/index.html", {"data": data})

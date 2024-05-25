@@ -57,7 +57,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded">تعریف نوع شاخص جدید</div>
+    <div class="shadow p-3 mb-5 bg-body rounded">نوع شاخص جدید</div>
 
     <div class="row">
 
@@ -65,12 +65,12 @@
             {%csrf_token%}
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label for="id_in_id" class="form-label">نام نوع شاخص</label>
+                    <label for="id_in_id" class="form-label">نوع شاخص</label>
                     {{form.item_type}}
                 </div>
 
                 <div class="col-md-6">
-                    <label for="id_item_type" class="form-label">شماره نوع شاخص</label>
+                    <label for="id_item_type" class="form-label">کد نوع</label>
                     {{form.in_id}}
                 </div>
 
