@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Indicators, IndicatorItems
 from .forms import IndicatorsForm, IndicatorItemsForm
+from django.contrib import messages
 # Create your views here.
 
 def indicators(request):
@@ -15,7 +16,11 @@ def indicators_create(request):
         form = IndicatorsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('indicators')
+            messages.success(request, 'با موفقیت ذخیره شد')
+        else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+    else:
+        form = IndicatorsForm()
     return render(request, 'dashboard/indicators/create.html', {'form': form})
 
 def indicator_items_create(request):
@@ -24,7 +29,11 @@ def indicator_items_create(request):
         form = IndicatorItemsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('indicators')
+            messages.success(request, 'با موفقیت ذخیره شد')
+        else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+    else:
+        form = IndicatorItemsForm()
     return render(request, 'dashboard/indicators/items/create.html', {'form': form})
 
 def indicators_edit(request,id):
@@ -37,8 +46,11 @@ def indicators_edit(request,id):
         form = IndicatorsForm(request.POST, instance=indicator)
         if form.is_valid():
             form.save()
-            return redirect("indicators")
-    
+            messages.success(request, 'با موفقیت ذخیره شد')
+        else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+    else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
     context = {
         'form': form
     }
@@ -55,7 +67,11 @@ def indicator_items_edit(request,id):
         form = IndicatorItemsForm(request.POST, instance=indicatoritems)
         if form.is_valid():
             form.save()
-            return redirect("indicators")
+            messages.success(request, 'با موفقیت ذخیره شد')
+        else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+    else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
     
     context = {
         'form': form
