@@ -85,7 +85,8 @@ def editor(request):
 def test(request):
     return render(request, "dashboard/test.html")
 def personnel(request):
-    return render(request, "dashboard/personnel/index.html")
+    personnel = users.objects.filter(is_superuser=False)
+    return render(request, "dashboard/personnel/index.html", {"users":personnel})
 
 
 def substitute(request):
@@ -113,7 +114,7 @@ def load_indicator_item_range(request):
 
 def autocomplete(request):
     if 'term' in request.GET:
-        data = User.objects.filter(first_name__startswith = request.GET.get('term'))
+        data = users.objects.filter(first_name__startswith = request.GET.get('term'))
         titles = list()
         for i in data:
             titles.append(i.first_name)

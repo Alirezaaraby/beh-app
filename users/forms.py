@@ -13,10 +13,10 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        print(get_user_model())
         fields = [
-     
-            "username",
+            "name",
+            "f_name",
+            "username"
         ]
 
 
@@ -44,14 +44,25 @@ class UserCompleteForm(ModelForm):
         fields = ["name", "f_name", "phone", "email", "inv_code","date_of_birth"]
 
 class UpdateProfileForm(forms.ModelForm):
+    username = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={"class": "form-control", "placeholder": "شماره پرسنلی"}
+        ),
+    )
+
+    name = forms.CharField(
+        max_length=25,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "شماره شاخص"}
+        ),
+    )
+
+    f_name = forms.CharField(
+        max_length=500,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "نام خانوادگی"}
+        ),
+    )
     class Meta:
         model = users
-        fields = ['f_name', 'username', 'date_of_birth', 'inv_code', 'phone', 'email']
-
-from django import forms
-from .models import users
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = users
-        exclude = ['password', 'is_staff', 'is_superuser', 'is_active', 'expiration', 'last_login'] 
+        fields = ['f_name', 'username', 'name'] 
