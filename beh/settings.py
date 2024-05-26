@@ -92,11 +92,12 @@ WSGI_APPLICATION = "beh.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "beh",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "localhost",
-        "PORT": "3306",
+
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
     }
 }
 
