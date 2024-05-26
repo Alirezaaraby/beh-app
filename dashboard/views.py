@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from datetime import datetime
 from .models import Assessments
 from indicators.models import Indicators, IndicatorItems
 from users.models import users
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
-
+from django.utils import timezone
+import jdatetime
 # Create your views here.
 
 
@@ -30,10 +30,16 @@ def daily_evaluation_create(request):
     indicatoritems = IndicatorItems.objects.all()
 
     if request.method == "POST":
-        current_datetime = datetime.now()
+        utc_time = timezone.now()
+        local_time = timezone.localtime(utc_time)
+        
+        tehran_year = local_time.year
+        tehran_month = local_time.month
+        tehran_day = local_time.day
+        
+        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-        date = current_datetime.strftime("%Y-%m-%d")
-        time = current_datetime.strftime("%H:%M:%S")
+        time = str(local_time.hour) + ":" + str(local_time.minute)
 
         pid = all_user.id
 
@@ -46,7 +52,7 @@ def daily_evaluation_create(request):
         score = request.POST.get("score")
         record_id = request.POST.get("record_id")
 
-        record_date = date
+        record_date = jalili_date
         record_time = time
         status = "در انتظار تایید"
         current = 1
@@ -73,6 +79,7 @@ def daily_evaluation_create(request):
         assessment.save()
         messages.success(request, 'با موفقیت ذخیره شد')
         # return redirect("dashboard")
+
     return render(
         request,
         "dashboard/daily-evaluation/create.html",

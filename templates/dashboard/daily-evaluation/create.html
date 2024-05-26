@@ -195,6 +195,7 @@
             <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
 
             </form>
+            <div>{{local_time}}</div>
         </div>
     </div>
 </div>
@@ -273,7 +274,7 @@
         var jalaliDay = jalaliDate.jd;
 
         $("#forecastEffectTime").val(jalaliMonth);
-        
+
         jalaliMonth = String(jalaliDate.jm).padStart(2, '0');
         jalaliDay = String(jalaliDate.jd).padStart(2, '0');
 
