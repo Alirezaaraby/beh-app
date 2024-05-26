@@ -1,5 +1,5 @@
 {% extends 'dashboard/base.html'%}
-{%load static%}
+{% load static %}
 {% block style %}
 <style>
     .dropzone {
@@ -67,7 +67,7 @@
         color: green;
     }
 </style>
-{%endblock%}
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -89,10 +89,10 @@
         <div class="col-md-5 col-lg-4 order-md-last">
 
             <div class="bg-white p-5 rounded shadow-sm border">
-                <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm"
+                <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create' %}" id="mainForm"
                     data-indicators-url="{% url 'ajax-load-indicator-items' %}"
                     data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
-                    {%csrf_token%}
+                    {% csrf_token %}
                     <div class="col-md-12 mb-2">
                         <label for="record_id" class="form-label">کد پرسنلی ثبت کننده</label>
                         <input type="text" class="form-control" id="record_id" placeholder="" name="record_id" required>
@@ -107,8 +107,8 @@
                     <div class="col-md-12 mb-2">
                         <label for="forecastEffectTime" class="form-label">پیش بینی زمان تاثیر</label>
                         <select class="form-select" id="forecastEffectTime" name="forecast_effect_time" required>
-                            <option value="">انتخاب کنید</option>
-                
+                            <option value>انتخاب کنید</option>
+
                             <option value="1">فروردین</option>
                             <option value="2">اردیبهشت</option>
                             <option value="3">خرداد</option>
@@ -188,7 +188,7 @@
 
                 <div class="col-md-12">
                     <label for="description" class="form-label">مصداق<span style="color: red;">*</span></label>
-                    <input type="text" id="description" class="form-control" name="description" rows="4" required/>
+                    <input type="text" id="description" class="form-control" name="description" rows="4" required />
                 </div>
             </div>
 
@@ -199,81 +199,86 @@
     </div>
 </div>
 
-{%block script%}
+{% block script %}
 
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
+
 <script>
-    $("#in_id").change(function () {
-        const url = $("#mainForm").attr("data-indicators-url");
-        const indicatorsId = $(this).val();
-        $.ajax({
-            url: url,
-            data: {
-                'in_id': indicatorsId
-            },
-            success: function (data) {
-                let html_data = '<option value="">---------</option>';
-                data.forEach(function (indicator) {
-                    html_data += `<option value="${indicator.id}">${indicator.item}</option>`;
-                });
-                $("#it_id").html(html_data);
-            }
-        });
-    });
-    $("#it_id").change(function () {
-        const url = $("#mainForm").attr("data-indicator-range-url");
-        const indicatorId = $(this).val();
-        $.ajax({
-            url: url,
-            data: {
-                'it_id': indicatorId
-            },
-            success: function (data) {
-                if (data.length > 0) {
-                    const item = data[0];
-                    const minEffect = item.min_effect;
-                    const maxEffect = item.max_effect;
-                    const defaultEffect = item.default_effect;
-
-                    $("#score").attr("min", minEffect);
-                    $("#score").attr("max", maxEffect);
-                    $("#score").val(defaultEffect);
-
-                    $("#range-min").text(minEffect);
-                    $("#seperator").text("تا");
-                    $("#range-max").text(maxEffect);
-
+    $(document).ready(function () {
+        $("#in_id").change(function () {
+            const url = $("#mainForm").attr("data-indicators-url");
+            const indicatorsId = $(this).val();
+            $.ajax({
+                url: url,
+                data: {
+                    'in_id': indicatorsId
+                },
+                success: function (data) {
+                    let html_data = '<option value>---------</option>';
+                    data.forEach(function (indicator) {
+                        html_data += `<option value="${indicator.id}">${indicator.item}</option>`;
+                    });
+                    $("#it_id").html(html_data);
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-            }
+            });
         });
-    });
 
-    jalaliDatepicker.startWatch();
+        $("#it_id").change(function () {
+            const url = $("#mainForm").attr("data-indicator-range-url");
+            const indicatorId = $(this).val();
+            $.ajax({
+                url: url,
+                data: {
+                    'it_id': indicatorId
+                },
+                success: function (data) {
+                    if (data.length > 0) {
+                        const item = data[0];
+                        const minEffect = item.min_effect;
+                        const maxEffect = item.max_effect;
+                        const defaultEffect = item.default_effect;
 
-    $(function () {
+                        $("#score").attr("min", minEffect);
+                        $("#score").attr("max", maxEffect);
+                        $("#score").val(defaultEffect);
+
+                        $("#range-min").text(minEffect);
+                        $("#seperator").text("تا");
+                        $("#range-max").text(maxEffect);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                }
+            });
+        });
+
+        jalaliDatepicker.startWatch();
+
         $("#personnel").autocomplete({
             source: "{% url 'autocomplete' %}"
         });
-    });
 
-    const currentDate = new Date();
+        // Set the Jalali month in the dropdown
+        const currentDate = new Date();
+        const month = currentDate.getMonth() + 1; // getMonth() returns 0-11
+        const year = currentDate.getFullYear();
+        const day = currentDate.getDate();
 
-const month = currentDate.getMonth() + 1;
+        const jalaliDate = jalaali.toJalaali(year, month, day);
+        const jalaliYear = jalaliDate.jy;
+        var jalaliMonth = jalaliDate.jm;
+        var jalaliDay = jalaliDate.jd;
 
-const year = currentDate.getFullYear();
-const day = currentDate.getDate();
+        $("#forecastEffectTime").val(jalaliMonth);
+        
+        jalaliMonth = String(jalaliDate.jm).padStart(2, '0');
+        jalaliDay = String(jalaliDate.jd).padStart(2, '0');
 
-const jalaliDate = jalaali.toJalaali(year, month, day);
-
-const jalaliMonth = jalaliDate.jm;
-
-const forecastEffectTimeDropdown = document.getElementById('forecastEffectTime');
-forecastEffectTimeDropdown.value = jalaliMonth;
+        $("#occure_date").val(`${jalaliYear}/${jalaliMonth}/${jalaliDay}`);    });
 </script>
 
-{%endblock%}
-{%endblock%}
+{% endblock %}
+{% endblock %}
