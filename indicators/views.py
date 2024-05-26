@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Indicators, IndicatorItems
 from .forms import IndicatorsForm, IndicatorItemsForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+@login_required
 def indicators(request):
     indicators = Indicators.objects.all()
     indicatoritems = IndicatorItems.objects.all()

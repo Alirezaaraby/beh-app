@@ -3,8 +3,9 @@ from .forms import UserRegistrationForm, UpdateProfileForm
 from django.contrib import messages
 from .models import users
 from django.contrib.auth.decorators import login_required
+from .decorators import superuser_required
 
-
+@superuser_required
 def register(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
@@ -21,7 +22,7 @@ def register(request):
     else:
         return redirect("login")
 
-
+@superuser_required
 def edit(request, id):
     user = get_object_or_404(users, pk=id)
     if request.method == "POST":
@@ -34,7 +35,7 @@ def edit(request, id):
         request, "dashboard/personnel/edit.html", {"form": form, "user": user}
     )
 
-
+@superuser_required
 def delete(request, id):
     user = get_object_or_404(users, pk=id)
     user.delete()

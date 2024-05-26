@@ -8,15 +8,16 @@ from django.contrib import messages
 from django.utils import timezone
 import jdatetime
 from .forms import AssessmentsForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required
 def index(request):
     # return redirect("dashboard")
     return render(request, "dashboard/index.html")
 
 
-
+@login_required
 def daily_evaluation(request):
     if request.user.user_type == 1:
         data = Assessments.objects.all()
@@ -27,7 +28,7 @@ def daily_evaluation(request):
 
     return render(request, "dashboard/daily-evaluation/index.html", {"data": data})
 
-
+@login_required
 def daily_evaluation_create(request):
     if request.method == 'POST':
         form = AssessmentsForm(request.POST)
@@ -59,7 +60,7 @@ def daily_evaluation_create(request):
     else:
         form = AssessmentsForm()
     return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user})
-
+@login_required
 def daily_evaluation_edit(request, id):
 
     assesment = Assessments.objects.get(id=id)
@@ -82,7 +83,7 @@ def daily_evaluation_edit(request, id):
     
     return render(request, 'dashboard/daily-evaluation/create.html', context)
     
-
+@login_required
 def daily_evaluation_accept(request, id):
     item = get_object_or_404(Assessments, pk=id)
     
@@ -90,7 +91,7 @@ def daily_evaluation_accept(request, id):
     item.save()
 
     return redirect('daily-evaluation')
-
+@login_required
 def daily_evaluation_delete(request, id):
 
     item = get_object_or_404(Assessments, pk=id)
