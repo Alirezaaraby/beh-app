@@ -14,9 +14,10 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">شماره پرسنلی</th>
                     <th scope="col">عنوان</th>
-                    <th scope="col">دسته بندی</th>
-                    <th scope="col">تاریخ ایجاد</th>
+                    <th scope="col">امتیاز</th>
+                    <th scope="col">تاریخ ثبت</th>
                     <th scope="col">وضعیت</th>
                     <th scope="col"></th>
                 </tr>
@@ -25,8 +26,9 @@
                 {% for i in data %}
                 <tr>
                     <td>{{forloop.counter }}</td>
+                    <td>{{i.pid}}</td>
                     <td>{{i.it_id}}</td>
-                    <td>{{i.in_id}}</td>
+                    <td>{{i.score}}</td>
                     <td>{{i.record_date}}</td>
                     <td>{{i.status}}</td>
                     <td>

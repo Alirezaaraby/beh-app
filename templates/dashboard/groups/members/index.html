@@ -63,7 +63,8 @@
     <div class="messages">
         {% for message in messages %}
 
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
+            role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             {{ message }}
         </div>
@@ -117,10 +118,13 @@
 </div>
 
 {%block script%}
+
 <script>
-    jalaliDatepicker.startWatch();
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+        jalaliDatepicker.startWatch();
+    });
 </script>
 {%endblock%}
 
 {%endblock%}
-

@@ -34,7 +34,7 @@ class GroupMembersForm(forms.ModelForm):
     pid = forms.ModelChoiceField(
         queryset=users.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select", "placeholder": "انتخاب نوع شاخص"}
+            attrs={"class": "form-select js-example-basic-single", "placeholder": "انتخاب نوع شاخص"}
         ),
     )
 

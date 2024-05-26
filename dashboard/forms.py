@@ -55,7 +55,7 @@ class AssessmentsForm(forms.ModelForm):
     record_id = forms.ModelChoiceField(
         queryset=users.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select", "placeholder": "شماره پرسنلی ثبت کننده", "id":"record_id"}
+            attrs={"class": "form-select js-example-basic-single", "placeholder": "شماره پرسنلی ثبت کننده", "id":"record_id"}
         ),
     )
     occure_date = forms.CharField(
