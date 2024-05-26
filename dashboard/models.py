@@ -7,7 +7,7 @@ class Assessments(models.Model):
     assessor_id = models.CharField(max_length=10)
 
     occure_date = models.CharField(max_length=25)
-    occure_time = models.CharField(max_length=25)
+    occure_time = models.CharField(max_length=25, blank=True, null=True)
     
     in_id = models.CharField(max_length=25)
     it_id = models.CharField(max_length=25)
@@ -16,14 +16,14 @@ class Assessments(models.Model):
     record_id = models.CharField(max_length=10)
 
     record_date = models.CharField(max_length=25) 
-    record_time = models.CharField(max_length=50)
+    record_time = models.CharField(max_length=50, blank=True, null=True)
 
-    current = models.CharField(max_length=10)
+    current = models.CharField(max_length=10, blank=True, null=True)
 
     forecastEffectTime = models.CharField(max_length=10)
-    realeffect_time = models.CharField(max_length=10)
+    realeffect_time = models.CharField(max_length=10, blank=True, null=True)
 
-    body = models.TextField(default="3")
+    description = models.TextField()
 
 class Overheads(models.Model):    
     p_id = models.CharField(max_length=10)

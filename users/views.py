@@ -39,9 +39,9 @@ def register(request):
                 form = UserRegistrationForm()
             return render(request, "registration/register.html", {"form": form})
         else:
-            return redirect("register")
+            return redirect("dashboard")
     else:
-        return redirect("register")
+        return redirect("login")
 
 
 def reset_password(request):

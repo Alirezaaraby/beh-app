@@ -76,7 +76,8 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
+            role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             {{ message }}
         </div>
@@ -86,125 +87,112 @@
 
     <div class="row g-3">
         <div class="col-md-5 col-lg-4 order-md-last">
-            <div class="bg-white p-5 rounded shadow-sm border">
-                <p>تصویر</p>
-                <div class="dropzone d-block" data-bs-toggle="tooltip" data-bs-placement="right" title="جهت بارگزاری بیشتر از یک فایل، آن ها را فشرده نمایید و به صورت فایل فشرده ذخیره نمایید.">
-                    <label for="files" class="dropzone-container">
-                        <div class="file-icon"><i class="fa-solid fa-file-circle-plus text-primary"></i></div>
-                        <div class="text-center pt-3 px-5">
-                            <p class="w-80 h5 text-dark fw-bold">انتخاب تصویر</p>
-                        </div>
-                    </label>
-                    <input id="files" name="files[]" type="file" class="file-input" />
-                </div>
 
-                <button type="button" class="btn btn-outline-primary w-100 mt-2">ذخیره</button>
+            <div class="bg-white p-5 rounded shadow-sm border">
+                <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm"
+                    data-indicators-url="{% url 'ajax-load-indicator-items' %}"
+                    data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
+                    {%csrf_token%}
+                    <div class="col-md-12 mb-2">
+                        <label for="record_id" class="form-label">کد پرسنلی ثبت کننده</label>
+                        <input type="text" class="form-control" id="record_id" placeholder="" name="record_id" required>
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                        <label for="occure_date" class="form-label">تاریخ وقوع</label>
+                        <input class="form-control" id="occure_date" placeholder="" name="occure_date" required
+                            data-jdp>
+                    </div>
+
+                    <div class="col-md-12 mb-2">
+                        <label for="forecastEffectTime" class="form-label">پیش بینی زمان تاثیر</label>
+                        <select class="form-select" id="forecastEffectTime" name="forecast_effect_time" required>
+                            <option value="">انتخاب کنید</option>
+                
+                            <option value="1">فروردین</option>
+                            <option value="2">اردیبهشت</option>
+                            <option value="3">خرداد</option>
+                            <option value="4">تیر</option>
+                            <option value="5">مرداد</option>
+                            <option value="6">شهریور</option>
+                            <option value="7">مهر</option>
+                            <option value="8">آبان</option>
+                            <option value="9">آذر</option>
+                            <option value="10">دی</option>
+                            <option value="11">بهمن</option>
+                            <option value="12">اسفند</option>
+                        </select>
+                    </div>
+
+                    <p>تصویر</p>
+                    <div class="dropzone d-block" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="جهت بارگزاری بیشتر از یک فایل، آن ها را فشرده نمایید و به صورت فایل فشرده ذخیره نمایید.">
+                        <label for="files" class="dropzone-container">
+                            <div class="file-icon"><i class="fa-solid fa-file-circle-plus text-primary"></i></div>
+                            <div class="text-center pt-3 px-5">
+                                <p class="w-80 h5 text-dark fw-bold">انتخاب تصویر</p>
+                            </div>
+                        </label>
+                        <input id="files" name="files[]" type="file" class="file-input" />
+                    </div>
+
+                    <!-- <button type="button" class="btn btn-outline-primary w-100 mt-2">ذخیره</button> -->
 
             </div>
 
         </div>
 
         <div class="col-md-7 col-lg-8">
-            <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create'%}" id="mainForm"
-                data-indicators-url="{% url 'ajax-load-indicator-items' %}"
-                data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
-                {%csrf_token%}
-                <div class="row g-3">
 
-                    <div class="col-md-12">
-                        <label for="personnel" class="form-label">ارزیابی شونده</label>
-                        <select class="form-select" id="pid" required="" name="pid" required>
-                            <option value="">انتخاب کنید</option>
-                            {% for user in users %}
-                            <option value="{{user.id}}">{{user.name}} {{user.f_name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+            <div class="row g-3">
 
-                    <div class="col-md-12">
-                        <label for="in_id" class="form-label">نوع شاخص</label>
-                        <select class="form-select" id="in_id" name="in_id" required>
-                            <option value="">انتخاب کنید</option>
-                            {% for in in indicators %}
-                            <option value="{{in.id}}">{{in.item_type}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="it_id" class="form-label">شاخص</label>
-                        <select class="form-select" id="it_id" name="it_id" required>
-                            <option value="">---------</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="score" class="form-label">امتیاز (<span id="range"></span>)</label>
-                        <input type="number" class="form-control" id="score" min="1" placeholder="" value=""
-                            name="score" required>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="record_id" class="form-label">کد پرسنلی ثبت کننده</label>
-                        <input type="text" class="form-control" id="record_id" placeholder="" value="" name="record_id"
-                            required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="occure_date" class="form-label">تاریخ وقوع</label>
-                        <input class="form-control" id="occure_date" placeholder="" value="" name="occure_date" required
-                            data-jdp>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="occure_time" class="form-label">زمان وقوع</label>
-                        <input type="text" class="form-control" id="occure_time" placeholder="" value=""
-                            name="occure_time" required>
-                    </div>
-                    <div class="col-md-12">
-                        <label for="forecastEffectTime" class="form-label">پیش بینی زمان تاثیر</label>
-                        <select class="form-select" id="forecastEffectTime" name="forecast_effect_time" required>
-                            <option value="">انتخاب کنید</option>
-
-                            <option value="1">فروردین</option>
-                            <option value="2">اردیبهشت</option>
-                            <option value="3">خرداد</option>
-                            <option value="4">تیر</option>
-                            <option value="5">مرداد</option>
-                            <option value="6">شهریور</option>
-                            <option value="7">مهر</option>
-                            <option value="8">آبان</option>
-                            <option value="9">آذر</option>
-                            <option value="10">دی</option>
-                            <option value="11">بهمن</option>
-                            <option value="12">اسفند</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="country" class="form-label">زمان تاثر واقعی</label>
-                        <select class="form-select" id="country" name="real_effect_time" required>
-                            <option value="">انتخاب کنید</option>
-                            <option value="1">فروردین</option>
-                            <option value="2">اردیبهشت</option>
-                            <option value="3">خرداد</option>
-                            <option value="4">تیر</option>
-                            <option value="5">مرداد</option>
-                            <option value="6">شهریور</option>
-                            <option value="7">مهر</option>
-                            <option value="8">آبان</option>
-                            <option value="9">آذر</option>
-                            <option value="10">دی</option>
-                            <option value="11">بهمن</option>
-                            <option value="12">اسفند</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label for="description" class="form-label">مصداق</label>
-                        <textarea id="description" class="form-control" name="body"></textarea>
-                    </div>
+                <div class="col-md-12">
+                    <label for="personnel" class="form-label">ارزیابی شونده<span style="color: red;">*</span></label>
+                    <select class="form-select" id="pid" required="" name="pid" required>
+                        <option value>انتخاب کنید</option>
+                        {% for user in users %}
+                        <option value="{{user.id}}">{{user.name}} {{user.f_name}} {{user.username}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
-                <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
+                <div class="col-md-12">
+                    <label for="in_id" class="form-label">نوع شاخص<span style="color: red;">*</span></label>
+                    <select class="form-select" id="in_id" name="in_id" required>
+                        <option value>انتخاب کنید</option>
+                        {% for in in indicators %}
+                        <option value="{{in.id}}">{{in.item_type}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="it_id" class="form-label">شاخص<span style="color: red;">*</span></label>
+                    <select class="form-select" id="it_id" name="it_id" required>
+                        <option value>---------</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="score" class="form-label">امتیاز (<span id="range-min" dir="ltr"></span> <span
+                            id="seperator"></span> <span id="range-max" dir="ltr"></span>)<span style="color: red;">*</span></label>
+                    <input type="number" class="form-control" id="score" min="1" placeholder="" value="" name="score"
+                        required>
+                </div>
+
+                <div class="col-md-6" hidden>
+                    <label for="occure_time" class="form-label">زمان وقوع<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="occure_time" placeholder="" value="asd"
+                        name="occure_time" required>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="description" class="form-label">مصداق<span style="color: red;">*</span></label>
+                    <input type="text" id="description" class="form-control" name="description" rows="4" required/>
+                </div>
+            </div>
+
+            <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
 
             </form>
         </div>
@@ -251,8 +239,10 @@
                     $("#score").attr("min", minEffect);
                     $("#score").attr("max", maxEffect);
                     $("#score").val(defaultEffect);
-                    
-                    $("#range").text("از" + minEffect + " تا " + maxEffect);
+
+                    $("#range-min").text(minEffect);
+                    $("#seperator").text("تا");
+                    $("#range-max").text(maxEffect);
 
                 }
             },
@@ -263,12 +253,26 @@
     });
 
     jalaliDatepicker.startWatch();
-    
+
     $(function () {
-            $("#personnel").autocomplete({
-                source: "{% url 'autocomplete' %}"
-            });
+        $("#personnel").autocomplete({
+            source: "{% url 'autocomplete' %}"
         });
+    });
+
+    const currentDate = new Date();
+
+const month = currentDate.getMonth() + 1;
+
+const year = currentDate.getFullYear();
+const day = currentDate.getDate();
+
+const jalaliDate = jalaali.toJalaali(year, month, day);
+
+const jalaliMonth = jalaliDate.jm;
+
+const forecastEffectTimeDropdown = document.getElementById('forecastEffectTime');
+forecastEffectTimeDropdown.value = jalaliMonth;
 </script>
 
 {%endblock%}

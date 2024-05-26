@@ -65,32 +65,32 @@
                 {%csrf_token%}
                 <div class="row g-3">
                     <div class="col-md-12">
-                        <label for="indicatorID" class="form-label">نام شاخص</label>
+                        <label for="indicatorID" class="form-label">نام شاخص<span style="color: red;">*</span></label>
                         {{form.item}}
                     </div>
 
                     <div class="col-md-6">
-                        <label for="country" class="form-label">انتخاب نوع شاخص</label>
+                        <label for="country" class="form-label">انتخاب نوع شاخص<span style="color: red;">*</span></label>
                         {{form.in_id}}
                     </div>
 
                     <div class="col-md-6">
-                        <label for="indicatorID" class="form-label">شماره شاخص</label>
+                        <label for="indicatorID" class="form-label">شماره شاخص<span style="color: red;">*</span></label>
                         {{form.it_id}}
                     </div>
                     <!--  -->
                     <div class="col-md-4">
-                        <label for="indicatorID" class="form-label">مقدار پیشفرض تاثیر</label>
+                        <label for="indicatorID" class="form-label">مقدار پیشفرض تاثیر<span style="color: red;">*</span></label>
                         {{form.default_effect}}
                     </div>
 
                     <div class="col-md-4">
-                        <label for="indicatorID" class="form-label">حداقل میزان تاثیر</label>
+                        <label for="indicatorID" class="form-label">حداقل میزان تاثیر<span style="color: red;">*</span></label>
                         {{form.min_effect}}
                     </div>
 
                     <div class="col-md-4">
-                        <label for="indicatorID" class="form-label">حداکثر میزان تاثیر</label>
+                        <label for="indicatorID" class="form-label">حداکثر میزان تاثیر<span style="color: red;">*</span></label>
                         {{form.max_effect}}
                     </div>
 
