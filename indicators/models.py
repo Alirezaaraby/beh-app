@@ -15,3 +15,5 @@ class IndicatorItems(models.Model):
     default_effect = models.IntegerField()
     max_effect = models.IntegerField(default=0)
     description = models.TextField(default='', blank=True, null=True)
+    def __str__(self):
+        return self.item

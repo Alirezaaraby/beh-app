@@ -89,39 +89,24 @@
         <div class="col-md-5 col-lg-4 order-md-last">
 
             <div class="bg-white p-5 rounded shadow-sm border">
-                <form class="needs-validation" novalidate="" action="{% url 'daily-evaluation-create' %}" id="mainForm"
+                <form class="needs-validation" novalidate="" id="mainForm"
                     data-indicators-url="{% url 'ajax-load-indicator-items' %}"
                     data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
                     {% csrf_token %}
+
                     <div class="col-md-12 mb-2">
                         <label for="record_id" class="form-label">کد پرسنلی ثبت کننده</label>
-                        <input type="text" class="form-control" id="record_id" placeholder="" name="record_id" required>
+                        {{form.record_id}}
                     </div>
 
                     <div class="col-md-12 mb-2">
                         <label for="occure_date" class="form-label">تاریخ وقوع</label>
-                        <input class="form-control" id="occure_date" placeholder="" name="occure_date" required
-                            data-jdp>
+                        {{form.occure_date}}
                     </div>
 
                     <div class="col-md-12 mb-2">
                         <label for="forecastEffectTime" class="form-label">پیش بینی زمان تاثیر</label>
-                        <select class="form-select" id="forecastEffectTime" name="forecast_effect_time" required>
-                            <option value>انتخاب کنید</option>
-
-                            <option value="1">فروردین</option>
-                            <option value="2">اردیبهشت</option>
-                            <option value="3">خرداد</option>
-                            <option value="4">تیر</option>
-                            <option value="5">مرداد</option>
-                            <option value="6">شهریور</option>
-                            <option value="7">مهر</option>
-                            <option value="8">آبان</option>
-                            <option value="9">آذر</option>
-                            <option value="10">دی</option>
-                            <option value="11">بهمن</option>
-                            <option value="12">اسفند</option>
-                        </select>
+                        {{form.forecastEffectTime}}
                     </div>
 
                     <p>تصویر</p>
@@ -148,56 +133,36 @@
 
                 <div class="col-md-12">
                     <label for="personnel" class="form-label">ارزیابی شونده<span style="color: red;">*</span></label>
-                    <select class="form-select" id="pid" required="" name="pid" required>
-                        <option value>انتخاب کنید</option>
-                        {% for user in users %}
-                        <option value="{{user.id}}">{{user.name}} {{user.f_name}} {{user.username}}</option>
-                        {% endfor %}
-                    </select>
+                    {{form.pid}}
                 </div>
 
                 <div class="col-md-12">
                     <label for="in_id" class="form-label">نوع شاخص<span style="color: red;">*</span></label>
-                    <select class="form-select" id="in_id" name="in_id" required>
-                        <option value>انتخاب کنید</option>
-                        {% for in in indicators %}
-                        <option value="{{in.id}}">{{in.item_type}}</option>
-                        {% endfor %}
-                    </select>
+                    {{form.in_id}}
                 </div>
 
                 <div class="col-md-12">
                     <label for="it_id" class="form-label">شاخص<span style="color: red;">*</span></label>
-                    <select class="form-select" id="it_id" name="it_id" required>
-                        <option value>---------</option>
-                    </select>
+                    {{form.it_id}}
                 </div>
 
                 <div class="col-md-12">
                     <label for="score" class="form-label">امتیاز (<span id="range-min" dir="ltr"></span> <span
-                            id="seperator"></span> <span id="range-max" dir="ltr"></span>)<span style="color: red;">*</span></label>
-                    <input type="number" class="form-control" id="score" min="1" placeholder="" value="" name="score"
-                        required>
-                </div>
-
-                <div class="col-md-6" hidden>
-                    <label for="occure_time" class="form-label">زمان وقوع<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="occure_time" placeholder="" value="asd"
-                        name="occure_time" required>
+                            id="seperator"></span> <span id="range-max" dir="ltr"></span>)<span
+                            style="color: red;">*</span></label>
+                    {{form.score}}
                 </div>
 
                 <div class="col-md-12">
-                    <label for="description" class="form-label">مصداق<span style="color: red;">*</span></label>
-                    <input type="text" id="description" class="form-control" name="description" rows="4" required />
+                    {{form.description}}
                 </div>
             </div>
 
             <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
 
-            </form>
-            <div>{{local_time}}</div>
         </div>
     </div>
+    </form>
 </div>
 
 {% block script %}
@@ -205,6 +170,8 @@
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 <script>
     $(document).ready(function () {
@@ -278,7 +245,11 @@
         jalaliMonth = String(jalaliDate.jm).padStart(2, '0');
         jalaliDay = String(jalaliDate.jd).padStart(2, '0');
 
-        $("#occure_date").val(`${jalaliYear}/${jalaliMonth}/${jalaliDay}`);    });
+        $("#occure_date").val(`${jalaliYear}/${jalaliMonth}/${jalaliDay}`);
+        $("#record_id").val("{{user.id}}");
+
+        // $('.js-example-basic-single').select2();
+    });
 </script>
 
 {% endblock %}

@@ -3,15 +3,15 @@ from users.models import users
 # Create your models here.
 
 class Assessments(models.Model):
-    pid = models.CharField(max_length=10)
-    assessor_id = models.CharField(max_length=10)
+    pid = models.ForeignKey(users, on_delete=models.CASCADE, related_name='assessments_as_pid')
+    assessor_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='assessments_as_assessor')
 
     occure_date = models.CharField(max_length=25)
     occure_time = models.CharField(max_length=25, blank=True, null=True)
     
     in_id = models.CharField(max_length=25)
     it_id = models.CharField(max_length=25)
-    score = models.CharField(max_length=25)
+    score = models.IntegerField()
     status = models.CharField(max_length=25)
     record_id = models.CharField(max_length=10)
 
@@ -20,7 +20,7 @@ class Assessments(models.Model):
 
     current = models.CharField(max_length=10, blank=True, null=True)
 
-    forecastEffectTime = models.CharField(max_length=10)
+    forecastEffectTime = models.CharField(max_length=10, blank=True, null=True)
     realeffect_time = models.CharField(max_length=10, blank=True, null=True)
 
     description = models.TextField()

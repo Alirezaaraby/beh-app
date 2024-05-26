@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 import jdatetime
+from .forms import AssessmentsForm
 # Create your views here.
 
 
@@ -22,69 +23,40 @@ def daily_evaluation(request):
 
 
 def daily_evaluation_create(request):
-    # TODO
-    all_users = users.objects.all()
-    all_user = users.objects.get(pk=1)
+    if request.method == 'POST':
+        form = AssessmentsForm(request.POST)
+        if form.is_valid():
+            new_form = form.save(commit=False)
 
-    indicators = Indicators.objects.all()
-    indicatoritems = IndicatorItems.objects.all()
+            utc_time = timezone.now()
+            local_time = timezone.localtime(utc_time)
+            
+            tehran_year = local_time.year
+            tehran_month = local_time.month
+            tehran_day = local_time.day
+            
+            jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-    if request.method == "POST":
-        utc_time = timezone.now()
-        local_time = timezone.localtime(utc_time)
-        
-        tehran_year = local_time.year
-        tehran_month = local_time.month
-        tehran_day = local_time.day
-        
-        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+            time = str(local_time.hour) + ":" + str(local_time.minute)
 
-        time = str(local_time.hour) + ":" + str(local_time.minute)
+            new_form.assessor_id = request.user
+            new_form.record_date = jalili_date
+            new_form.record_time = time
+            new_form.status = "در دست بررسی"
 
-        pid = all_user.id
+            # 2 : در دست بررسی
+            # 1: تایید
+            # 0: عدم تایید
+            
+            new_form.current = True
 
-        assessor_id = request.user
-
-        occure_date = request.POST.get("occure_date")
-        occure_time = request.POST.get("occure_time")
-        in_id = request.POST.get("in_id")
-        it_id = request.POST.get("it_id")
-        score = request.POST.get("score")
-        record_id = request.POST.get("record_id")
-
-        record_date = jalili_date
-        record_time = time
-        status = "در انتظار تایید"
-        current = 1
-
-        forecast_effect_time = request.POST.get("forecast_effect_time")
-        real_effect_time = request.POST.get("real_effect_time")
-
-        assessment = Assessments(
-            pid=pid,
-            assessor_id=assessor_id,
-            occure_date=occure_date,
-            occure_time=occure_time,
-            in_id=in_id,
-            it_id=it_id,
-            score=score,
-            status=status,
-            record_id=record_id,
-            record_date=record_date,
-            record_time=record_time,
-            current=current,
-            forecastEffectTime=forecast_effect_time,
-            realeffect_time=real_effect_time,
-        )
-        assessment.save()
-        messages.success(request, 'با موفقیت ذخیره شد')
-        # return redirect("dashboard")
-
-    return render(
-        request,
-        "dashboard/daily-evaluation/create.html",
-        {"user": request.user ,"users": all_users, "indicators": indicators, "indicatoritems": indicatoritems},
-    )
+            new_form.save()
+            messages.success(request, "با موفقیت ثبت شد")
+        else:
+            messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
+    else:
+        form = AssessmentsForm()
+    return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user})
 
 
 def editor(request):
