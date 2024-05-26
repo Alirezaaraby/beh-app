@@ -18,7 +18,13 @@ def index(request):
 
 
 def daily_evaluation(request):
-    data = Assessments.objects.all()
+    if request.user.user_type == 1:
+        data = Assessments.objects.all()
+    elif request.user.user_type == 2:
+        data = Assessments.objects.filter(record_id = request.user.id)
+    elif request.user.user_type == 3:
+        data = Assessments.objects.filter(pid = request.user.id)
+
     return render(request, "dashboard/daily-evaluation/index.html", {"data": data})
 
 

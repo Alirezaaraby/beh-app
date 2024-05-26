@@ -4,7 +4,9 @@
 <div class="container">
     <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
             ارزیابی روزانه</span>
+            {% if request.user.user_type == 1 or request.user.user_type == 2 %}
         <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+        {%endif%}
     </div>
 
     <!-- <button -->
