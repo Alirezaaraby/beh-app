@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import users
+from indicators.models import Indicators, IndicatorItems
 # Create your models here.
 
 class Assessments(models.Model):
@@ -9,11 +10,11 @@ class Assessments(models.Model):
     occure_date = models.CharField(max_length=25)
     occure_time = models.CharField(max_length=25, blank=True, null=True)
     
-    in_id = models.CharField(max_length=25)
-    it_id = models.CharField(max_length=25)
+    in_id = models.ForeignKey(Indicators, on_delete=models.CASCADE)
+    it_id = models.ForeignKey(IndicatorItems, on_delete=models.CASCADE)
     score = models.IntegerField()
     status = models.CharField(max_length=25)
-    record_id = models.CharField(max_length=10)
+    record_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='assessments_as_record')
 
     record_date = models.CharField(max_length=25) 
     record_time = models.CharField(max_length=50, blank=True, null=True)
