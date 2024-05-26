@@ -41,6 +41,10 @@
                                 </svg>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-light bg-light">
+                                {% if request.user.user_type == 1 %}
+                                <li><a class="dropdown-item text-success" href="{% url 'daily-evaluation-accept' i.id %}">تایید</a>
+                                </li>
+                                {%endif%}
                                 <li><a class="dropdown-item" href="{% url 'daily-evaluation-edit' i.id %}">ویرایش</a>
                                 </li>
                                 <!-- <li><a class="dropdown-item text-warning" href="#">report</a></li> -->

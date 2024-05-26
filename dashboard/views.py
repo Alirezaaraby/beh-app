@@ -76,6 +76,15 @@ def daily_evaluation_edit(request, id):
     
     return render(request, 'dashboard/daily-evaluation/create.html', context)
     
+
+def daily_evaluation_accept(request, id):
+    item = get_object_or_404(Assessments, pk=id)
+    
+    item.status = "تاییده شده"
+    item.save()
+
+    return redirect('daily-evaluation')
+
 def daily_evaluation_delete(request, id):
 
     item = get_object_or_404(Assessments, pk=id)

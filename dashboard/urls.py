@@ -8,6 +8,7 @@ urlpatterns = [
     path("daily-evaluation/create", daily_evaluation_create , name="daily-evaluation-create"),
     path("daily-evaluation/edit/<int:id>", daily_evaluation_edit , name="daily-evaluation-edit"),
     path("daily-evaluation/delete/<int:id>", daily_evaluation_delete , name="daily-evaluation-delete"),
+    path("daily-evaluation/accept/<int:id>", daily_evaluation_accept , name="daily-evaluation-accept"),
 
     path("editor", editor , name="editor"),
 
