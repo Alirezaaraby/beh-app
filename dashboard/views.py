@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Assessments
 from indicators.models import Indicators, IndicatorItems
 from users.models import users
@@ -43,10 +43,6 @@ def daily_evaluation_create(request):
             new_form.record_date = jalili_date
             new_form.record_time = time
             new_form.status = "در دست بررسی"
-
-            # 2 : در دست بررسی
-            # 1: تایید
-            # 0: عدم تایید
             
             new_form.current = True
 
@@ -58,6 +54,33 @@ def daily_evaluation_create(request):
         form = AssessmentsForm()
     return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user})
 
+def daily_evaluation_edit(request, id):
+
+    assesment = Assessments.objects.get(id=id)
+    
+    form = AssessmentsForm(instance=assesment)
+    
+    if request.method == "POST":
+        form = AssessmentsForm(request.POST, instance=assesment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'با موفقیت ذخیره شد')
+        else:
+            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+    else:
+        form = AssessmentsForm(instance=assesment)
+    
+    context = {
+        'form': form
+    }
+    
+    return render(request, 'dashboard/daily-evaluation/create.html', context)
+    
+def daily_evaluation_delete(request, id):
+
+    item = get_object_or_404(Assessments, pk=id)
+    item.delete()
+    return redirect("daily-evaluation")
 
 def editor(request):
     return render(request, "dashboard/daily-evaluation/editor.html")
