@@ -13,6 +13,8 @@ def register(request):
                 form = UserRegistrationForm(request.POST)
                 if form.is_valid():
                     form.save()
+                    messages.success(request, "با موفقیت ایجاد شد")
+                else:
                     messages.error(request, form.errors)
             else:
                 form = UserRegistrationForm()

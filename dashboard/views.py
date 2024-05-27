@@ -53,13 +53,16 @@ def daily_evaluation_create(request):
             
             new_form.current = True
 
+            # new_form.cleaned_data['score'] = ''
             new_form.save()
             messages.success(request, "با موفقیت ثبت شد")
+            return redirect("daily-evaluation-create")
         else:
             messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
     else:
         form = AssessmentsForm()
     return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user})
+
 @login_required
 def daily_evaluation_edit(request, id):
 
@@ -72,6 +75,7 @@ def daily_evaluation_edit(request, id):
         if form.is_valid():
             form.save()
             messages.success(request, 'با موفقیت ذخیره شد')
+            return redirect("daily-evaluation-edit")
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
     else:
@@ -91,6 +95,25 @@ def daily_evaluation_accept(request, id):
     item.save()
 
     return redirect('daily-evaluation')
+
+@login_required
+def daily_evaluation_modify(request, id):
+    item = get_object_or_404(Assessments, pk=id)
+    
+    item.status = "نیازمند اصلاح"
+    item.save()
+
+    return redirect('daily-evaluation')
+
+@login_required
+def daily_evaluation_reject(request, id):
+    item = get_object_or_404(Assessments, pk=id)
+    
+    item.status = "عدم تایید"
+    item.save()
+
+    return redirect('daily-evaluation')
+
 @login_required
 def daily_evaluation_delete(request, id):
 

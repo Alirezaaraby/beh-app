@@ -16,8 +16,8 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">شماره پرسنلی</th>
-                    <th scope="col">عنوان</th>
+                    <th scope="col">ارزیابی شونده</th>
+                    <th scope="col">شاخص (مثبت/منفی)</th>
                     <th scope="col">امتیاز</th>
                     <th scope="col">تاریخ ثبت</th>
                     <th scope="col">وضعیت</th>
@@ -30,11 +30,12 @@
                     <td>{{forloop.counter }}</td>
                     <td>{{i.pid}}</td>
                     <td>{{i.it_id}}</td>
-                    <td>{{i.score}}</td>
+                    <td dir="ltr" class="text-center">{{i.score}}</td>
                     <td>{{i.record_date}}</td>
                     <td>{{i.status}}</td>
                     <td>
                         <div class="dropdown">
+                            {% if request.user.user_type == 1 or request.user.user_type == 2 %}
                             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"
                                     viewBox="0 0 16 16">
@@ -42,9 +43,18 @@
                                         d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
                                 </svg>
                             </button>
+                            {%endif%}
+
                             <ul class="dropdown-menu dropdown-menu-light bg-light">
                                 {% if request.user.user_type == 1 %}
                                 <li><a class="dropdown-item text-success" href="{% url 'daily-evaluation-accept' i.id %}">تایید</a>
+                                </li>
+                                <li><a class="dropdown-item text-warning" href="{% url 'daily-evaluation-modify' i.id %}">نیازمند اصلاح</a>
+                                </li>
+                                <li><a class="dropdown-item text-danger" href="{% url 'daily-evaluation-reject' i.id %}">عدم تایید</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider border-top border-secondary">
                                 </li>
                                 {%endif%}
                                 <li><a class="dropdown-item" href="{% url 'daily-evaluation-edit' i.id %}">ویرایش</a>

@@ -1,180 +1,131 @@
-{% extends "base.html" %}
-{%load static%}
-{%block title%}ثبت نام{%endblock%}
-
-{% block style%}
+{% extends 'dashboard/base.html'%}
+{% block style %}
 <style>
-  html,
-  body {
-    height: 100%;
+  .dropzone {
+    border: dashed 4px #ddd !important;
+    background-color: #f2f6fc;
+    border-radius: 15px;
   }
 
-  .form-signin {
-    max-width: 330px;
-    padding: 1rem;
-  }
-
-  .form-signin .form-floating:focus-within {
-    z-index: 2;
-  }
-
-  .first {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    text-align: right;
-  }
-
-  .middle{
-    margin-bottom: -1px;
-    border-radius: 0;
-  }
-
-  .last {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  @media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-      font-size: 3.5rem;
-    }
-  }
-
-  .b-example-divider {
+  .dropzone .dropzone-container {
+    padding: 2rem 0;
     width: 100%;
-    height: 3rem;
-    background-color: rgba(0, 0, 0, .1);
-    border: solid rgba(0, 0, 0, .15);
-    border-width: 1px 0;
-    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-  }
-
-  .b-example-vr {
-    flex-shrink: 0;
-    width: 1.5rem;
-    height: 100vh;
-  }
-
-  .bi {
-    vertical-align: -.125em;
-    fill: currentColor;
-  }
-
-  .nav-scroller {
+    height: 100%;
     position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
-  }
-
-  .nav-scroller .nav {
     display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #8c96a8;
+    z-index: 20;
   }
 
-  .btn-bd-primary {
-    --bd-violet-bg: #712cf9;
-    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-    --bs-btn-font-weight: 600;
-    --bs-btn-color: var(--bs-white);
-    --bs-btn-bg: var(--bd-violet-bg);
-    --bs-btn-border-color: var(--bd-violet-bg);
-    --bs-btn-hover-color: var(--bs-white);
-    --bs-btn-hover-bg: #6528e0;
-    --bs-btn-hover-border-color: #6528e0;
-    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-    --bs-btn-active-color: var(--bs-btn-hover-color);
-    --bs-btn-active-bg: #5a23c8;
-    --bs-btn-active-border-color: #5a23c8;
+  .dropzone .file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
   }
 
-  .bd-mode-toggle {
-    z-index: 1500;
+  .file-icon {
+    font-size: 60px;
   }
 
-  .bd-mode-toggle .dropdown-menu .active .bi {
-    display: block !important;
+  .hr-sect {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    margin: 8px 0px;
+  }
+
+  .hr-sect:before,
+  .hr-sect:after {
+    content: "";
+    flex-grow: 1;
+    background: #ddd;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 8px;
   }
 </style>
 {%endblock%}
 
-{%block content %}
-
-<body class="d-flex align-items-center py-4 bg-body-tertiary text-center" dir="rtl">
-
-  <div class="form-signin w-100 m-auto">
-    {% if form.errors %}
-    <p>شماره پرسنلی یا رمز عبور شما اشتباه است</p>
-    {% endif %}
-
-    <form method="POST">
-      {% csrf_token %}
-      <img class="mb-4" src="{% static 'logo.png' %}" alt="" width="48" height="48">
-      <h1 class="h3 mb-3 fw-normal">ثبت نام</h1>
-
-
-
-      <div class="form-floating">
-        <input type="text" class="form-control first" id="username" name="username" placeholder="" required>
-        <label for="username">شماره پرسنلی</label>
-      </div>
-
-
-      <div class="form-floating">
-        <input type="text" class="form-control middle" id="name" name="name" placeholder="" required>
-        <label for="name">نام</label>
-      </div>
-
-      <div class="form-floating">
-        <input type="text" class="form-control middle" id="f_name" name="f_name" placeholder="" required>
-        <label for="f_name">نام خانوادگی</label>
-      </div>
-
-
-
-      <div class="form-floating">
-        <input type="password" class="form-control middle" id="floatingPassword" placeholder="Password" name="password1"
-          required>
-        <label for="floatingPassword">رمز عبور</label>
-      </div>
-
-      <div class="form-floating">
-        <input type="password" class="form-control last" id="floatingPassword" placeholder="Password" name="password2"
-          required>
-        <label for="floatingPassword">تایید رمز عبور</label>
-      </div>
-
-      <div class="mt-3">
-        <label for="in_id" class="form-label">نوع کاربر</label>
-        <select class="form-select" id="in_id" name="user_type" required>
-            <option value="3">کارمندان</option>
-            <option value="2">مدیران</option>
-        </select>
-      </div>
-
-      <br>
-      <button class="btn btn-primary w-100 py-2" type="submit">ورود</button>
-      <!-- <p class="mt-2"> حساب کاربری ندارید؟<a href="https://google.com"> ثبت نام</a></p> -->
-      <p class="mt-5 mb-3 text-body-secondary">1402 - 1403 &copy; </p>
-    </form>
-
+{% block content %}
+<div class="container">
+  <div class="shadow p-3 mb-5 bg-body rounded">تعریف نوع شاخص جدید</div>
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <div
+      class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
+      role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      {{ message }}
+    </div>
+    {% endfor %}
   </div>
-</body>
-{% endblock content %}
+  {% endif %}
+  <div class="row">
+
+    <form class="needs-validation" novalidate="" method="POST">
+      {%csrf_token%}
+      <div class="row g-3">
+        <div class="col-md-12">
+          <div class="form-floating">
+            <input type="text" class="form-control first" id="username" name="username" placeholder="" required>
+            <label for="username">شماره پرسنلی</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" class="form-control middle" id="name" name="name" placeholder="" required>
+            <label for="name">نام</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" class="form-control middle" id="f_name" name="f_name" placeholder="" required>
+            <label for="f_name">نام خانوادگی</label>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="password" class="form-control middle" id="floatingPassword" placeholder="Password"
+              name="password1" required>
+            <label for="floatingPassword">رمز عبور</label>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="password" class="form-control last" id="floatingPassword" placeholder="Password"
+              name="password2" required>
+            <label for="floatingPassword">تایید رمز عبور</label>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="mt-3">
+            <label for="in_id" class="form-label">نوع کاربر</label>
+            <select class="form-select" id="in_id" name="user_type" required>
+              <option value="3">کارمندان</option>
+              <option value="2">مدیران</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">ثبت نام</button>
+    </form>
+  </div>
+  <!-- </div> -->
+</div>
+{%endblock%}

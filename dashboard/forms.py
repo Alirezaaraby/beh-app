@@ -31,7 +31,7 @@ class AssessmentsForm(forms.ModelForm):
     in_id = forms.ModelChoiceField(
         queryset=Indicators.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select", "placeholder": "نوع شاخص", "id":"in_id"}
+            attrs={"class": "form-select js-example-basic-single1", "placeholder": "نوع شاخص", "id":"in_id"}
         ),
     )
     it_id = forms.ModelChoiceField(
