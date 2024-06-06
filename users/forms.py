@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import users
+from .models import users, Permissions
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -33,3 +33,9 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = users
         fields = ["f_name", "username", "name"]
+
+class PermissionsForm(forms.ModelForm):
+    class Meta:
+        model = Permissions
+        fields = "__all__"
+

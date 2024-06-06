@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html'%}
+
+{% block content %}
+<div class="list-group">
+    <form method="post" action="{%url 'permissions' permission_id  %}">
+    {% csrf_token %}
+
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.daily_evaluation%}checked{% endif %} name="daily_evaluation">
+        <span>
+            ارزیابی روزانه
+        </span>
+    </label>
+
+
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.personnel%}checked{% endif %} name="personnel">
+        <span>
+            پرسنل
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.groups%}checked{% endif %} name="groups">
+        <span>
+            گروه ها
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.indicators%}checked{% endif %} name="indicators">
+        <span>
+            شاخص ها
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.substitute%}checked{% endif %} name="substitute">
+        <span>
+            جانشین ها
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.logs%}checked{% endif %} name="logs">
+        <span>
+            گزارش ها
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.reports%}checked{% endif %} name="reports">
+        <span>
+            کارنامه ها
+        </span>
+    </label>
+    <input type="submit" value="ذخیره" class="btn btn-primary btn-md mt-4">
+</form>
+
+</div>
+{%endblock%}
