@@ -75,7 +75,6 @@ def daily_evaluation_edit(request, id):
         if form.is_valid():
             form.save()
             messages.success(request, 'با موفقیت ذخیره شد')
-            return redirect("daily-evaluation-edit")
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
     else:
