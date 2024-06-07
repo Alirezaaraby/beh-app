@@ -2,11 +2,13 @@
     <h5>ارزیابی</h5>
     <hr>
     <ul class="nav nav-pills flex-column">
-        {% if request.user.user_type == 1 or request.user.user_type == 2 %}
+        {% if menu_permissions and menu_permissions.daily_evaluation %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'daily-evaluation'%}">ارزیابی روزانه</a>
+            <a class="nav-link" href="{% url 'daily-evaluation' %}">ارزیابی روزانه</a>
         </li>
+        {% endif %}
 
+        {% if menu_permissions and menu_permissions.personnel %}
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
                 data-bs-toggle="collapse" data-bs-target="#personnel-collapse" aria-expanded="false">
@@ -14,92 +16,41 @@
             </button>
             <div class="collapse" id="personnel-collapse" style="margin-right: 40px;">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{%url 'personnel'%}"
-                            class="link-dark d-inline-flex text-decoration-none rounded">مشاهده</a></li>
-                    <li><a href="{% url 'register'%}"
-                            class="link-dark d-inline-flex text-decoration-none rounded mt-1">ایجاد</a></li>
+                    <li><a href="{% url 'personnel' %}" class="link-dark d-inline-flex text-decoration-none rounded">مشاهده</a></li>
+                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">ایجاد</a></li>
                 </ul>
             </div>
         </li>
+        {% endif %}
 
+        {% if menu_permissions and menu_permissions.groups %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'groups'%}">گروه ها</a>
+            <a class="nav-link" href="{% url 'groups' %}">گروه ها</a>
         </li>
+        {% endif %}
+
+        {% if menu_permissions and menu_permissions.indicators %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'indicators'%}">شاخص ها</a>
+            <a class="nav-link" href="{% url 'indicators' %}">شاخص ها</a>
         </li>
+        {% endif %}
+
+        {% if menu_permissions and menu_permissions.substitute %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'substitute'%}">جانشین</a>
+            <a class="nav-link" href="{% url 'substitute' %}">جانشین</a>
         </li>
-        {%endif%}
+        {% endif %}
+
+        {% if menu_permissions and menu_permissions.logs %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'logs'%}">گزارش</a>
+            <a class="nav-link" href="{% url 'logs' %}">گزارش</a>
         </li>
+        {% endif %}
+
+        {% if menu_permissions and menu_permissions.reports %}
         <li class="nav-item">
-            <a class="nav-link" href="{%url 'reports'%}">کارنامه</a>
+            <a class="nav-link" href="{% url 'reports' %}">کارنامه</a>
         </li>
-        <!-- <li class="nav-item">
-            
-            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#usersSubmenu" role="button" aria-expanded="false" aria-controls="usersSubmenu">
-                <span><i class="bi bi-calendar"></i> ارزیابی روزانه </span>
-            </a>
-            <div class="collapse" id="usersSubmenu">
-                <ul class="nav flex-column collapse-inner">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="#"><i class="bi bi-people submenu-icon"></i>All Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="#"><i class="bi bi-person-plus submenu-icon"></i>Add New</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="#"><i class="bi bi-person-check submenu-icon"></i>User Roles</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#usersSubmenu" role="button" aria-expanded="false"
-                aria-controls="usersSubmenu">
-                Users
-            </a>
-            <div class="collapse" id="usersSubmenu">
-                <ul class="nav flex-column collapse-inner">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">All Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Add New</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">User Roles</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#settingsSubmenu" role="button" aria-expanded="false"
-                aria-controls="settingsSubmenu">
-                Settings
-            </a>
-            <div class="collapse" id="settingsSubmenu">
-                <ul class="nav flex-column collapse-inner">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">General</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Security</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Notifications</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
-        </li> -->
+        {% endif %}
     </ul>
 </nav>
