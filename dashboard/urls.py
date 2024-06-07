@@ -15,6 +15,7 @@ urlpatterns = [
     path("editor", editor , name="editor"),
 
     path("personnel/", personnel , name="personnel"),
+    path("overheads/", include("overheads.urls")),
     path("groups/", include("groups.urls")),
     path("test/", test),
 

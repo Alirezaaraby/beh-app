@@ -7,6 +7,7 @@ def add_permissions(request):
             permissions = {
                 'daily_evaluation': True,
                 'personnel': True,
+                'overheads': True,
                 'groups': True,
                 'indicators': True,
                 'substitute': True,

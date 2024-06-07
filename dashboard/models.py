@@ -26,7 +26,3 @@ class Assessments(models.Model):
 
     description = models.TextField()
 
-class Overheads(models.Model):    
-    p_id = models.CharField(max_length=10)
-    overhead_level = models.CharField(max_length=10)
-    overhead_id = models.CharField(max_length=10)

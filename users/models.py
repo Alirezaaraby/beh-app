@@ -62,6 +62,7 @@ class Permissions(models.Model):
     pid = models.OneToOneField(users, on_delete=models.CASCADE)
     daily_evaluation = models.BooleanField(default=False)
     personnel = models.BooleanField(default=False)
+    overheads = models.BooleanField(default=False)
     groups = models.BooleanField(default=False)
     indicators = models.BooleanField(default=False)
     substitute = models.BooleanField(default=False)

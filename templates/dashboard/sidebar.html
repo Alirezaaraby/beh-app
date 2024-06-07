@@ -22,6 +22,12 @@
             </div>
         </li>
         {% endif %}
+        
+        {% if menu_permissions and menu_permissions.overheads %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'overheads' %}">مدیران بالاسری</a>
+        </li>
+        {% endif %}
 
         {% if menu_permissions and menu_permissions.groups %}
         <li class="nav-item">
