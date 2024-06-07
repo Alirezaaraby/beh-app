@@ -37,13 +37,18 @@
                                 </svg>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-light bg-light">
-                                <li><a class="dropdown-gmem" href="{% url 'edit-user' i.id %}">ویرایش</a>
+                                <li><a class="dropdown-item text-success" href="{% url 'permissions' i.id %}">دسترسی ها</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider border-top border-secondary">
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'edit-user' i.id %}">ویرایش</a>
                                 </li>
                                 <!-- <li><a class="dropdown-gmem text-warning" href="#">report</a></li> -->
                                 <li>
                                     <hr class="dropdown-divider border-top border-secondary">
                                 </li>
-                                <li><a class="dropdown-gmem text-danger"
+                                <li><a class="dropdown-item text-danger"
                                         href="{% url 'delete-user' i.id %}">حذف</a></li>
                             </ul>
                         </div>

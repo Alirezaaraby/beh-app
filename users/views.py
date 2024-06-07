@@ -59,5 +59,6 @@ def permissions(request, id):
         p.reports = request.POST.get('reports')
 
         p.save()
+        return redirect("personnel")
     
     return render(request, "dashboard/personnel/permissions.html", {"permissions": p,"permission_id": id})
