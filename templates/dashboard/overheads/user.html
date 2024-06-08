@@ -1,0 +1,66 @@
+{% extends 'dashboard/base.html' %}
+
+{%block content%}
+<div class="container">
+
+    <div class="shadow p-3 mb-5 bg-body rounded"><strong>کاربر:</strong><span class="mr-3">
+            {{user_data.pid}}
+        </span>
+    </div>
+
+    <input class="form-control" id="myInput" type="text" placeholder="جستجو">
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>پرسنل</th>
+                <th>مدیر بالاسری</th>
+                <th>سطح بالاسری</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody id="myTable">
+            {% for i in overheads %}
+
+            <tr>
+                <td>{{i.pid}}</td>
+                <td>{{i.overhead_id}}</td>
+                <td>{{i.overhead_level}}</td>
+                <td>                        <div class="dropdown">
+                    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-light bg-light">
+                        <li><a class="dropdown-item text-danger"
+                                href="{% url 'overheads-delete' i.id%}">حذف</a></li>
+                    </ul>
+                </div>
+                </td>
+            </tr>
+            {%endfor%}
+
+        </tbody>
+    </table>
+    
+</div>
+{%endblock%}
+
+
+{%block script%}
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+{%endblock%}

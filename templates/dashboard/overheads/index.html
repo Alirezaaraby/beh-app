@@ -1,64 +1,49 @@
-{% extends 'dashboard/base.html'%}
+{% extends 'dashboard/base.html' %}
 
-{% block content %}
+{%block content%}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
-            مدیران بالاسری</span>
-        <a href="{% url 'register'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
-    </div>
 
-    <!-- <button -->
-
-    <div class="table-responsive small">
-        <table class="table table-striped table-sm pb-5">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">کد پرسنلی</th>
-                    <th scope="col">نام</th>
-                    <th scope="col">نام خانوادگی</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in users %}
-                <tr>
-                    <td>{{forloop.counter }}</td>
-                    <td>{{i.username}}</td>
-                    <td>{{i.name}}</td>
-                    <td>{{i.f_name}}</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                </svg>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-light bg-light">
-                                <li><a class="dropdown-item text-success" href="{% url 'permissions' i.id %}">دسترسی ها</a>
-                                </li>
-                                <li><a class="dropdown-item text-success" href="{% url 'permissions' i.id %}">دسترسی ها</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider border-top border-secondary">
-                                </li>
-                                <li><a class="dropdown-item" href="{% url 'edit-user' i.id %}">ویرایش</a>
-                                </li>
-                                <!-- <li><a class="dropdown-gmem text-warning" href="#">report</a></li> -->
-                                <li>
-                                    <hr class="dropdown-divider border-top border-secondary">
-                                </li>
-                                <li><a class="dropdown-item text-danger"
-                                        href="{% url 'delete-user' i.id %}">حذف</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
-    </div>
+<div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
+    مدیران بالاسری        <a href="{% url 'overheads-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+</span>
 </div>
+
+<input class="form-control" id="myInput" type="text" placeholder="جستجو">
+<br>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>نام و نام خانوادگی</th>
+            <th>کد پرسنلی</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="myTable">
+        {% for i in data %}
+
+        <tr>
+            <td>{{i.name}} {{i.f_name}}</td>
+            <td>{{i.username}}</td>
+            <td> <a href="{% url 'overheads-details' i.id%}" class="btn btn-primary btn-sm w-100">مشاهده</a>
+            </td>
+        </tr>
+        {%endfor%}
+
+    </tbody>
+</table>
+</div>
+{%endblock%}
+
+
+{%block script%}
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 {%endblock%}
