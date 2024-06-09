@@ -14,7 +14,7 @@ class OverheadsForm(forms.ModelForm):
     overhead_level = forms.CharField(
         max_length=250,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "عنوان گروه"}
+            attrs={"class": "form-control", "placeholder": "سطح بالاسری"}
         ),
     )
 
@@ -22,13 +22,6 @@ class OverheadsForm(forms.ModelForm):
         queryset=users.objects.all(),
         widget=forms.Select(
             attrs={"class": "form-select js-example-basic-single", "placeholder": "انتخاب بالاسری"}
-        ),
-    )
-
-    created_at = forms.CharField(
-        max_length=250,
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "عنوان گروه"}
         ),
     )
 

@@ -9,7 +9,8 @@ from django.utils import timezone
 import jdatetime
 from .forms import AssessmentsForm
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from overheads.models import Overheads
+from django.db.models import OuterRef, Subquery, Max
 
 @login_required
 def index(request):
@@ -19,14 +20,17 @@ def index(request):
 
 @login_required
 def daily_evaluation(request):
-    if request.user.user_type == 1:
-        data = Assessments.objects.all()
-    elif request.user.user_type == 2:
-        data = Assessments.objects.filter(record_id = request.user.id)
-    elif request.user.user_type == 3:
-        data = Assessments.objects.filter(pid = request.user.id)
-
-    return render(request, "dashboard/daily-evaluation/index.html", {"data": data})
+    if request.user.is_superuser:
+        overhead = Assessments.objects.all()
+    else:
+        max_overhead_level = Overheads.objects.filter(overhead_id=request.user.id).aggregate(Max('overhead_level'))
+        max_level = max_overhead_level['overhead_level__max']
+        print(max_level)
+        overhead = Assessments.objects.filter(
+            assessor_id=request.user.id,
+            overhead_level__lte= int(max_level) + 1
+        )
+    return render(request, "dashboard/daily-evaluation/index.html", {"data": overhead})
 
 @login_required
 def daily_evaluation_create(request):
@@ -88,20 +92,66 @@ def daily_evaluation_edit(request, id):
     
 @login_required
 def daily_evaluation_accept(request, id):
-    item = get_object_or_404(Assessments, pk=id)
-    
-    item.status = "تاییده شده"
-    item.save()
+    if request.user.is_superuser:
+        item = get_object_or_404(Assessments, pk=id)       
+        item.status = "تاییده شده"
+        item.save()
+    else:
 
+        utc_time = timezone.now()
+        local_time = timezone.localtime(utc_time)
+        
+        tehran_year = local_time.year
+        tehran_month = local_time.month
+        tehran_day = local_time.day
+        
+        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+        time = str(local_time.hour) + ":" + str(local_time.minute)
+
+        item = get_object_or_404(Assessments, pk=id)
+        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level).first()
+        
+        item.overhead_level = item.overhead_level + 1
+
+
+        item.assessor_id = overhead.overhead_id
+        item.record_date = jalili_date
+        item.record_time = time
+        
+        item.save()
     return redirect('daily-evaluation')
 
 @login_required
 def daily_evaluation_modify(request, id):
-    item = get_object_or_404(Assessments, pk=id)
-    
-    item.status = "نیازمند اصلاح"
-    item.save()
+    if request.user.is_superuser:
+        item = get_object_or_404(Assessments, pk=id)       
+        item.status = "تاییده شده"
+        item.save()
+    else:
 
+        utc_time = timezone.now()
+        local_time = timezone.localtime(utc_time)
+        
+        tehran_year = local_time.year
+        tehran_month = local_time.month
+        tehran_day = local_time.day
+        
+        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+        time = str(local_time.hour) + ":" + str(local_time.minute)
+
+        item = get_object_or_404(Assessments, pk=id)
+        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
+        
+        item.overhead_level = (item.overhead_level) - 1 
+
+
+        item.assessor_id = overhead.overhead_id
+        item.record_date = jalili_date
+        item.record_time = time
+        
+        item.save()
     return redirect('daily-evaluation')
 
 @login_required

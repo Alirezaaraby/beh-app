@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded">افزودن اعضای گروه</div>
+    <div class="shadow p-3 mb-5 bg-body rounded">افزودن مدیر بالاسری</div>
 
     {% if messages %}
     <div class="messages">
@@ -22,23 +22,18 @@
             {% csrf_token %}
             <div class="row g-3">
                 <div class="col-md-12">
-                    <label for="id_pid" class="form-label">نام کاربر<span style="color: red;">*</span></label>
+                    <label for="id_pid" class="form-label">پرسنل<span style="color: red;">*</span></label>
                     {{ form.pid }}
                 </div>
 
                 <div class="col-md-12">
-                    <label for="id_overhead_level" class="form-label">سطح سربار<span style="color: red;">*</span></label>
+                    <label for="id_overhead_level" class="form-label">سطح بالاسری<span style="color: red;">*</span></label>
                     {{ form.overhead_level }}
                 </div>
 
                 <div class="col-md-12">
-                    <label for="id_overhead_id" class="form-label">شناسه سربار<span style="color: red;">*</span></label>
+                    <label for="id_overhead_id" class="form-label">بالاسری<span style="color: red;">*</span></label>
                     {{ form.overhead_id }}
-                </div>
-
-                <div class="col-md-12">
-                    <label for="id_created_at" class="form-label">ایجاد شده در<span style="color: red;">*</span></label>
-                    {{ form.created_at }}
                 </div>
             </div>
 

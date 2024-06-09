@@ -13,7 +13,6 @@ class UserManager(BaseUserManager):
         f_name,
         phone,
         password,
-        user_type,
         **extra_fields
     ):
 
@@ -21,7 +20,6 @@ class UserManager(BaseUserManager):
             name=name,
             f_name=f_name,
             phone=phone,
-            user_type = user_type
             **extra_fields
         )
 
@@ -32,7 +30,6 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username, password, **extra_fields):
         user = self.model(username=username, **extra_fields)
         user.set_password(password)
-        user.user_type = 1
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -47,8 +44,6 @@ class users(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-
-    user_type = models.IntegerField()
 
     objects = UserManager()
 

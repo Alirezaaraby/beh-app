@@ -8,7 +8,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ["name", "f_name", "username", "user_type"]
+        fields = ["name", "f_name", "username"]
 
 
 class UpdateProfileForm(forms.ModelForm):

@@ -4,9 +4,10 @@
 <div class="container">
 
     <div class="shadow p-3 mb-5 bg-body rounded"><strong>کاربر:</strong><span class="mr-3">
-            {{user_data.pid}}
+            {{user_data}}
         </span>
     </div>
+    {% if overheads%}
 
     <input class="form-control" id="myInput" type="text" placeholder="جستجو">
     <br>
@@ -47,6 +48,9 @@
 
         </tbody>
     </table>
+    {%else%}
+    <h1>اطلاعاتی برای نمایش وجود ندارد</h1>
+    {%endif%}
     
 </div>
 {%endblock%}

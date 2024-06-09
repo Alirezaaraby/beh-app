@@ -52,5 +52,5 @@ def overheads_delete(request, id):
 
 def overheads_details(request, id):
     overheads = Overheads.objects.filter(pid=id)
-    user_data = overheads[0]
+    user_data = users.objects.get(id=id)
     return render(request, "dashboard/overheads/user.html", {"overheads": overheads, "user_data":user_data})

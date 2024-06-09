@@ -23,6 +23,7 @@ class Assessments(models.Model):
 
     forecastEffectTime = models.CharField(max_length=10, blank=True, null=True)
     realeffect_time = models.CharField(max_length=10, blank=True, null=True)
+    overhead_level = models.IntegerField(default=1)
 
     description = models.TextField()
 
