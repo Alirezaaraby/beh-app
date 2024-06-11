@@ -20,6 +20,12 @@
         </span>
     </label>
     <label class="list-group-item d-flex gap-2">
+        <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.overheads%}checked{% endif %} name="overheads">
+        <span>
+            مدیران بالاسری
+        </span>
+    </label>
+    <label class="list-group-item d-flex gap-2">
         <input class="form-check-input flex-shrink-0" type="checkbox" value="1" {% if permissions.groups%}checked{% endif %} name="groups">
         <span>
             گروه ها

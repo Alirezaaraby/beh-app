@@ -17,7 +17,6 @@ def index(request):
     # return redirect("dashboard")
     return render(request, "dashboard/index.html")
 
-
 @login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
@@ -25,12 +24,16 @@ def daily_evaluation(request):
     else:
         max_overhead_level = Overheads.objects.filter(overhead_id=request.user.id).aggregate(Max('overhead_level'))
         max_level = max_overhead_level['overhead_level__max']
-        print(max_level)
+        
+        if max_level is None:
+            max_level = 0
+
         overhead = Assessments.objects.filter(
             assessor_id=request.user.id,
-            overhead_level__lte= int(max_level) + 1
+            overhead_level__lte=int(max_level) + 1
         )
     return render(request, "dashboard/daily-evaluation/index.html", {"data": overhead})
+
 
 @login_required
 def daily_evaluation_create(request):

@@ -52,6 +52,7 @@ def permissions(request, id):
         
         p.daily_evaluation = request.POST.get('daily_evaluation')
         p.personnel = request.POST.get('personnel')
+        p.overheads = request.POST.get('overheads')
         p.groups = request.POST.get('groups')
         p.indicators = request.POST.get('indicators')
         p.substitute = request.POST.get('substitute')
