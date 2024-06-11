@@ -30,7 +30,18 @@
                     <td>{{i.it_id}}</td>
                     <td dir="ltr" class="text-center">{{i.score}}</td>
                     <td>{{i.record_date}}</td>
-                    <td>{{i.status}}</td>
+                    <td>
+                        {% if i.status == "2" %}
+                            تایید شده
+                        {% elif i.status == "1" %}
+                            در دست بررسی سطح {{i.overhead_level }}
+                        {% elif i.status == "0" %}
+                            معلق
+                        {% else %}
+                        {{i.status}}
+                        {% endif %}
+                    </td>
+                                        {% if i.status != "2" %}
                     <td>
                         <div class="dropdown">
                             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,6 +55,7 @@
                             <ul class="dropdown-menu dropdown-menu-light bg-light">
                                 <li><a class="dropdown-item text-success" href="{% url 'daily-evaluation-accept' i.id %}">تایید</a>
                                 </li>
+                                {%if i.status != "0"%}
                                 <li><a class="dropdown-item text-warning" href="{% url 'daily-evaluation-modify' i.id %}">نیازمند اصلاح</a>
                                 </li>
                                 <li><a class="dropdown-item text-danger" href="{% url 'daily-evaluation-reject' i.id %}">عدم تایید</a>
@@ -51,6 +63,7 @@
                                 <li>
                                     <hr class="dropdown-divider border-top border-secondary">
                                 </li>
+                                {%endif%}
                                 <li><a class="dropdown-item" href="{% url 'daily-evaluation-edit' i.id %}">ویرایش</a>
                                 </li>
                                 <!-- <li><a class="dropdown-item text-warning" href="#">report</a></li> -->
@@ -62,6 +75,8 @@
                             </ul>
                         </div>
                     </td>
+                    {%else%}<td></td>
+                    {%endif%}
                 </tr>
                 {%endfor%}
             </tbody>

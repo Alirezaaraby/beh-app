@@ -30,7 +30,7 @@ def daily_evaluation(request):
 
         overhead = Assessments.objects.filter(
             assessor_id=request.user.id,
-            overhead_level__lte=int(max_level) + 1
+            overhead_level__lt=int(max_level) + 1
         )
     return render(request, "dashboard/daily-evaluation/index.html", {"data": overhead})
 
@@ -56,7 +56,7 @@ def daily_evaluation_create(request):
             new_form.assessor_id = request.user
             new_form.record_date = jalili_date
             new_form.record_time = time
-            new_form.status = "در دست بررسی"
+            new_form.status = "0"
             
             new_form.current = True
 
@@ -97,7 +97,7 @@ def daily_evaluation_edit(request, id):
 def daily_evaluation_accept(request, id):
     if request.user.is_superuser:
         item = get_object_or_404(Assessments, pk=id)       
-        item.status = "تاییده شده"
+        item.status = 2
         item.save()
     else:
 
@@ -113,14 +113,29 @@ def daily_evaluation_accept(request, id):
         time = str(local_time.hour) + ":" + str(local_time.minute)
 
         item = get_object_or_404(Assessments, pk=id)
-        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level).first()
+        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level + 1).first()
         
         item.overhead_level = item.overhead_level + 1
+        
+        # overhead = Overheads.objects.filter(pid=item.pid)
 
+        # max_overhead_level = overhead.aggregate(Max('overhead_level'))['overhead_level__max']
 
-        item.assessor_id = overhead.overhead_id
+        if overhead == None:
+            item.assessor_id = item.assessor_id
+            item.status = "نیازمند بررسی توسط مدیرکل"
+        else:
+            item.assessor_id = overhead.overhead_id
+            if item.overhead_level == 1:
+                item.status = "0"
+            elif item.overhead_level > 1:
+                item.status = "1"
         item.record_date = jalili_date
         item.record_time = time
+
+        # elif item.overhead_level > max_overhead_level:
+            # item.status = "نیازمند بررسی توسط مدیرکل"
+        
         
         item.save()
     return redirect('daily-evaluation')
