@@ -36,7 +36,9 @@
                         {% elif i.status == "1" %}
                             در دست بررسی سطح {{i.overhead_level }}
                         {% elif i.status == "0" %}
-                            معلق
+                        معلق
+                        {% elif i.status == "عدم تایید" %}
+                        عدم تایید
                         {% else %}
                         {{i.status}}
                         {% endif %}
@@ -56,14 +58,16 @@
                                 <li><a class="dropdown-item text-success" href="{% url 'daily-evaluation-accept' i.id %}">تایید</a>
                                 </li>
                                 {%if i.status != "0"%}
+                                {%if i.overhead_level != 1%}
                                 <li><a class="dropdown-item text-warning" href="{% url 'daily-evaluation-modify' i.id %}">نیازمند اصلاح</a>
-                                </li>
+                                </li>{%endif%}
                                 <li><a class="dropdown-item text-danger" href="{% url 'daily-evaluation-reject' i.id %}">عدم تایید</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider border-top border-secondary">
                                 </li>
                                 {%endif%}
+                                <li><a class="dropdown-item" href="{% url 'history' i.id %}">تاریخچه</a>
                                 <li><a class="dropdown-item" href="{% url 'daily-evaluation-edit' i.id %}">ویرایش</a>
                                 </li>
                                 <!-- <li><a class="dropdown-item text-warning" href="#">report</a></li> -->

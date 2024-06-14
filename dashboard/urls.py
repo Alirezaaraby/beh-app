@@ -11,6 +11,7 @@ urlpatterns = [
     path("daily-evaluation/accept/<int:id>", daily_evaluation_accept , name="daily-evaluation-accept"),
     path("daily-evaluation/modify/<int:id>", daily_evaluation_modify , name="daily-evaluation-modify"),
     path("daily-evaluation/reject/<int:id>", daily_evaluation_reject , name="daily-evaluation-reject"),
+    path("daily-evaluation/history/<int:id>", history , name="history"),
 
     path("editor", editor , name="editor"),
 

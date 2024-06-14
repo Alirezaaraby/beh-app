@@ -11,6 +11,8 @@ from .forms import AssessmentsForm
 from django.contrib.auth.decorators import login_required
 from overheads.models import Overheads
 from django.db.models import OuterRef, Subquery, Max
+from evaluation.models import History
+from django.db.models import Q
 
 @login_required
 def index(request):
@@ -25,13 +27,19 @@ def daily_evaluation(request):
         max_overhead_level = Overheads.objects.filter(overhead_id=request.user.id).aggregate(Max('overhead_level'))
         max_level = max_overhead_level['overhead_level__max']
         
+        user_id = request.user.id
         if max_level is None:
             max_level = 0
 
         overhead = Assessments.objects.filter(
-            assessor_id=request.user.id,
+            assessor_id=user_id,
             overhead_level__lt=int(max_level) + 1
         )
+
+
+        assessments = Assessments.objects.filter(Q(assessor_id=user_id) | Q(pid=user_id))
+        overhead_list = list(assessments.values())
+
     return render(request, "dashboard/daily-evaluation/index.html", {"data": overhead})
 
 
@@ -98,7 +106,22 @@ def daily_evaluation_accept(request, id):
     if request.user.is_superuser:
         item = get_object_or_404(Assessments, pk=id)       
         item.status = 2
-        item.save()
+        item.assessor_id = request.user
+        
+        utc_time = timezone.now()
+        local_time = timezone.localtime(utc_time)
+        
+        tehran_year = local_time.year
+        tehran_month = local_time.month
+        tehran_day = local_time.day
+        
+        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+        time = str(local_time.hour) + ":" + str(local_time.minute)
+
+        item.record_date = jalili_date
+        item.record_time = time
+
     else:
 
         utc_time = timezone.now()
@@ -117,6 +140,12 @@ def daily_evaluation_accept(request, id):
         
         item.overhead_level = item.overhead_level + 1
         
+        
+        # overhead = Overheads.objects.filter(pid=item.pid)
+
+        # max_overhead_level = overhead.aggregate(Max('overhead_level'))['overhead_level__max']
+
+
         # overhead = Overheads.objects.filter(pid=item.pid)
 
         # max_overhead_level = overhead.aggregate(Max('overhead_level'))['overhead_level__max']
@@ -124,27 +153,64 @@ def daily_evaluation_accept(request, id):
         if overhead == None:
             item.assessor_id = item.assessor_id
             item.status = "نیازمند بررسی توسط مدیرکل"
+            status = item.status
         else:
             item.assessor_id = overhead.overhead_id
             if item.overhead_level == 1:
                 item.status = "0"
+                status = "معلق"
             elif item.overhead_level > 1:
                 item.status = "1"
-        item.record_date = jalili_date
-        item.record_time = time
+                status = "در دست بررسی سطح " + str(item.overhead_level)
 
-        # elif item.overhead_level > max_overhead_level:
-            # item.status = "نیازمند بررسی توسط مدیرکل"
+    print(item.status)
+    History.objects.create(
+        pid=item.pid,
+        assessor_id=item.assessor_id,
+        occure_date=item.occure_date,
+        occure_time=item.occure_time,
+        in_id=item.in_id,
+        it_id=item.it_id,
+        score=item.score,
+        status=item.status,
+        record_id=item.record_id,
+        record_date=str(jalili_date),  # Ensure date is stored as string
+        record_time=time,
+        current=item.current,
+        forecastEffectTime=item.forecastEffectTime,
+        realeffect_time=item.realeffect_time,
+        description=item.description,
+        uid=item
+    )
         
         
-        item.save()
+    item.save()
     return redirect('daily-evaluation')
 
 @login_required
 def daily_evaluation_modify(request, id):
     if request.user.is_superuser:
         item = get_object_or_404(Assessments, pk=id)       
-        item.status = "تاییده شده"
+        utc_time = timezone.now()
+        local_time = timezone.localtime(utc_time)
+        
+        tehran_year = local_time.year
+        tehran_month = local_time.month
+        tehran_day = local_time.day
+        
+        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+        time = str(local_time.hour) + ":" + str(local_time.minute)
+
+        item = get_object_or_404(Assessments, pk=id)
+        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
+        
+        item.overhead_level = (item.overhead_level) - 1 
+
+
+        item.assessor_id = overhead.overhead_id
+        item.record_date = jalili_date
+        item.record_time = time
         item.save()
     else:
 
@@ -170,6 +236,25 @@ def daily_evaluation_modify(request, id):
         item.record_time = time
         
         item.save()
+
+    History.objects.create(
+        pid=item.pid,
+        assessor_id=item.assessor_id,
+        occure_date=item.occure_date,
+        occure_time=item.occure_time,
+        in_id=item.in_id,
+        it_id=item.it_id,
+        score=item.score,
+        status="در دست بررسی سطح" + str(item.status),
+        record_id=item.record_id,
+        record_date=str(jalili_date),  # Ensure date is stored as string
+        record_time=time,
+        current=item.current,
+        forecastEffectTime=item.forecastEffectTime,
+        realeffect_time=item.realeffect_time,
+        description=item.description,
+        uid=item.id
+    )
     return redirect('daily-evaluation')
 
 @login_required
@@ -177,8 +262,39 @@ def daily_evaluation_reject(request, id):
     item = get_object_or_404(Assessments, pk=id)
     
     item.status = "عدم تایید"
-    item.save()
+    item.record_date=str(jalili_date)
+    item.record_time=time
 
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    tehran_year = local_time.year
+    tehran_month = local_time.month
+    tehran_day = local_time.day
+    
+    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+    time = str(local_time.hour) + ":" + str(local_time.minute)
+    
+    History.objects.create(
+        pid=item.pid,
+        assessor_id=item.assessor_id,
+        occure_date=item.occure_date,
+        occure_time=item.occure_time,
+        in_id=item.in_id,
+        it_id=item.it_id,
+        score=item.score,
+        status="عدم تایید",
+        record_id=item.record_id,
+        record_date=str(jalili_date),  # Ensure date is stored as string
+        record_time=time,
+        current=item.current,
+        forecastEffectTime=item.forecastEffectTime,
+        realeffect_time=item.realeffect_time,
+        description=item.description,
+        uid=item
+    )
+    item.save()
     return redirect('daily-evaluation')
 
 @login_required
@@ -228,3 +344,7 @@ def autocomplete(request):
         for i in data:
             titles.append(i.name + " " +i.f_name + " (" + i.username + ")")
         return JsonResponse(titles, safe=False)
+def history(request,id):
+    item = History.objects.filter(uid=id)
+
+    return render(request,"dashboard/daily-evaluation/history.html", {"history":item})

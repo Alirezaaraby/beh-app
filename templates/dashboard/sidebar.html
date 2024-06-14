@@ -4,7 +4,7 @@
     <ul class="nav nav-pills flex-column">
         {% if menu_permissions and menu_permissions.daily_evaluation %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'daily-evaluation' %}">ارزیابی روزانه</a>
+            <a class="nav-link" href="{% url 'daily-evaluation' %}">ارزیابی</a>
         </li>
         {% endif %}
 
@@ -17,7 +17,7 @@
             <div class="collapse" id="personnel-collapse" style="margin-right: 40px;">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="{% url 'personnel' %}" class="link-dark d-inline-flex text-decoration-none rounded">مشاهده</a></li>
-                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">ایجاد</a></li>
+                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">جدید</a></li>
                 </ul>
             </div>
         </li>
@@ -25,19 +25,37 @@
         
         {% if menu_permissions and menu_permissions.overheads %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'overheads' %}">مدیران بالاسری</a>
+            <a class="nav-link" href="{% url 'overheads' %}">چارت</a>
         </li>
         {% endif %}
 
         {% if menu_permissions and menu_permissions.groups %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'groups' %}">گروه ها</a>
+        <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#groups-collapse" aria-expanded="false">
+                گروه ها
+            </button>
+            <div class="collapse" id="groups-collapse" style="margin-right: 40px;">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'personnel' %}" class="link-dark d-inline-flex text-decoration-none rounded">انواع گروه ها</a></li>
+                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">اعضای گروه ها</a></li>
+                </ul>
+            </div>
         </li>
         {% endif %}
 
         {% if menu_permissions and menu_permissions.indicators %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'indicators' %}">شاخص ها</a>
+        <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                data-bs-toggle="collapse" data-bs-target="#indicators-collapse" aria-expanded="false">
+                شاخص ها
+            </button>
+            <div class="collapse" id="indicators-collapse" style="margin-right: 40px;">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'indicators' %}" class="link-dark d-inline-flex text-decoration-none rounded">انواع شاخص ها</a></li>
+                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">شاخص ها</a></li>
+                </ul>
+            </div>
         </li>
         {% endif %}
 
