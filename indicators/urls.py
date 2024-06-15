@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path("", indicators, name="indicators"),
     path("create", indicators_create, name="indicators-create"),
+    path("items/", indicator_items, name="indicator-items"),
     path("edit/<int:id>", indicators_edit, name="indicators-edit"),
     path("details/<int:id>", indicator_details, name="indicator-details"),
     path("delete/<int:id>", indicators_delete, name="indicators-delete"),

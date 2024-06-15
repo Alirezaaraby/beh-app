@@ -7,8 +7,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def indicators(request):
     indicators = Indicators.objects.all()
-    indicatoritems = IndicatorItems.objects.all()
-    return render(request, "dashboard/indicators/index.html", {'indicators': indicators, 'indicatoritems': indicatoritems})
+    return render(request, "dashboard/indicators/index.html", {'indicators': indicators})
 
 
 def indicators_create(request):
@@ -23,6 +22,11 @@ def indicators_create(request):
     else:
         form = IndicatorsForm()
     return render(request, 'dashboard/indicators/modify.html', {'form': form})
+
+
+def indicator_items(request):
+    indicatoritems = IndicatorItems.objects.all()
+    return render(request, "dashboard/indicators/items.html", {'indicatoritems': indicatoritems})
 
 def indicator_items_create(request):
     form = IndicatorItemsForm()

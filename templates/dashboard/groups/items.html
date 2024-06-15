@@ -22,28 +22,31 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded ml-3">گروه ها
+    <div class="shadow p-3 mb-5 bg-body rounded ml-3">اعضای گروه ها
         <a href="{% url 'groups-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
     </div>
 
+    <div class="container">
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">نام</th>
-                    <th scope="col">کد گروه</th>
-                    <th scope="col">توضیحات</th>
+                    <th scope="col">گروه</th>
+                    <th scope="col">از تاریخ</th>
+                    <th scope="col">تا تاریخ</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
-                {%for g in groups %}
+                {%for gm in groupmembers %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    <td>{{ g.name }}</td>
-                    <td>{{ g.g_code }}</td>
-                    <td>{{ g.description }}</td>
+                    <td>{{ gm.pid }}</td>
+                    <td>{{ gm.g_code }}</td>
+                    <td>{{ gm.from_date }}</td>
+                    <td>{{ gm.to_date }}</td>
                     <td>
                         <div class="dropdown">
                             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -54,14 +57,14 @@
                                 </svg>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-light bg-light">
-                                <li><a class="dropdown-item" href="{% url 'groups-edit' g.id %}">ویرایش</a>
+                                <li><a class="dropdown-item" href="{% url 'group-members-edit' gm.id %}">ویرایش</a>
                                 </li>
                                 <!-- <li><a class="dropdown-gmem text-warning" href="#">report</a></li> -->
                                 <li>
                                     <hr class="dropdown-divider border-top border-secondary">
                                 </li>
                                 <li><a class="dropdown-item text-danger"
-                                        href="{% url 'groups-delete' g.id %}">حذف</a></li>
+                                        href="{% url 'group-members-delete' gm.id %}">حذف</a></li>
                             </ul>
                         </div>
                     </td>

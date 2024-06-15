@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 def groups(request):
     groups = Groups.objects.all()
     groupmembers = GroupMembers.objects.all()
-    return render(request, "dashboard/groups/index.html", {'groups': groups, 'groupmembers': groupmembers})
+    return render(request, "dashboard/groups/index.html", {'groups': groups})
 @login_required
 def groups_create(request):
     form = GroupsForm()
@@ -24,6 +24,11 @@ def groups_create(request):
     else:
         form = GroupsForm()
     return render(request, 'dashboard/groups/modify.html', {'form': form})
+
+def group_items(request):
+    groupmembers = GroupMembers.objects.all()
+    return render(request, "dashboard/groups/items.html", {'groupmembers': groupmembers})
+
 @login_required
 def group_members_create(request):
     form = GroupMembersForm()

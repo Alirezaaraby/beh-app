@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path("", groups, name="groups"),
     path("create", groups_create, name="groups-create"),
+    path("items", group_items, name="group-items"),
     path("edit/<int:id>", groups_edit, name="groups-edit"),
     path("delete/<int:id>", groups_delete, name="groups-delete"),
     path("details/<int:id>", groups_details, name="groups-details"),
