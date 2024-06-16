@@ -24,7 +24,7 @@ urlpatterns = [
 
     path("substitute/", substitute , name="substitute"),
     path("logs/", logs , name="logs"),
-    path("reports/", reports , name="reports"),
+    path("reports/", include("reports.urls") , name="reports"),
 
     path('ajax/load-indicator-items/', load_indicator_items, name='ajax-load-indicator-items'),
     path('ajax/load-indicator-item-range/', load_indicator_item_range, name='ajax-load-indicator-item-range'),

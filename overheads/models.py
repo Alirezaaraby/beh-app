@@ -11,3 +11,6 @@ class Overheads(models.Model):
 
     def __str__(self):
         return f'{self.overhead_level} - {self.pid.username}'
+class utils(models.Model):
+    pid = models.ForeignKey(users, related_name='overheads_pid', on_delete=models.CASCADE)
+    overhead_id = models.ForeignKey(users, related_name='overheads_id', on_delete=models.CASCADE)

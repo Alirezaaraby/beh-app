@@ -76,38 +76,38 @@
       {%csrf_token%}
       <div class="row g-3">
         <div class="col-md-12">
-          <div class="form-floating">
-            <input type="text" class="form-control first" id="username" name="username" placeholder="" required>
-            <label for="username">شماره پرسنلی</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" class="form-control middle" id="name" name="name" placeholder="" required>
-            <label for="name">نام</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" class="form-control middle" id="f_name" name="f_name" placeholder="" required>
-            <label for="f_name">نام خانوادگی</label>
-          </div>
-        </div>
-
+          <label for="record_id" class="form-label">شماره پرسنلی</label>
+          {{form.username}}
+      </div>
 
         <div class="col-md-6">
-          <div class="form-floating">
-            <input type="password" class="form-control middle" id="floatingPassword" placeholder="Password"
-              name="password1" required>
-            <label for="floatingPassword">رمز عبور</label>
-          </div>
-        </div>
-
+          <label for="record_id" class="form-label">نام</label>
+          {{form.name}}
+      </div>
+        
         <div class="col-md-6">
-          <div class="form-floating">
-            <input type="password" class="form-control last" id="floatingPassword" placeholder="Password"
-              name="password2" required>
-            <label for="floatingPassword">تایید رمز عبور</label>
+          <label for="record_id" class="form-label">نام خانوادگی</label>
+          {{form.f_name}}
+      </div>
+
+
+      <h5>رمز عبور</h5>
+      <div class="col-md-6">          
+        <div class="input-group flex-nowrap">
+          <input type="password" class="form-control middle pwd" placeholder="رمز عبور" aria-label="Username" aria-describedby="addon-wrapping" name="password1">
+          <span class="input-group-text bg-white reveal" id="addon-wrapping">
+            <i class="bi bi-eye-slash password-hide"></i>
+            <i class="bi bi-eye password-show"></i>
+          </span>
+        </div>
+      </div>
+        <div class="col-md-6">          
+          <div class="input-group flex-nowrap">
+            <input type="password" class="form-control middle pwd" placeholder="تکرار رمز عبور" aria-label="Username" aria-describedby="addon-wrapping" name="password2">
+            <span class="input-group-text bg-white reveal" id="addon-wrapping">
+              <i class="bi bi-eye-slash password-hide"></i>
+              <i class="bi bi-eye password-show"></i>
+            </span>
           </div>
         </div>
 
@@ -120,4 +120,23 @@
   </div>
   <!-- </div> -->
 </div>
+{%endblock%}
+{%block script%}
+<script>
+  $(".password-hide").hide();
+  $(".reveal").on('click',function() {
+    var $pwd = $(".pwd");
+    if ($pwd.attr('type') === 'password') {
+        $pwd.attr('type', 'text');
+        $(".password-hide").show();
+        $(".password-show").hide();
+
+    } else {
+        $pwd.attr('type', 'password');
+        $(".password-hide").hide();
+        $(".password-show").show();
+
+    }
+});
+</script>
 {%endblock%}

@@ -1,0 +1,61 @@
+{% extends 'dashboard/base.html'%}
+
+{% block content %}
+<div class="container">
+    <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
+            ارزیابی روزانه</span>
+        <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+    </div>
+
+    <!-- <button -->
+
+    <div class="table-responsive small">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ارزیابی شونده</th>
+                    <th scope="col">شاخص (مثبت/منفی)</th>
+                    <th scope="col">امتیاز</th>
+                    <th scope="col">تاریخ ثبت</th>
+                    <th scope="col">وضعیت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter }}</td>
+                    <td>{{i.pid}}</td>
+                    <td>{{i.it_id}}</td>
+                    <td dir="ltr" class="text-center">{{i.score}}</td>
+                    <td>{{i.record_date}}</td>
+                    <td>
+                        {% if i.status == "2" %}
+                            تایید شده
+                        {% elif i.status == "1" %}
+                            در دست بررسی سطح {{i.overhead_level }}
+                        {% elif i.status == "0" %}
+                        معلق
+                        {% elif i.status == "عدم تایید" %}
+                        عدم تایید
+                        {% else %}
+                        {{i.status}}
+                        {% endif %}
+                    </td>
+                </tr>
+                {%endfor%}
+                <tr class="table-dark">
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td dir="ltr" class="text-center">{{total}}</td>
+                    <td>-</td>
+                    <td>
+                        -
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}

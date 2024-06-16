@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Assessments
 from indicators.models import Indicators, IndicatorItems
-from users.models import users
+from users.models import users, Permissions
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib import messages
@@ -9,7 +9,7 @@ from django.utils import timezone
 import jdatetime
 from .forms import AssessmentsForm
 from django.contrib.auth.decorators import login_required
-from overheads.models import Overheads
+from overheads.models import Overheads, utils
 from django.db.models import OuterRef, Subquery, Max
 from evaluation.models import History
 from django.db.models import Q
@@ -315,7 +315,28 @@ def personnel(request):
 
 
 def substitute(request):
-    return render(request, "dashboard/substitute/index.html")
+    user = users.objects.all()
+    permissions = None
+    if request.method == 'POST':
+        substitute_id = request.POST.get("substitute_id")
+        if substitute_id:
+            try:
+                permissions = Permissions.objects.get(pid_id=request.user.id)
+                Permissions.objects.create(
+                    pid=substitute_id,
+                    daily_evaluation=permissions.daily_evaluation,
+                    personnel=permissions.personnel,
+                    overheads=permissions.overheads,
+                    groups=permissions.groups,
+                    indicators=permissions.indicators,
+                    substitute=permissions.substitute,
+                    logs=permissions.logs,
+                    reports=permissions.reports
+                )
+            except Permissions.DoesNotExist:
+                permissions = None
+
+    return render(request, "dashboard/substitute/index.html", {"users": user, "permissions": permissions})
 
 
 def logs(request):

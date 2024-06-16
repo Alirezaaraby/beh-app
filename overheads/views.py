@@ -4,7 +4,7 @@ from users.models import users
 from .models import Overheads
 from .forms import OverheadsForm
 from django.contrib import messages
-from .models import Overheads
+from .models import Overheads, utils
 # Create your views here.
 
 def overheads(request):
@@ -15,6 +15,9 @@ def overheads_create(request):
     if request.method == 'POST':
         form = OverheadsForm(request.POST)
         if form.is_valid():
+            pid = form.cleaned_data['pid']
+            overhead_id = form.cleaned_data['overhead_id']
+            utils.objects.create(pid=pid, overhead_id=overhead_id)
             form.save()
             messages.success(request, 'با موفقیت ذخیره شد')
         else:
@@ -49,7 +52,7 @@ def overheads_delete(request, id):
 
     item = get_object_or_404(Overheads, pk=id)
     item.delete()
-
+    return redirect("overheads")
 def overheads_details(request, id):
     overheads = Overheads.objects.filter(pid=id)
     user_data = users.objects.get(id=id)

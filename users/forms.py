@@ -5,7 +5,21 @@ from .models import users, Permissions
 
 
 class UserRegistrationForm(UserCreationForm):
+    username = forms.CharField(
+        max_length=32,
+        widget=forms.NumberInput(attrs={"class": "form-control", "placeholder": ""}),
+    )
 
+    name = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "نام"}),
+    )
+
+    f_name = forms.CharField(
+        max_length=50,
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "نام خانوادگی"}),
+    )
+    
     class Meta:
         model = get_user_model()
         fields = ["name", "f_name", "username"]
@@ -19,12 +33,12 @@ class UpdateProfileForm(forms.ModelForm):
     )
 
     name = forms.CharField(
-        max_length=25,
+        max_length=50,
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "نام"}),
     )
 
     f_name = forms.CharField(
-        max_length=500,
+        max_length=50,
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": "نام خانوادگی"}
         ),
