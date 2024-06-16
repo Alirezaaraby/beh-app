@@ -22,25 +22,87 @@ def index(request):
 @login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
-        overhead = Assessments.objects.all()
+        assessments = Assessments.objects.all()
+
+        final_assessments = []
+        for assessment in assessments:
+            assessment_dict = {
+                'id': assessment.id,
+                'pid': assessment.pid,
+                'assessor_id': assessment.assessor_id,
+                'occure_date': assessment.occure_date,
+                'occure_time': assessment.occure_time,
+                'in_id': assessment.in_id,
+                'it_id': assessment.it_id,
+                'score': assessment.score,
+                'status': assessment.status,
+                'record_id': assessment.record_id,
+                'record_date': assessment.record_date,
+                'record_time': assessment.record_time,
+                'current': assessment.current,
+                'forecastEffectTime': assessment.forecastEffectTime,
+                'realeffect_time': assessment.realeffect_time,
+                'overhead_level': assessment.overhead_level,
+                'description': assessment.description,
+            }
+            if assessment.status == "2":
+                assessment_dict['editable'] = "0"
+            else:
+                assessment_dict['editable'] = "1"
+            final_assessments.append(assessment_dict)
+            
     else:
-        max_overhead_level = Overheads.objects.filter(overhead_id=request.user.id).aggregate(Max('overhead_level'))
-        max_level = max_overhead_level['overhead_level__max']
-        
         user_id = request.user.id
-        if max_level is None:
-            max_level = 0
-
-        overhead = Assessments.objects.filter(
-            assessor_id=user_id,
-            overhead_level__lt=int(max_level) + 1
-        )
-
-
         assessments = Assessments.objects.filter(Q(assessor_id=user_id) | Q(pid=user_id))
-        overhead_list = list(assessments.values())
+        overheads = Overheads.objects.all()
+        
+        final_assessments = []
+        for assessment in assessments:
+            assessment_dict = {
+                'id': assessment.id,
+                'pid': assessment.pid,
+                'assessor_id': assessment.assessor_id,
+                'occure_date': assessment.occure_date,
+                'occure_time': assessment.occure_time,
+                'in_id': assessment.in_id,
+                'it_id': assessment.it_id,
+                'score': assessment.score,
+                'status': assessment.status,
+                'record_id': assessment.record_id,
+                'record_date': assessment.record_date,
+                'record_time': assessment.record_time,
+                'current': assessment.current,
+                'forecastEffectTime': assessment.forecastEffectTime,
+                'realeffect_time': assessment.realeffect_time,
+                'overhead_level': assessment.overhead_level,
+                'description': assessment.description,
+            }
+            if assessment.status == "2":
+                assessment_dict['editable'] = "0"
 
-    return render(request, "dashboard/daily-evaluation/index.html", {"data": overhead})
+            if assessment.pid.id == user_id:
+                assessment_dict['editable'] = "0"
+            else:
+                assessment_dict['editable'] = "1"
+
+            a_o = overheads.filter(pid=assessment.pid).first()
+            if a_o:
+                try:
+                    overhead_level = int(a_o.overhead_level)
+                    assessment_overhead_level = int(assessment.overhead_level)
+                    if assessment_overhead_level <= overhead_level:
+                        assessment_dict['editable'] = "1"
+                    else:
+                        assessment_dict['editable'] = "0"
+                except ValueError:
+                    assessment_dict['editable'] = "0"
+            else:
+                assessment_dict['editable'] = "0"
+
+            final_assessments.append(assessment_dict)
+
+
+    return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments})
 
 
 @login_required

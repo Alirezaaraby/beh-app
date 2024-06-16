@@ -43,7 +43,8 @@
                         {{i.status}}
                         {% endif %}
                     </td>
-                                        {% if i.status != "2" %}
+
+                    {% if i.editable == "1" %}
                     <td>
                         <div class="dropdown">
                             <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,7 +80,8 @@
                             </ul>
                         </div>
                     </td>
-                    {%else%}<td></td>
+                    {%else%}
+                    <td></td>
                     {%endif%}
                 </tr>
                 {%endfor%}
