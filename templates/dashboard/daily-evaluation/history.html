@@ -12,8 +12,22 @@
     {%for i in history%}
     <div class="bg-light border-sm rounded">
         <h1>مصداق : {{i.description}}</h1>
-        <h2>نمره : {{i.status}}</h2>
-        <h2>وضعیت : {{i.status}}</h2>
+        <h2>نمره : {{i.score}}</h2>
+
+        <h2>وضعیت : 
+            {% if i.status == "2" %}
+            تایید شده
+        {% elif i.status == "1" %}
+            در دست بررسی سطح {{i.overhead_level }}
+        {% elif i.status == "0" %}
+        معلق
+        {% elif i.status == "عدم تایید" %}
+        عدم تایید
+        {% else %}
+        {{i.status}}
+        {% endif %}
+        </h2>
+        <h2>ثبت کننده : {{i.assessor_id}}</h2>
         <h3>تاریخ : {{i.record_time}} - {{i.record_date}}</h3>
     </div>
     {%endfor%}
