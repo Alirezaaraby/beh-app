@@ -22,6 +22,7 @@ def index(request):
 @login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
+        print("if")
         assessments = Assessments.objects.all()
 
         final_assessments = []
@@ -52,10 +53,17 @@ def daily_evaluation(request):
             final_assessments.append(assessment_dict)
             
     else:
+        print("else")
         user_id = request.user.id
         assessments = Assessments.objects.filter(Q(assessor_id=user_id) | Q(pid=user_id))
-        overheads = Overheads.objects.all()
+
+        asses_ids = Assessments.objects.values_list('id', flat=True)
+        asses_ids = list(asses_ids)
         
+        overheads = Overheads.objects.all()
+        history = History.objects.filter(assessor_id = user_id)
+        print(history)
+        id_list = []
         final_assessments = []
         for assessment in assessments:
             assessment_dict = {
@@ -77,6 +85,7 @@ def daily_evaluation(request):
                 'overhead_level': assessment.overhead_level,
                 'description': assessment.description,
             }
+            id_list.append(assessment.id)
             if assessment.status == "2":
                 assessment_dict['editable'] = "0"
 
@@ -101,6 +110,33 @@ def daily_evaluation(request):
 
             final_assessments.append(assessment_dict)
 
+        for i in history:
+
+            if i.uid.id in asses_ids:
+                print("hi")
+                assessment = Assessments.objects.get(id = i.uid.id)
+                print(assessment)
+                assessment_dict = {
+                    'id': assessment.id,
+                    'pid': assessment.pid,
+                    'assessor_id': assessment.assessor_id,
+                    'occure_date': assessment.occure_date,
+                    'occure_time': assessment.occure_time,
+                    'in_id': assessment.in_id,
+                    'it_id': assessment.it_id,
+                    'score': assessment.score,
+                    'status': assessment.status,
+                    'record_id': assessment.record_id,
+                    'record_date': assessment.record_date,
+                    'record_time': assessment.record_time,
+                    'current': assessment.current,
+                    'forecastEffectTime': assessment.forecastEffectTime,
+                    'realeffect_time': assessment.realeffect_time,
+                    'overhead_level': assessment.overhead_level,
+                    'description': assessment.description,
+                    'editable' : "0"
+                }
+                final_assessments.append(assessment_dict)
 
     return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments})
 
@@ -165,39 +201,46 @@ def daily_evaluation_edit(request, id):
     
 @login_required
 def daily_evaluation_accept(request, id):
+    item = get_object_or_404(Assessments, pk=id)
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    tehran_year = local_time.year
+    tehran_month = local_time.month
+    tehran_day = local_time.day
+    
+    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+    time = str(local_time.hour) + ":" + str(local_time.minute)
+
+    History.objects.create(
+        pid=item.pid,
+        assessor_id=item.assessor_id,
+        occure_date=item.occure_date,
+        occure_time=item.occure_time,
+        in_id=item.in_id,
+        it_id=item.it_id,
+        score=item.score,
+        status=item.status,
+        record_id=item.record_id,
+        record_date=str(jalili_date),  # Ensure date is stored as string
+        record_time=time,
+        current=item.current,
+        forecastEffectTime=item.forecastEffectTime,
+        realeffect_time=item.realeffect_time,
+        description=item.description,
+        uid=item
+    )
+
     if request.user.is_superuser:
-        item = get_object_or_404(Assessments, pk=id)       
         item.status = 2
         item.assessor_id = request.user
-        
-        utc_time = timezone.now()
-        local_time = timezone.localtime(utc_time)
-        
-        tehran_year = local_time.year
-        tehran_month = local_time.month
-        tehran_day = local_time.day
-        
-        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
-
-        time = str(local_time.hour) + ":" + str(local_time.minute)
 
         item.record_date = jalili_date
         item.record_time = time
 
     else:
 
-        utc_time = timezone.now()
-        local_time = timezone.localtime(utc_time)
-        
-        tehran_year = local_time.year
-        tehran_month = local_time.month
-        tehran_day = local_time.day
-        
-        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
-
-        time = str(local_time.hour) + ":" + str(local_time.minute)
-
-        item = get_object_or_404(Assessments, pk=id)
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level + 1).first()
         
         item.overhead_level = item.overhead_level + 1
@@ -224,8 +267,15 @@ def daily_evaluation_accept(request, id):
             elif item.overhead_level > 1:
                 item.status = "1"
                 status = "در دست بررسی سطح " + str(item.overhead_level)
+        
+        
+    item.save()
+    return redirect('daily-evaluation')
 
-    print(item.status)
+@login_required
+def daily_evaluation_modify(request, id):
+    item = get_object_or_404(Assessments, pk=id)       
+
     History.objects.create(
         pid=item.pid,
         assessor_id=item.assessor_id,
@@ -234,7 +284,7 @@ def daily_evaluation_accept(request, id):
         in_id=item.in_id,
         it_id=item.it_id,
         score=item.score,
-        status=item.status,
+        status="در دست بررسی سطح" + str(item.status),
         record_id=item.record_id,
         record_date=str(jalili_date),  # Ensure date is stored as string
         record_time=time,
@@ -242,17 +292,10 @@ def daily_evaluation_accept(request, id):
         forecastEffectTime=item.forecastEffectTime,
         realeffect_time=item.realeffect_time,
         description=item.description,
-        uid=item
+        uid=item.id
     )
-        
-        
-    item.save()
-    return redirect('daily-evaluation')
 
-@login_required
-def daily_evaluation_modify(request, id):
     if request.user.is_superuser:
-        item = get_object_or_404(Assessments, pk=id)       
         utc_time = timezone.now()
         local_time = timezone.localtime(utc_time)
         
@@ -264,7 +307,6 @@ def daily_evaluation_modify(request, id):
 
         time = str(local_time.hour) + ":" + str(local_time.minute)
 
-        item = get_object_or_404(Assessments, pk=id)
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
         
         item.overhead_level = (item.overhead_level) - 1 
@@ -287,7 +329,6 @@ def daily_evaluation_modify(request, id):
 
         time = str(local_time.hour) + ":" + str(local_time.minute)
 
-        item = get_object_or_404(Assessments, pk=id)
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
         
         item.overhead_level = (item.overhead_level) - 1 
@@ -299,6 +340,12 @@ def daily_evaluation_modify(request, id):
         
         item.save()
 
+    return redirect('daily-evaluation')
+
+@login_required
+def daily_evaluation_reject(request, id):
+    item = get_object_or_404(Assessments, pk=id)
+    
     History.objects.create(
         pid=item.pid,
         assessor_id=item.assessor_id,
@@ -307,7 +354,7 @@ def daily_evaluation_modify(request, id):
         in_id=item.in_id,
         it_id=item.it_id,
         score=item.score,
-        status="در دست بررسی سطح" + str(item.status),
+        status=item.status,
         record_id=item.record_id,
         record_date=str(jalili_date),  # Ensure date is stored as string
         record_time=time,
@@ -315,13 +362,8 @@ def daily_evaluation_modify(request, id):
         forecastEffectTime=item.forecastEffectTime,
         realeffect_time=item.realeffect_time,
         description=item.description,
-        uid=item.id
+        uid=item
     )
-    return redirect('daily-evaluation')
-
-@login_required
-def daily_evaluation_reject(request, id):
-    item = get_object_or_404(Assessments, pk=id)
     
     item.status = "عدم تایید"
     item.record_date=str(jalili_date)
@@ -338,24 +380,6 @@ def daily_evaluation_reject(request, id):
 
     time = str(local_time.hour) + ":" + str(local_time.minute)
     
-    History.objects.create(
-        pid=item.pid,
-        assessor_id=item.assessor_id,
-        occure_date=item.occure_date,
-        occure_time=item.occure_time,
-        in_id=item.in_id,
-        it_id=item.it_id,
-        score=item.score,
-        status="عدم تایید",
-        record_id=item.record_id,
-        record_date=str(jalili_date),  # Ensure date is stored as string
-        record_time=time,
-        current=item.current,
-        forecastEffectTime=item.forecastEffectTime,
-        realeffect_time=item.realeffect_time,
-        description=item.description,
-        uid=item
-    )
     item.save()
     return redirect('daily-evaluation')
 
