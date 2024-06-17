@@ -90,7 +90,11 @@ def daily_evaluation(request):
                 assessment_dict['editable'] = "1"
             else:
                 assessment_dict['editable'] = "0"
-            final_assessments.append(assessment_dict)
+            
+            if assessment.status == "نیازمند بررسی توسط مدیرکل":
+                pass
+            else:
+                final_assessments.append(assessment_dict)
 
         for i in history:
 
