@@ -61,6 +61,8 @@ def daily_evaluation(request):
         history = History.objects.filter(assessor_id = user_id)
         id_list = []
         final_assessments = []
+        uids = []
+        final_uids = []
 
         for assessment in assessments:
             assessment_dict = {
@@ -94,6 +96,9 @@ def daily_evaluation(request):
             if assessment.status == "نیازمند بررسی توسط مدیرکل":
                 pass
             else:
+                if assessment.status == "عدم تایید":
+                    assessment_dict['editable'] = "0"
+                final_uids.append(assessment.id)
                 final_assessments.append(assessment_dict)
 
         for i in history:
@@ -120,7 +125,12 @@ def daily_evaluation(request):
                     'description': assessment.description,
                     'editable' : "0"
                 }
-                final_assessments.append(assessment_dict)
+                if i.uid.id not in uids:
+                    uids.append(i.uid.id)
+                    if i.uid.id not in final_uids:
+                        if i.status == "عدم تایید":
+                            assessment_dict['editable'] = "0"
+                        final_assessments.append(assessment_dict)
 
     return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments})
 
@@ -258,7 +268,17 @@ def daily_evaluation_accept(request, id):
 
 @login_required
 def daily_evaluation_modify(request, id):
-    item = get_object_or_404(Assessments, pk=id)       
+    item = get_object_or_404(Assessments, pk=id)
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    tehran_year = local_time.year
+    tehran_month = local_time.month
+    tehran_day = local_time.day
+    
+    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+    time = str(local_time.hour) + ":" + str(local_time.minute)
 
     History.objects.create(
         pid=item.pid,
@@ -268,7 +288,7 @@ def daily_evaluation_modify(request, id):
         in_id=item.in_id,
         it_id=item.it_id,
         score=item.score,
-        status="در دست بررسی سطح" + str(item.status),
+        status=item.status,
         record_id=item.record_id,
         record_date=str(jalili_date),  # Ensure date is stored as string
         record_time=time,
@@ -276,7 +296,7 @@ def daily_evaluation_modify(request, id):
         forecastEffectTime=item.forecastEffectTime,
         realeffect_time=item.realeffect_time,
         description=item.description,
-        uid=item.id
+        uid=item
     )
 
     if request.user.is_superuser:
@@ -329,6 +349,21 @@ def daily_evaluation_modify(request, id):
 @login_required
 def daily_evaluation_reject(request, id):
     item = get_object_or_404(Assessments, pk=id)
+
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    tehran_year = local_time.year
+    tehran_month = local_time.month
+    tehran_day = local_time.day
+    
+    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+    time = str(local_time.hour) + ":" + str(local_time.minute)
+
+    item.status = "عدم تایید"
+    item.record_date=str(jalili_date)
+    item.record_time=time
     
     History.objects.create(
         pid=item.pid,
@@ -348,22 +383,7 @@ def daily_evaluation_reject(request, id):
         description=item.description,
         uid=item
     )
-    
-    item.status = "عدم تایید"
-    item.record_date=str(jalili_date)
-    item.record_time=time
 
-    utc_time = timezone.now()
-    local_time = timezone.localtime(utc_time)
-    
-    tehran_year = local_time.year
-    tehran_month = local_time.month
-    tehran_day = local_time.day
-    
-    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
-
-    time = str(local_time.hour) + ":" + str(local_time.minute)
-    
     item.save()
     return redirect('daily-evaluation')
 
