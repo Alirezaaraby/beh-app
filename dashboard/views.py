@@ -22,7 +22,6 @@ def index(request):
 @login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
-        print("if")
         assessments = Assessments.objects.all()
 
         final_assessments = []
@@ -53,18 +52,16 @@ def daily_evaluation(request):
             final_assessments.append(assessment_dict)
             
     else:
-        print("else")
         user_id = request.user.id
         assessments = Assessments.objects.filter(Q(assessor_id=user_id) | Q(pid=user_id))
-
         asses_ids = Assessments.objects.values_list('id', flat=True)
         asses_ids = list(asses_ids)
         
         overheads = Overheads.objects.all()
         history = History.objects.filter(assessor_id = user_id)
-        print(history)
         id_list = []
         final_assessments = []
+
         for assessment in assessments:
             assessment_dict = {
                 'id': assessment.id,
@@ -89,33 +86,16 @@ def daily_evaluation(request):
             if assessment.status == "2":
                 assessment_dict['editable'] = "0"
 
-            if assessment.pid.id == user_id:
-                assessment_dict['editable'] = "0"
-            else:
+            if assessment.assessor_id.id == user_id:
                 assessment_dict['editable'] = "1"
-
-            a_o = overheads.filter(pid=assessment.pid).first()
-            if a_o:
-                try:
-                    overhead_level = int(a_o.overhead_level)
-                    assessment_overhead_level = int(assessment.overhead_level)
-                    if assessment_overhead_level <= overhead_level:
-                        assessment_dict['editable'] = "1"
-                    else:
-                        assessment_dict['editable'] = "0"
-                except ValueError:
-                    assessment_dict['editable'] = "0"
             else:
                 assessment_dict['editable'] = "0"
-
             final_assessments.append(assessment_dict)
 
         for i in history:
 
             if i.uid.id in asses_ids:
-                print("hi")
                 assessment = Assessments.objects.get(id = i.uid.id)
-                print(assessment)
                 assessment_dict = {
                     'id': assessment.id,
                     'pid': assessment.pid,
