@@ -425,10 +425,6 @@ def substitute(request):
     return render(request, "dashboard/substitute/index.html", {"users": user, "permissions": permissions})
 
 
-def logs(request):
-    return render(request, "dashboard/logs/index.html")
-
-
 def reports(request):
     return render(request, "dashboard/reports/index.html")
 

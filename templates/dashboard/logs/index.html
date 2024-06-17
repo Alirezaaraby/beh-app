@@ -1,0 +1,203 @@
+{% extends 'dashboard/base.html'%}
+
+{% block content %}
+<div class="container">
+    <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
+            گزارش</span>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                دریافت خروجی
+              </button>
+    </div>
+    <form action="{% url 'logs' %}" method="post">
+        {% csrf_token %}
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">دریافت گزارش</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>انتخاب ستون ها </h3>
+                        <div class="dropdown"> 
+                            <button class="btn btn-success dropdown-toggle"
+                                    type="button" 
+                                    id="multiSelectDropdown"
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false"> 
+                                انتخاب 
+                            </button> 
+                            <ul class="dropdown-menu" aria-labelledby="multiSelectDropdown"> 
+                                <li> 
+                                    <label class="list-group-item d-flex gap-2"> 
+                                        <input type="checkbox" name="columns" value="pid"> 
+                                        پرسنل ها 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="assessor_id"> 
+                                        ارزیابی کننده 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="occure_date"> 
+                                        تاریخ وقوع 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="occure_time"> 
+                                        زمان وقوع 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="in_id"> 
+                                        نوع شاخص 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="it_id"> 
+                                        شاخص 
+                                    </label> 
+                                </li> 
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="score"> 
+                                        امتیاز 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="status"> 
+                                        وضعیت 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="record_id"> 
+                                        کد پرسنلی ثبت کننده 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="record_date"> 
+                                        تاریخ ثبت 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="record_time"> 
+                                        زمان ثبت 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="current"> 
+                                        جاری/راکد 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="forecastEffectTime"> 
+                                        پیش بینی زمان تاثیر 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="realeffect_time"> 
+                                        زمان تاثیر واقعی 
+                                    </label> 
+                                </li>
+                                <li class="list-group-item d-flex gap-2"> 
+                                    <label> 
+                                        <input type="checkbox" name="columns" value="description"> 
+                                        مصداق 
+                                    </label> 
+                                </li>
+                            </ul> 
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-primary">بارگیری</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- <button -->
+
+    <div class="table-responsive small">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ارزیابی شونده</th>
+                    <th scope="col">شاخص (مثبت/منفی)</th>
+                    <th scope="col">امتیاز</th>
+                    <th scope="col">تاریخ ثبت</th>
+                    <th scope="col">وضعیت</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter }}</td>
+                    <td>{{i.pid}}</td>
+                    <td>{{i.it_id}}</td>
+                    <td dir="ltr" class="text-center">{{i.score}}</td>
+                    <td>{{i.record_date}}</td>
+                    <td>
+                        {% if i.status == "2" %}
+                            تایید شده
+                        {% elif i.status == "1" %}
+                            در دست بررسی سطح {{i.overhead_level }}
+                        {% elif i.status == "0" %}
+                        معلق
+                        {% elif i.status == "عدم تایید" %}
+                        عدم تایید
+                        {% else %}
+                        {{i.status}}
+                        {% endif %}
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}
+
+{%block script%}
+<script> 
+    const chBoxes = 
+        document.querySelectorAll('.dropdown-menu input[type="checkbox"]'); 
+    const dpBtn =  
+        document.getElementById('multiSelectDropdown'); 
+    let mySelectedListItems = []; 
+
+    function handleCB() { 
+        mySelectedListItems = []; 
+        let mySelectedListItemsText = ''; 
+
+        chBoxes.forEach((checkbox) => { 
+            if (checkbox.checked) { 
+                mySelectedListItems.push(checkbox.value); 
+                mySelectedListItemsText += checkbox.value + ', '; 
+            } 
+        });
+
+        dpBtn.innerText = 
+            mySelectedListItems.length > 0 
+                ? mySelectedListItemsText.slice(0, -2) : 'Select'; 
+    } 
+
+    chBoxes.forEach((checkbox) => { 
+        checkbox.addEventListener('change', handleCB); 
+    }); 
+</script> 
+{%endblock%}

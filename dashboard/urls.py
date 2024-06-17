@@ -23,7 +23,7 @@ urlpatterns = [
     path("indicators/", include("indicators.urls")),
 
     path("substitute/", substitute , name="substitute"),
-    path("logs/", logs , name="logs"),
+    path("logs/", include("logs.urls")),
     path("reports/", include("reports.urls") , name="reports"),
 
     path('ajax/load-indicator-items/', load_indicator_items, name='ajax-load-indicator-items'),
