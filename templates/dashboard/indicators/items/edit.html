@@ -64,17 +64,17 @@
             <form class="needs-validation" novalidate="" method="POST">
                 {%csrf_token%}
                 <div class="row g-3">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <label for="indicatorID" class="form-label">نام شاخص</label>
                         {{form.item}}
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="country" class="form-label">انتخاب نوع شاخص</label>
                         {{form.in_id}}
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="indicatorID" class="form-label">شماره شاخص</label>
                         {{form.it_id}}
                     </div>

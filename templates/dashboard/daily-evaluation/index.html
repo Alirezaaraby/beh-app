@@ -8,7 +8,8 @@
     </div>
 
     <!-- <button -->
-
+    <input class="form-control" id="myInput" type="text" placeholder="جستجو">
+    <br>
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>
@@ -22,7 +23,7 @@
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="myTable">
                 {% for i in data %}
                 <tr>
                     <td>{{forloop.counter }}</td>
@@ -103,4 +104,16 @@
         </table>
     </div>
 </div>
+{%endblock%}
+{% block script%}
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 {%endblock%}
