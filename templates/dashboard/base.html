@@ -1,4 +1,4 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
 
@@ -25,20 +25,36 @@
 
     <style>
         body {
-            display: flex;
             height: 100vh;
-            /* overflow: hidden; */
             direction: rtl;
             font-family: "Vazirmatn", sans-serif;
             font-optical-sizing: auto;
-            font-weight: 400px;
+            font-weight: 400;
             font-style: normal;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 56px); /* Adjust this if your navbar height is different */
         }
 
         .sidenav {
             width: 250px;
             background-color: white;
             color: black;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .sidenav a {
@@ -47,6 +63,7 @@
 
         .content {
             flex-grow: 1;
+            overflow-y: auto;
         }
 
         .navbar-nav .nav-link {
@@ -62,38 +79,37 @@
         }
     </style>
 
-    {%block style%}
-    {%endblock%}
+    {% block style %}
+    {% endblock %}
 </head>
 
 <body>
-    <!-- Sidebar -->
-    {% include 'dashboard/sidebar.html'%}
+    <!-- Top Navbar -->
+    {% include 'dashboard/nav.html' %}
 
-    <!-- Main content -->
-    <div class="content d-flex flex-column">
-        <!-- Top Navbar -->
-        {% include 'dashboard/nav.html'%}
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        {% include 'dashboard/sidebar.html' %}
 
-        <!-- Page Content -->
-        <div class="container-fluid mt-3">
-            {%block content%}
-            {%endblock%}
+        <!-- Main content -->
+        <div class="content d-flex flex-column">
+            <!-- Page Content -->
+            <div class="container-fluid mt-3">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
-    </div> 
+    </div>
 
-    <script type="text/javascript"
-        src="{% static 'js/jalalidatepicker.min.js' %}">
-    </script>
+    <script type="text/javascript" src="{% static 'js/jalalidatepicker.min.js' %}"></script>
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    {%block script%}
+    {% block script %}
 
-    {%endblock%}
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script> -->
-
+    {% endblock %}
 </body>
 
 </html>
