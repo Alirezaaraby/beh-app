@@ -314,7 +314,7 @@ def daily_evaluation_modify(request, id):
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
         
         item.overhead_level = (item.overhead_level) - 1 
-
+        item.status = "1"
 
         item.assessor_id = overhead.overhead_id
         item.record_date = jalili_date
