@@ -24,27 +24,27 @@ MONTH_CHOICES = [
 
 class AssessmentsForm(forms.ModelForm):
     pid = forms.ModelChoiceField(
-        queryset=users.objects.all(),
+        queryset=None,  # Set queryset to None initially
         widget=forms.Select(
-            attrs={"class": "form-select js-example-basic-single", "placeholder": "ارزیابی شونده", "id":"pid"}
+            attrs={"class": "form-select js-example-basic-single", "placeholder": "ارزیابی شونده", "id": "pid"}
         ),
     )
     in_id = forms.ModelChoiceField(
         queryset=Indicators.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select js-example-basic-single1", "placeholder": "نوع شاخص", "id":"in_id"}
+            attrs={"class": "form-select js-example-basic-single1", "placeholder": "نوع شاخص", "id": "in_id"}
         ),
     )
     it_id = forms.ModelChoiceField(
         queryset=IndicatorItems.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select", "placeholder": "شاخص", "id":"it_id"}
+            attrs={"class": "form-select", "placeholder": "شاخص", "id": "it_id"}
         ),
     )
     score = forms.CharField(
         max_length=250,
         widget=forms.NumberInput(
-            attrs={"class": "form-control", "placeholder": "امتیاز", "id":"score"}
+            attrs={"class": "form-control", "placeholder": "امتیاز", "id": "score"}
         ),
     )
     description = forms.CharField(
@@ -56,13 +56,13 @@ class AssessmentsForm(forms.ModelForm):
     record_id = forms.ModelChoiceField(
         queryset=users.objects.all(),
         widget=forms.Select(
-            attrs={"class": "form-select js-example-basic-single", "placeholder": "شماره پرسنلی ثبت کننده", "id":"record_id"}
+            attrs={"class": "form-select js-example-basic-single", "placeholder": "شماره پرسنلی ثبت کننده", "id": "record_id"}
         ),
     )
     occure_date = forms.CharField(
         max_length=250,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "تاریخ وقوع", "id":"occure_date", "data-jdp": ""}
+            attrs={"class": "form-control", "placeholder": "تاریخ وقوع", "id": "occure_date", "data-jdp": ""}
         ),
     )
     forecastEffectTime = forms.ChoiceField(
@@ -70,7 +70,7 @@ class AssessmentsForm(forms.ModelForm):
         required=True,
         label="پیش بینی زمان تاثیر",
         widget=forms.Select(
-            attrs={"class": "form-select", "id":"forecastEffectTime", "placeholder":"پیش بینی زمان تاثیر"}),
+            attrs={"class": "form-select", "id": "forecastEffectTime", "placeholder": "پیش بینی زمان تاثیر"}),
     )
 
     class Meta:
@@ -85,3 +85,13 @@ class AssessmentsForm(forms.ModelForm):
             "occure_date",
             "forecastEffectTime",
         ]
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super(AssessmentsForm, self).__init__(*args, **kwargs)
+        
+        if request:
+            self.fields['pid'].queryset = utils.objects.filter(overhead_id=request.user.id)
+        else:
+            self.fields['pid'].queryset = utils.objects.none()  # or some default queryset
+

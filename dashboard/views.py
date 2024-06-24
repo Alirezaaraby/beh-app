@@ -20,6 +20,11 @@ def index(request):
     return render(request, "dashboard/index.html")
 
 @login_required
+def daily_evaluation_complete(request):
+    assessments = Assessments.objects.filter(Q(status="عدم تایید") | Q(status="2"))
+    
+    return render(request, "dashboard/daily-evaluation/index.html", {"data": assessments, "current":"0"})
+@login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
         assessments = Assessments.objects.all()
@@ -132,13 +137,13 @@ def daily_evaluation(request):
                             assessment_dict['editable'] = "0"
                         final_assessments.append(assessment_dict)
 
-    return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments})
+    return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments, "current":"1"})
 
 
 @login_required
 def daily_evaluation_create(request):
     if request.method == 'POST':
-        form = AssessmentsForm(request.POST)
+        form = AssessmentsForm(request.POST, request=request)
         if form.is_valid():
             new_form = form.save(commit=False)
 

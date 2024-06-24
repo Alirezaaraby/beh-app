@@ -5,6 +5,11 @@
     <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
             ارزیابی روزانه</span>
         <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+        {% if current == "1"%}
+        <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary btn-sm mr-3">تکمیل شده</a>
+        {%else%}
+        <a href="{% url 'daily-evaluation'%}" class="btn btn-outline-primary btn-sm mr-3">همه</a>
+        {%endif%}
     </div>
 
     <!-- <button -->

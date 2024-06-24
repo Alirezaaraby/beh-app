@@ -15,9 +15,18 @@ def overheads_create(request):
     if request.method == 'POST':
         form = OverheadsForm(request.POST)
         if form.is_valid():
+                        
             pid = form.cleaned_data['pid']
             overhead_id = form.cleaned_data['overhead_id']
+
+            overhead_level = int(form.cleaned_data['overhead_level'])
+
+            print(pid)
+            print(overhead_id)
+            print(overhead_level)
+
             utils.objects.create(pid=pid, overhead_id=overhead_id)
+
             form.save()
             messages.success(request, 'با موفقیت ذخیره شد')
         else:
