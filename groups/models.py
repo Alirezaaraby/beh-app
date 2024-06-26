@@ -10,7 +10,7 @@ class Groups(models.Model):
     description = models.TextField(default="", blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " (" + self.g_code +")"
 
 
 class GroupMembers(models.Model):

@@ -25,7 +25,7 @@
         
         {% if menu_permissions and menu_permissions.overheads %}
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'overheads' %}">چارت</a>
+            <a class="nav-link" href="{% url 'overheads' %}">بالاسری</a>
         </li>
         {% endif %}
 
@@ -37,7 +37,7 @@
             </button>
             <div class="collapse" id="groups-collapse" style="margin-right: 40px;">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{% url 'groups' %}" class="link-dark d-inline-flex text-decoration-none rounded">انواع گروه ها</a></li>
+                    <li><a href="{% url 'groups' %}" class="link-dark d-inline-flex text-decoration-none rounded">عناوین گروه ها</a></li>
                     <li><a href="{% url 'group-items' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">اعضای گروه ها</a></li>
                 </ul>
             </div>

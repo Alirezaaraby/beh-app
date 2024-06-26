@@ -24,6 +24,15 @@ def daily_evaluation_complete(request):
     assessments = Assessments.objects.filter(Q(status="عدم تایید") | Q(status="2"))
     
     return render(request, "dashboard/daily-evaluation/index.html", {"data": assessments, "current":"0"})
+
+def get_local_time():
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    minute_str = '{:02d}'.format(local_time.minute)
+    
+    return str(local_time.hour) + ":" + minute_str
+
 @login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
@@ -156,7 +165,7 @@ def daily_evaluation_create(request):
             
             jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-            time = str(local_time.hour) + ":" + str(local_time.minute)
+            time = get_local_time()
 
             new_form.assessor_id = request.user
             new_form.record_date = jalili_date
@@ -210,7 +219,7 @@ def daily_evaluation_accept(request, id):
     
     jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-    time = str(local_time.hour) + ":" + str(local_time.minute)
+    time = get_local_time()
 
     History.objects.create(
         pid=item.pid,
@@ -237,6 +246,25 @@ def daily_evaluation_accept(request, id):
 
         item.record_date = jalili_date
         item.record_time = time
+
+        History.objects.create(
+        pid=item.pid,
+        assessor_id=item.assessor_id,
+        occure_date=item.occure_date,
+        occure_time=item.occure_time,
+        in_id=item.in_id,
+        it_id=item.it_id,
+        score=item.score,
+        status=item.status,
+        record_id=item.record_id,
+        record_date=str(jalili_date),  # Ensure date is stored as string
+        record_time=time,
+        current=item.current,
+        forecastEffectTime=item.forecastEffectTime,
+        realeffect_time=item.realeffect_time,
+        description=item.description,
+        uid=item
+    )
 
     else:
 
@@ -283,7 +311,7 @@ def daily_evaluation_modify(request, id):
     
     jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-    time = str(local_time.hour) + ":" + str(local_time.minute)
+    time = get_local_time()
 
     History.objects.create(
         pid=item.pid,
@@ -314,7 +342,7 @@ def daily_evaluation_modify(request, id):
         
         jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-        time = str(local_time.hour) + ":" + str(local_time.minute)
+        time = get_local_time()
 
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
         
@@ -336,7 +364,7 @@ def daily_evaluation_modify(request, id):
         
         jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-        time = str(local_time.hour) + ":" + str(local_time.minute)
+        time = get_local_time()
 
         overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
         
@@ -364,7 +392,7 @@ def daily_evaluation_reject(request, id):
     
     jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-    time = str(local_time.hour) + ":" + str(local_time.minute)
+    time = get_local_time()
 
     item.status = "عدم تایید"
     item.record_date=str(jalili_date)
