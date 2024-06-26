@@ -77,12 +77,12 @@
         <form class="needs-validation" novalidate="" method="POST">
             {%csrf_token%}
             <div class="row g-3">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="id_pid" class="form-label">نام عضو جدید<span style="color: red;">*</span></label>
                     {{form.pid}}
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="id_g_code" class="form-label">انتخاب گروه<span style="color: red;">*</span></label>
                     {{form.g_code}}
                 </div>

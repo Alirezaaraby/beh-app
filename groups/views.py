@@ -95,7 +95,7 @@ def group_members_delete(request, id):
 
     item = get_object_or_404(GroupMembers, pk=id)
     item.delete()
-    return redirect("groups")
+    return redirect("group-items")
 @login_required
 def groups_details(request, id):
     group = get_object_or_404(Groups, pk=id)
