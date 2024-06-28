@@ -77,7 +77,10 @@
       <div class="row g-3">
         <div class="col-md-12">
           <label for="record_id" class="form-label">شماره پرسنلی</label>
-          {{form.username}}
+          <input class="form-control"type="text" id="username" name="username" value="{{currentid}}">
+          <div class="feedback" style="font-size: 0.8rem;">
+            آخرین شماره پرسنلی: {{latestid}}
+          </div>        
       </div>
 
         <div class="col-md-6">

@@ -52,6 +52,9 @@ class users(AbstractBaseUser):
 
     def __str__(self):
         return self.name + " " + self.f_name + "(" + self.username + ")"
+    
+    def __repr__(self) -> str:
+        return self.username
 
 class Permissions(models.Model):
     pid = models.OneToOneField(users, on_delete=models.CASCADE)

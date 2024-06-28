@@ -9,6 +9,8 @@ from .decorators import superuser_required
 def register(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
+            latestid = users.objects.order_by('-username').first()
+            latestid = latestid.__repr__()
             if request.method == "POST":
                 form = UserRegistrationForm(request.POST)
                 if form.is_valid():
@@ -18,7 +20,7 @@ def register(request):
                     messages.error(request, form.errors)
             else:
                 form = UserRegistrationForm()
-            return render(request, "registration/register.html", {"form": form})
+            return render(request, "registration/register.html", {"form": form, "latestid": latestid, "currentid": int(latestid) + 1})
         else:
             return redirect("dashboard")
     else:
