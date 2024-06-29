@@ -57,7 +57,8 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded">تعریف نوع شاخص جدید</div>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">تعریف نوع شاخص جدید        <a href="{% url 'groups'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
+    </div>
     {% if messages %}
     <div class="messages">
         {% for message in messages %}

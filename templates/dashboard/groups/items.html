@@ -22,8 +22,13 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded ml-3">اعضای گروه ها
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">
+        <span>
+        اعضای گروه ها
         <a href="{% url 'group-members-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+    </span>
+    <a href="{% url 'groups'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
+
     </div>
 
     <div class="container">

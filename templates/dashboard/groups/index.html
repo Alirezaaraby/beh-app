@@ -22,8 +22,12 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded ml-3">گروه ها
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">
+        <span>گروه ها
         <a href="{% url 'groups-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+    </span>
+    <a href="{% url 'home'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
+
     </div>
 
     <div class="table-responsive small">
