@@ -22,8 +22,9 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded ml-3">شاخص ها
-        <a href="{% url 'indicator-items-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between"><span>شاخص ها
+        <a href="{% url 'indicator-items-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a></span>
+        <a href="{% url 'indicators'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
 
     <div class="table-responsive small">

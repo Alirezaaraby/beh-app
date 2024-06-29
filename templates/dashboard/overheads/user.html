@@ -3,10 +3,11 @@
 {%block content%}
 <div class="container">
 
-    <div class="shadow p-3 mb-5 bg-body rounded"><strong>مشاهده رده های بالاتر آقای/خانم:</strong><span class="mr-3">
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between"><span class="mr-3"><strong>مشاهده رده های بالاتر آقای/خانم:</strong>
             {{user_data}}
+            <a href="{% url 'overheads-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
         </span>
-        <a href="{% url 'overheads-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+        <a href="{% url 'overheads'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
     {% if overheads%}
 

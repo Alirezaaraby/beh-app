@@ -2,11 +2,13 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
-            گزارش</span>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between"><span class="mr-3">
+            گزارش
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 دریافت خروجی
               </button>
+              </span>
+              <a href="{% url 'home'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
     <form action="{% url 'logs' %}" method="post">
         {% csrf_token %}

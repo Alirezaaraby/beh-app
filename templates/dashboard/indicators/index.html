@@ -22,8 +22,9 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded ml-3">انواع شاخص ها
-        <a href="{% url 'indicators-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between"><span> انواع شاخص ها
+        <a href="{% url 'indicators-create'%}" class="btn btn-outline-primary btn-sm pr-3">جدید</a></span>
+        <a href="{% url 'home'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
 
     <div class="container">
