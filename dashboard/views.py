@@ -151,6 +151,11 @@ def daily_evaluation(request):
 
 @login_required
 def daily_evaluation_create(request):
+    if request.user.is_superuser:
+        overheads = users.objects.filter(is_superuser=False)
+    else:
+        overheads = Overheads.objects.filter(overhead_id=request.user.id)
+
     if request.method == 'POST':
         form = AssessmentsForm(request.POST, request=request)
         if form.is_valid():
@@ -179,10 +184,11 @@ def daily_evaluation_create(request):
             messages.success(request, "با موفقیت ثبت شد")
             return redirect("daily-evaluation-create")
         else:
+            print(form.errors)
             messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
     else:
         form = AssessmentsForm()
-    return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user})
+    return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
 
 @login_required
 def daily_evaluation_edit(request, id):

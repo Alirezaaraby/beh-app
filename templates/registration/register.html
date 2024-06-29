@@ -57,7 +57,11 @@
 
 {% block content %}
 <div class="container">
-  <div class="shadow p-3 mb-5 bg-body rounded">تعریف نوع شاخص جدید</div>
+  <div class="shadow p-3 mb-5 bg-body rounded">
+    ثبت نام پرسنل
+    <a href="{% url 'register'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+  </div>
+
   {% if messages %}
   <div class="messages">
     {% for message in messages %}

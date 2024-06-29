@@ -3,12 +3,33 @@
     <hr>
     <ul class="nav nav-pills flex-column">
         {% if menu_permissions and menu_permissions.daily_evaluation %}
+
+        {% if "/dashboard/daily-evaluation/" in request.path %}
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'daily-evaluation' %}">ارزیابی</a>
+        </li>
+        {%else%}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'daily-evaluation' %}">ارزیابی</a>
         </li>
+        {%endif%}
         {% endif %}
 
         {% if menu_permissions and menu_permissions.personnel %}
+        {% if "personnel" in request.path or "register" in request.path %}
+        <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active"
+                data-bs-toggle="collapse" data-bs-target="#personnel-collapse" aria-expanded="true">
+                پرسنل
+            </button>
+            <div class="collapse.show" id="personnel-collapse" style="margin-right: 40px;">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'personnel' %}" class="link-dark d-inline-flex text-decoration-none rounded">مشاهده</a></li>
+                    <li><a href="{% url 'register' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">جدید</a></li>
+                </ul>
+            </div>
+        </li>
+        {%else%}
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
                 data-bs-toggle="collapse" data-bs-target="#personnel-collapse" aria-expanded="false">
@@ -21,15 +42,37 @@
                 </ul>
             </div>
         </li>
+        {%endif%}
         {% endif %}
         
         {% if menu_permissions and menu_permissions.overheads %}
+        {% if "overheads" in request.path %}
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'overheads' %}">بالاسری</a>
+        </li>
+        {%else%}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'overheads' %}">بالاسری</a>
         </li>
+        {%endif%}
         {% endif %}
 
         {% if menu_permissions and menu_permissions.groups %}
+        {% if "groups" in request.path%}
+        <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active"
+                data-bs-toggle="collapse" data-bs-target="#groups-collapse" aria-expanded="false">
+                گروه ها
+            </button>
+            <div class="collapse.show" id="groups-collapse" style="margin-right: 40px;">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'groups' %}" class="link-dark d-inline-flex text-decoration-none rounded">عناوین گروه ها</a></li>
+                    <li><a href="{% url 'group-items' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">اعضای گروه ها</a></li>
+                </ul>
+            </div>
+        </li>
+        {%else%}
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
                 data-bs-toggle="collapse" data-bs-target="#groups-collapse" aria-expanded="false">
@@ -43,8 +86,24 @@
             </div>
         </li>
         {% endif %}
+        {% endif %}
 
         {% if menu_permissions and menu_permissions.indicators %}
+        {% if "indicators" in request.path %}
+
+        <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link active"
+                data-bs-toggle="collapse" data-bs-target="#indicators-collapse" aria-expanded="false">
+                شاخص ها
+            </button>
+            <div class="collapse.show" id="indicators-collapse" style="margin-right: 40px;">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{% url 'indicators' %}" class="link-dark d-inline-flex text-decoration-none rounded">انواع شاخص ها</a></li>
+                    <li><a href="{% url 'indicator-items' %}" class="link-dark d-inline-flex text-decoration-none rounded mt-1">شاخص ها</a></li>
+                </ul>
+            </div>
+        </li>
+        {%else%}
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
                 data-bs-toggle="collapse" data-bs-target="#indicators-collapse" aria-expanded="false">
@@ -58,23 +117,45 @@
             </div>
         </li>
         {% endif %}
+        {% endif %}
 
         {% if menu_permissions and menu_permissions.substitute %}
+        {% if "substitute" in request.path %}
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'substitute' %}">جانشین</a>
+        </li>
+        {%else%}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'substitute' %}">جانشین</a>
         </li>
         {% endif %}
+        {% endif %}
 
         {% if menu_permissions and menu_permissions.logs %}
+        {% if "logs" in request.path %}
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'logs' %}">گزارش</a>
+        </li>
+        {%else%}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'logs' %}">گزارش</a>
         </li>
         {% endif %}
+        {% endif %}
 
         {% if menu_permissions and menu_permissions.reports %}
+        {% if "reports" in request.path %}
+
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'reports' %}">کارنامه</a>
+        </li>
+        {%else%}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'reports' %}">کارنامه</a>
         </li>
+        {% endif %}
         {% endif %}
     </ul>
 </nav>

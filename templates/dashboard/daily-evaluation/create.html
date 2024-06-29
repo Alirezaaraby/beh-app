@@ -131,9 +131,15 @@
 
             <div class="row g-3">
 
-                <div class="col-md-6">
+                <div class="col-md-6" data-select2-id="select2-data-20-cskf">
                     <label for="personnel" class="form-label">ارزیابی شونده<span style="color: red;">*</span></label>
-                    {{form.pid}}
+
+                        <select name="pid" class="form-select" placeholder="ارزیابی شونده" required="">
+                        <option value="" selected="" data-select2-id="select2-data-15-82mn">---------</option>
+                        {%for i in overheads%}
+                            <option value="{{i}}">{{i.id}}</option>
+                        {%endfor%}
+                      </select>
                 </div>
 
                 <div class="col-md-6">
