@@ -34,6 +34,10 @@ def get_local_time():
     return str(local_time.hour) + ":" + minute_str
 
 @login_required
+def daily_evaluation_details(request, id):
+    assesment = get_object_or_404(Assessments, id=id)
+    return render(request, "dashboard/daily-evaluation/details.html", {"data":assesment})
+@login_required
 def daily_evaluation(request):
     if request.user.is_superuser:
         assessments = Assessments.objects.all()

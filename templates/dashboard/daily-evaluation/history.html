@@ -2,9 +2,9 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded"><span class="mr-3">
-            ارزیابی روزانه</span>
-        <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">
+        <span class="mr-3">ارزیابی روزانه</span>
+        <a href="{% url 'daily-evaluation'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
 
     <!-- <button -->
@@ -13,7 +13,7 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">ردیف</th>
                     <th scope="col">مصداق</th>
                     <th scope="col">نمره</th>
                     <th scope="col">وضعیت</th>
