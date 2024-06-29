@@ -24,7 +24,7 @@ MONTH_CHOICES = [
 
 class AssessmentsForm(forms.ModelForm):
     pid = forms.ModelChoiceField(
-        queryset=None,  # Set queryset to None initially
+        queryset=users.objects.none(),
         widget=forms.Select(
             attrs={"class": "form-select js-example-basic-single", "placeholder": "ارزیابی شونده", "id": "pid"}
         ),
@@ -87,11 +87,7 @@ class AssessmentsForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        request = kwargs.pop('request', None)
+        user_queryset = kwargs.pop('user_queryset', users.objects.none())
         super(AssessmentsForm, self).__init__(*args, **kwargs)
-        
-        if request:
-            self.fields['pid'].queryset = utils.objects.filter(overhead_id=request.user.id)
-        else:
-            self.fields['pid'].queryset = utils.objects.none()  # or some default queryset
+        self.fields['pid'].queryset = user_queryset
 
