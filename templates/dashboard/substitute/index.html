@@ -92,6 +92,27 @@
             <form method="POST" action="{% url 'substitute' %}">
                 {% csrf_token %}
                 <div class="row g-3">
+                    {%if user.is_superuser%}
+                    <div class="col-md-6">
+                        <label for="personnel" class="form-label">انتخاب کاربر<span style="color: red;">*</span></label>
+                        <select name="pid" class="form-select" required>
+                            <option value="" selected>---------</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="personnel" class="form-label">انتخاب جانشین<span style="color: red;">*</span></label>
+                        <select name="substitute_id" class="form-select" required>
+                            <option value="" selected>---------</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {%else%}
                     <div class="col-md-12">
                         <label for="personnel" class="form-label">انتخاب جانشین<span style="color: red;">*</span></label>
                         <select name="substitute_id" class="form-select" required>
@@ -101,6 +122,7 @@
                             {% endfor %}
                         </select>
                     </div>
+                    {%endif%}
                 </div>
                 <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
             </form>

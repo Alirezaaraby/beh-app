@@ -1,40 +1,29 @@
+# your_app/views.py
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from users.models import users, Permissions
 from .forms import SubstituteForm
+from .service.permissions_handler import PermissionHandler  # Import the service class
+from users.models import users
 
 def substitute(request):
-    # Exclude the current user and superusers from the queryset
-    users_list = users.objects.exclude(id=request.user.id).exclude(is_superuser=True)
-    permissions = None
+    if request.user.is_superuser:
+        users_list = users.objects.exclude(id=request.user.id).exclude(is_superuser=True)
+    else:
+        users_list = users.objects.all()
 
     if request.method == 'POST':
         substitute_id = request.POST.get("substitute_id")
         if substitute_id:
-            try:
-                substitute_user = users.objects.get(id=substitute_id)
-                permissions = Permissions.objects.get(pid_id=request.user.id)
-
-                # Use update_or_create with defaults
-                Permissions.objects.update_or_create(
-                    pid=substitute_user,
-                    defaults={
-                        'daily_evaluation': permissions.daily_evaluation,
-                        'personnel': permissions.personnel,
-                        'overheads': permissions.overheads,
-                        'groups': permissions.groups,
-                        'indicators': permissions.indicators,
-                        'substitute': permissions.substitute,
-                        'logs': permissions.logs,
-                        'reports': permissions.reports,
-                    }
-                )
+            if request.user.is_superuser:
+                pid = request.POST.get("pid")
+            else:
+                pid = request.user.id
+            handler = PermissionHandler(substitute_id=substitute_id, pid=pid)
+            if handler.copy_permissions_and_save():
                 messages.success(request, 'Permissions successfully copied to the substitute user.')
-                return HttpResponseRedirect(request.get_full_path())  # Reload the current URL
-            except Permissions.DoesNotExist:
-                messages.error(request, 'No permissions found for the current user.')
-            except users.DoesNotExist:
-                messages.error(request, 'Substitute user does not exist.')
+            else:
+                messages.error(request, 'An error occurred while copying permissions.')
+            return redirect(request.get_full_path())  # Reload the current URL
 
-    return render(request, "dashboard/substitute/index.html", {"users": users_list, "permissions": permissions})
+    return render(request, "dashboard/substitute/index.html", {"user": request.user, "users": users_list})
