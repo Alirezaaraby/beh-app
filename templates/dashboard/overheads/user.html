@@ -20,6 +20,7 @@
                 <th>پرسنل</th>
                 <th>مدیر بالاسری</th>
                 <th>شماره سطح بالاسری</th>
+                <th>مصوب کننده</th>
                 <th></th>
             </tr>
         </thead>
@@ -31,6 +32,13 @@
                 <td>{{i.pid}}</td>
                 <td>{{i.overhead_id}}</td>
                 <td>{{i.overhead_level}}</td>
+                <td>
+                    {% if i.approver%}
+                        بله
+                    {%else%}
+                        خیر
+                    {%endif%}
+                </td>
                 <td>                        <div class="dropdown">
                     <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <svg width="12" height="14" fill="currentColor" class="bi bi-three-dots-vertical"

@@ -27,3 +27,6 @@ class Assessments(models.Model):
 
     description = models.TextField()
 
+class Viewers(models.Model):
+    viewer = models.ForeignKey(users, on_delete=models.CASCADE)
+    assessment = models.ForeignKey(Assessments, on_delete=models.CASCADE)

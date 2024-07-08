@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Assessments
+from .models import Assessments, Viewers
 from indicators.models import Indicators, IndicatorItems
 from users.models import users, Permissions
 from django.contrib.auth.decorators import login_required
@@ -71,7 +71,13 @@ def daily_evaluation(request):
             
     else:
         user_id = request.user.id
-        assessments = Assessments.objects.filter(Q(assessor_id=user_id) | Q(pid=user_id))
+        
+        user_viewers = Viewers.objects.filter(viewer=request.user)
+
+        assessment_ids = user_viewers.values_list('assessment_id', flat=True)
+
+        assessments = Assessments.objects.filter(id__in=assessment_ids)
+
         asses_ids = Assessments.objects.values_list('id', flat=True)
         asses_ids = list(asses_ids)
         
@@ -119,37 +125,6 @@ def daily_evaluation(request):
                 final_uids.append(assessment.id)
                 final_assessments.append(assessment_dict)
 
-        for i in history:
-
-            if i.uid.id in asses_ids:
-                assessment = Assessments.objects.get(id = i.uid.id)
-                assessment_dict = {
-                    'id': assessment.id,
-                    'pid': assessment.pid,
-                    'assessor_id': assessment.assessor_id,
-                    'occure_date': assessment.occure_date,
-                    'occure_time': assessment.occure_time,
-                    'in_id': assessment.in_id,
-                    'it_id': assessment.it_id,
-                    'score': assessment.score,
-                    'status': assessment.status,
-                    'record_id': assessment.record_id,
-                    'record_date': assessment.record_date,
-                    'record_time': assessment.record_time,
-                    'current': assessment.current,
-                    'forecastEffectTime': assessment.forecastEffectTime,
-                    'realeffect_time': assessment.realeffect_time,
-                    'overhead_level': assessment.overhead_level,
-                    'description': assessment.description,
-                    'editable' : "0"
-                }
-                if i.uid.id not in uids:
-                    uids.append(i.uid.id)
-                    if i.uid.id not in final_uids:
-                        if i.status == "عدم تایید":
-                            assessment_dict['editable'] = "0"
-                        final_assessments.append(assessment_dict)
-
     return render(request, "dashboard/daily-evaluation/index.html", {"data": final_assessments, "current":"1"})
 
 
@@ -183,6 +158,10 @@ def daily_evaluation_create(request):
 
                 # new_form.cleaned_data['score'] = ''
                 new_form.save()
+
+                Viewers.objects.create(viewer= new_form.pid, assessment= new_form)
+                Viewers.objects.create(viewer= new_form.assessor_id, assessment= new_form)
+
                 messages.success(request, "با موفقیت ثبت شد")
                 return redirect("daily-evaluation-create")
             else:
@@ -234,6 +213,10 @@ def daily_evaluation_create(request):
                     # status = "در دست بررسی سطح " + str(item.overhead_level)
                 
                 new_form.save()
+
+                Viewers.objects.create(viewer= new_form.pid, assessment= new_form)
+                Viewers.objects.create(viewer= request.user, assessment= new_form)
+                Viewers.objects.create(viewer= new_form.assessor_id, assessment= new_form)
 
                 messages.success(request, "با موفقیت ثبت شد")
                 return redirect("daily-evaluation-create")
