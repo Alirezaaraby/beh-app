@@ -63,7 +63,7 @@ def daily_evaluation(request):
                 'overhead_level': assessment.overhead_level,
                 'description': assessment.description,
             }
-            if assessment.status == "2":
+            if assessment.status == "2" or assessment.status == "0":
                 assessment_dict['editable'] = "0"
             else:
                 assessment_dict['editable'] = "1"
@@ -454,7 +454,7 @@ def daily_evaluation_reject(request, id):
 
     time = get_local_time()
 
-    item.status = "عدم تایید"
+    item.status = "0"
     item.record_date=str(jalili_date)
     item.record_time=time
     
