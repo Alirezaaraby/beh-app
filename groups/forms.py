@@ -20,7 +20,7 @@ class GroupsForm(forms.ModelForm):
 
     description = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "توضیحات"}
+            attrs={"class": "form-control", "placeholder": "توضیحات", "rows" : "3"}
         ),
         required=False,
     )
@@ -77,7 +77,7 @@ class GroupMembersForm(forms.ModelForm):
 
     description = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "توضیحات"}
+            attrs={"class": "form-control", "placeholder": "توضیحات", "rows" : "3"}
         ),
         required=False,
     )

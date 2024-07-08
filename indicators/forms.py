@@ -19,7 +19,7 @@ class IndicatorsForm(forms.ModelForm):
     )
 
     description = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "توضیحات"}),
+        widget=forms.Textarea(attrs={"class": "form-control", "placeholder": "توضیحات", "rows" : "3"}),
         required=False
     )
 
@@ -70,7 +70,7 @@ class IndicatorItemsForm(forms.ModelForm):
 
     description = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "توضیحات"}
+            attrs={"class": "form-control", "placeholder": "توضیحات", "rows" : "3"}
         ),
         required=False,
     )

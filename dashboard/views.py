@@ -191,8 +191,8 @@ def daily_evaluation_create(request):
                 jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
                 time = get_local_time()
-
-                overhead = Overheads.objects.filter(pid=new_form.pid, overhead_level=2).first()
+                last_overhead = Overheads.objects.filter(pid=new_form.pid, overhead_id=request.user).first()
+                overhead = Overheads.objects.filter(pid=new_form.pid, overhead_level=int(last_overhead.overhead_level)+1).first()
                 new_form.assessor_id = overhead.overhead_id
                 new_form.record_date = jalili_date
                 new_form.record_time = time
@@ -202,7 +202,7 @@ def daily_evaluation_create(request):
                 else:
                     new_form.status = "1"
 
-                new_form.overhead_level = 2
+                new_form.overhead_level = int(last_overhead.overhead_level)+1
 
                 new_form.current = True
 
@@ -317,8 +317,13 @@ def daily_evaluation_accept(request, id):
         current_overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
 
         if overhead == None:
-            if current_overhead == None:
+            if current_overhead.approver:
+                item.status = "2"
+
+            elif current_overhead == None:
                 messages.success(request, "خطا در دریافت بالاسری")
+                return redirect('daily-evaluation')
+            
             else:
                 item.assessor_id = item.assessor_id
                 item.status = "3"

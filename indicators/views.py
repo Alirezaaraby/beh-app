@@ -15,7 +15,12 @@ def indicators_create(request):
     if request.method == 'POST':
         form = IndicatorsForm(request.POST)
         if form.is_valid():
-            form.save()
+            in_id = form.cleaned_data['in_id']
+            duplicate = Indicators.objects.filter(in_id=in_id).exists()
+            if duplicate:
+                messages.error(request, 'کد نوع تکراری')
+            else:
+                form.save()
             messages.success(request, 'با موفقیت ذخیره شد')
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
@@ -33,7 +38,14 @@ def indicator_items_create(request):
     if request.method == 'POST':
         form = IndicatorItemsForm(request.POST)
         if form.is_valid():
-            form.save()
+            it_id = form.cleaned_data['it_id']
+            duplicate = IndicatorItems.objects.filter(it_id=it_id).exists()
+
+            if duplicate:
+                messages.error(request, 'شماره شاخص تکراری')
+            else:
+                form.save()
+
             messages.success(request, 'با موفقیت ذخیره شد')
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')

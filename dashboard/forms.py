@@ -49,7 +49,7 @@ class AssessmentsForm(forms.ModelForm):
     )
     description = forms.CharField(
         widget=forms.Textarea(
-            attrs={"class": "form-control", "placeholder": "توضیحات", "id": "description"}
+            attrs={"class": "form-control", "placeholder": "توضیحات", "id": "description", "rows" : "3"}
         ),
         required=True,
     )
