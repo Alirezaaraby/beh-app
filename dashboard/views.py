@@ -455,31 +455,6 @@ def personnel(request):
     return render(request, "dashboard/personnel/index.html", {"users":personnel})
 
 
-def substitute(request):
-    user = users.objects.all()
-    permissions = None
-    if request.method == 'POST':
-        substitute_id = request.POST.get("substitute_id")
-        if substitute_id:
-            try:
-                permissions = Permissions.objects.get(pid_id=request.user.id)
-                Permissions.objects.create(
-                    pid=substitute_id,
-                    daily_evaluation=permissions.daily_evaluation,
-                    personnel=permissions.personnel,
-                    overheads=permissions.overheads,
-                    groups=permissions.groups,
-                    indicators=permissions.indicators,
-                    substitute=permissions.substitute,
-                    logs=permissions.logs,
-                    reports=permissions.reports
-                )
-            except Permissions.DoesNotExist:
-                permissions = None
-
-    return render(request, "dashboard/substitute/index.html", {"users": user, "permissions": permissions})
-
-
 def reports(request):
     return render(request, "dashboard/reports/index.html")
 

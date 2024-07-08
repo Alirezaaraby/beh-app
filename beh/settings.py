@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'groups',
     'overheads',
     'evaluation',
+    'substitute',
     'logs',
     'reports',
 ]
