@@ -21,19 +21,24 @@
         <form class="needs-validation" novalidate="" method="POST">
             {% csrf_token %}
             <div class="row g-3">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="id_pid" class="form-label">پرسنل<span style="color: red;">*</span></label>
                     {{ form.pid }}
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="id_overhead_level" class="form-label">شماره سطح بالاسری<span style="color: red;">*</span></label>
                     {{ form.overhead_level }}
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="id_overhead_id" class="form-label">بالاسری<span style="color: red;">*</span></label>
                     {{ form.overhead_id }}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_overhead_id" class="form-label">مصوب کننده<span style="color: red;">*</span></label>
+                    {{ form.approver }}
                 </div>
             </div>
 

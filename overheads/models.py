@@ -8,6 +8,7 @@ class Overheads(models.Model):
     pid = models.ForeignKey(users, related_name='overhead_pids', on_delete=models.CASCADE)
     overhead_level = models.CharField(max_length=100)
     overhead_id = models.ForeignKey(users, related_name='overhead_ids', on_delete=models.CASCADE)
+    approver = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.overhead_level} - {self.pid.username}'

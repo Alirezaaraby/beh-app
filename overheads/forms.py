@@ -25,6 +25,14 @@ class OverheadsForm(forms.ModelForm):
         ),
     )
 
+    approver = forms.TypedChoiceField(
+        choices=((False, 'بالاسری معمولی'), (True, 'مصوب کننده')),
+        coerce=lambda x: x == 'True',
+        widget=forms.Select(
+            attrs={"class": "form-select", "placeholder": "انتخاب تایید کننده"}
+        ),
+    )
+
     class Meta:
         model = Overheads
         fields = "__all__"
