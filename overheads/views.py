@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from users.models import users
@@ -85,10 +86,8 @@ def overheads_delete(request, id):
 
     item = get_object_or_404(Overheads, pk=id)
     item.delete()
-    return redirect("overheads")
+    return HttpResponseRedirect(request.get_full_path())
 def overheads_details(request, id):
     overheads = Overheads.objects.filter(pid=id)
     user_data = users.objects.get(id=id)
     return render(request, "dashboard/overheads/user.html", {"overheads": overheads, "user_data":user_data})
-
-# TODO: reload should be here
