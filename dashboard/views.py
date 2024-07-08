@@ -328,32 +328,23 @@ def daily_evaluation_accept(request, id):
 
     else:
 
-        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level + 1).first()
-        
         item.overhead_level = item.overhead_level + 1
-        
-        
-        # overhead = Overheads.objects.filter(pid=item.pid)
 
-        # max_overhead_level = overhead.aggregate(Max('overhead_level'))['overhead_level__max']
-
-
-        # overhead = Overheads.objects.filter(pid=item.pid)
-
-        # max_overhead_level = overhead.aggregate(Max('overhead_level'))['overhead_level__max']
+        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level).first()
+        current_overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
 
         if overhead == None:
-            item.assessor_id = item.assessor_id
-            item.status = "نیازمند بررسی توسط مدیرکل"
-            status = item.status
+            if current_overhead == None:
+                messages.success(request, "خطا در دریافت بالاسری")
+            else:
+                item.assessor_id = item.assessor_id
+                item.status = "3"
         else:
-            item.assessor_id = overhead.overhead_id
-            if item.overhead_level == 1:
-                item.status = "0"
-                status = "معلق"
-            elif item.overhead_level > 1:
+            if current_overhead.approver:
+                item.status = "2"
+            else:
+                item.assessor_id = overhead.overhead_id
                 item.status = "1"
-                status = "در دست بررسی سطح " + str(item.overhead_level)
         
         
     item.save()
@@ -392,50 +383,29 @@ def daily_evaluation_modify(request, id):
         uid=item
     )
 
-    if request.user.is_superuser:
-        utc_time = timezone.now()
-        local_time = timezone.localtime(utc_time)
-        
-        tehran_year = local_time.year
-        tehran_month = local_time.month
-        tehran_day = local_time.day
-        
-        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+    utc_time = timezone.now()
+    local_time = timezone.localtime(utc_time)
+    
+    tehran_year = local_time.year
+    tehran_month = local_time.month
+    tehran_day = local_time.day
+    
+    jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-        time = get_local_time()
+    time = get_local_time()
 
-        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
-        
-        item.overhead_level = (item.overhead_level) - 1 
-        item.status = "1"
+    overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
+    
+    if overhead == None:
+        messages.success(request, "خطا در ارجاع به مدیر قبلی")
+        return redirect('daily-evaluation')
+    item.overhead_level = (item.overhead_level) - 1 
+    item.status = "1"
 
-        item.assessor_id = overhead.overhead_id
-        item.record_date = jalili_date
-        item.record_time = time
-        item.save()
-    else:
-
-        utc_time = timezone.now()
-        local_time = timezone.localtime(utc_time)
-        
-        tehran_year = local_time.year
-        tehran_month = local_time.month
-        tehran_day = local_time.day
-        
-        jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
-
-        time = get_local_time()
-
-        overhead = Overheads.objects.filter(pid=item.pid, overhead_level=item.overhead_level - 1).first()
-        
-        item.overhead_level = (item.overhead_level) - 1 
-
-
-        item.assessor_id = overhead.overhead_id
-        item.record_date = jalili_date
-        item.record_time = time
-        
-        item.save()
+    item.assessor_id = overhead.overhead_id
+    item.record_date = jalili_date
+    item.record_time = time
+    item.save()
 
     return redirect('daily-evaluation')
 
