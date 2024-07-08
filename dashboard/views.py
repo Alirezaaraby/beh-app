@@ -195,40 +195,54 @@ def daily_evaluation_create(request):
     else:
         user_ids = Overheads.objects.filter(overhead_id=request.user).values_list('pid', flat=True)
         overheads = users.objects.filter(id__in=user_ids)
-        
-    if request.method == 'POST':
-        form = AssessmentsForm(request.POST, user_queryset=overheads)
-        if form.is_valid():
-            new_form = form.save(commit=False)
-
-            utc_time = timezone.now()
-            local_time = timezone.localtime(utc_time)
             
-            tehran_year = local_time.year
-            tehran_month = local_time.month
-            tehran_day = local_time.day
-            
-            jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+        if request.method == 'POST':
+            form = AssessmentsForm(request.POST, user_queryset=overheads)
+            if form.is_valid():
+                
+                new_form = form.save(commit=False)
 
-            time = get_local_time()
+                utc_time = timezone.now()
+                local_time = timezone.localtime(utc_time)
+                
+                tehran_year = local_time.year
+                tehran_month = local_time.month
+                tehran_day = local_time.day
+                
+                jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
 
-            new_form.assessor_id = request.user
-            new_form.record_date = jalili_date
-            new_form.record_time = time
-            new_form.status = "0"
-            
-            new_form.current = True
+                time = get_local_time()
 
-            # new_form.cleaned_data['score'] = ''
-            new_form.save()
-            messages.success(request, "با موفقیت ثبت شد")
-            return redirect("daily-evaluation-create")
+                overhead = Overheads.objects.filter(pid=new_form.pid, overhead_level=2).first()
+                new_form.assessor_id = overhead.overhead_id
+                new_form.record_date = jalili_date
+                new_form.record_time = time
+
+                if overhead.overhead_id.is_superuser:
+                    new_form.status = "3"
+                else:
+                    new_form.status = "1"
+
+                new_form.overhead_level = 2
+
+                new_form.current = True
+
+                # new_form.cleaned_data['score'] = ''
+
+                # if new_form.overhead_level > 1:
+                    # item.status = "1"
+                    # status = "در دست بررسی سطح " + str(item.overhead_level)
+                
+                new_form.save()
+
+                messages.success(request, "با موفقیت ثبت شد")
+                return redirect("daily-evaluation-create")
+            else:
+                print(form.errors)
+                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
         else:
-            print(form.errors)
-            messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
-    else:
-        form = AssessmentsForm(user_queryset=overheads)
-    return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
+            form = AssessmentsForm(user_queryset=overheads)
+        return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
 
 @login_required
 def daily_evaluation_edit(request, id):

@@ -38,16 +38,17 @@
                     <td dir="ltr" class="text-center">{{i.score}}</td>
                     <td>{{i.record_date}}</td>
                     <td>
-                        {% if i.status == "2" %}
+                        {% if i.status == "3" %}
+                            نیازمند بررسی توسط مدیر کل
+                        {% elif i.status == "2"%}
                             تایید شده
                         {% elif i.status == "1" %}
                             در دست بررسی سطح {{i.overhead_level }}
+
                         {% elif i.status == "0" %}
-                        معلق
-                        {% elif i.status == "عدم تایید" %}
-                        عدم تایید
+                            عدم تایید
                         {% else %}
-                        {{i.status}}
+                            {{i.status}}
                         {% endif %}
                     </td>
 
