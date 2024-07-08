@@ -157,6 +157,41 @@ def daily_evaluation(request):
 def daily_evaluation_create(request):
     if request.user.is_superuser:
         overheads = users.objects.filter(is_superuser=False)
+        
+        if request.method == 'POST':
+            form = AssessmentsForm(request.POST, user_queryset=overheads)
+            if form.is_valid():
+                new_form = form.save(commit=False)
+
+                utc_time = timezone.now()
+                local_time = timezone.localtime(utc_time)
+                
+                tehran_year = local_time.year
+                tehran_month = local_time.month
+                tehran_day = local_time.day
+                
+                jalili_date =  jdatetime.date.fromgregorian(day=tehran_day,month=tehran_month,year=tehran_year) 
+
+                time = get_local_time()
+
+                new_form.assessor_id = request.user
+                new_form.record_date = jalili_date
+                new_form.record_time = time
+                new_form.status = "2"
+                
+                new_form.current = True
+
+                # new_form.cleaned_data['score'] = ''
+                new_form.save()
+                messages.success(request, "با موفقیت ثبت شد")
+                return redirect("daily-evaluation-create")
+            else:
+                print(form.errors)
+                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
+        else:
+            form = AssessmentsForm(user_queryset=overheads)
+        return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
+            
     else:
         user_ids = Overheads.objects.filter(overhead_id=request.user).values_list('pid', flat=True)
         overheads = users.objects.filter(id__in=user_ids)
