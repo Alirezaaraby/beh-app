@@ -11,6 +11,7 @@ from .forms import AssessmentsForm
 from django.contrib.auth.decorators import login_required
 from overheads.models import Overheads, utils
 from django.db.models import OuterRef, Subquery, Max
+from substitute.models import Substitute
 from evaluation.models import History
 from django.db.models import Q
 
@@ -130,6 +131,7 @@ def daily_evaluation(request):
 
 @login_required
 def daily_evaluation_create(request):
+    # sub = Substitute.objects.get(id=)
     if request.user.is_superuser:
         overheads = users.objects.filter(is_superuser=False)
         

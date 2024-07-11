@@ -5,3 +5,15 @@ from users.models import users
 class Substitute(models.Model):
     pid = models.ForeignKey(users, on_delete=models.CASCADE, related_name='users_as_pid')
     substitute_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='users_as_substitute')
+
+    daily_evaluation = models.BooleanField()
+    personnel = models.BooleanField()
+    overheads = models.BooleanField()
+    groups = models.BooleanField()
+    indicators = models.BooleanField()
+    substitute = models.BooleanField()
+    logs = models.BooleanField()
+    logs = models.BooleanField()
+    reports = models.BooleanField()
+
+    # from_time = date

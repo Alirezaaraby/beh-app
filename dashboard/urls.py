@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import *
-import substitute.views as sub
+# import substitute.views as sub
 
 urlpatterns = [
     path("", index, name="dashboard"),
@@ -25,7 +25,7 @@ urlpatterns = [
 
     path("indicators/", include("indicators.urls")),
 
-    path("substitute/", sub.substitute , name="substitute"),
+    path("substitute/", include("substitute.urls")),
     path("logs/", include("logs.urls")),
     path("reports/", include("reports.urls") , name="reports"),
 

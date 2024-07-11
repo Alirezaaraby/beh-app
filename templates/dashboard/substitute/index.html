@@ -1,4 +1,4 @@
-{% extends 'dashboard/base.html'%}
+{% extends 'dashboard/base.html' %}
 {% load static %}
 {% block style %}
 <style>
@@ -71,13 +71,12 @@
 
 {% block content %}
 <div class="container">
-    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">انتخاب جانشین<a href="{% url 'home'%}" class="btn btn-outline-primary btn-sm">بازگشت</a></div>
+    <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between">انتخاب جانشین<a href="{% url 'home' %}" class="btn btn-outline-primary btn-sm">بازگشت</a></div>
 
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
-            role="alert">
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             {{ message }}
         </div>
@@ -86,140 +85,179 @@
     {% endif %}
 
     <div class="row g-3">
-
         <div class="col-md-12">
-
             <form method="POST" action="{% url 'substitute' %}">
                 {% csrf_token %}
                 <div class="row g-3">
-                    {%if user.is_superuser%}
                     <div class="col-md-6">
                         <label for="personnel" class="form-label">انتخاب کاربر<span style="color: red;">*</span></label>
-                        <select name="pid" class="form-select" required>
+                        <select id="user-select" name="pid" class="form-select" required>
                             <option value="" selected>---------</option>
                             {% for user in users %}
                                 <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
                             {% endfor %}
                         </select>
                     </div>
-
                     <div class="col-md-6">
                         <label for="personnel" class="form-label">انتخاب جانشین<span style="color: red;">*</span></label>
-                        <select name="substitute_id" class="form-select" required>
+                        <select id="user-select" name="substitute_id" class="form-select" required>
                             <option value="" selected>---------</option>
                             {% for user in users %}
                                 <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
                             {% endfor %}
                         </select>
                     </div>
-                    {%else%}
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <label for="personnel" class="form-label">از تاریخ<span style="color: red;">*</span></label>
+                        <select id="user-select" name="pid" class="form-select" required>
+                            <option value="" selected>---------</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="personnel" class="form-label">تا تاریخ<span style="color: red;">*</span></label>
+                        <select id="user-select" name="substitute_id" class="form-select" required>
+                            <option value="" selected>---------</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="personnel" class="form-label">انتخاب کاربر<span style="color: red;">*</span></label>
+                        <select id="user-select" name="pid" class="form-select" required>
+                            <option value="" selected>---------</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label for="personnel" class="form-label">انتخاب جانشین<span style="color: red;">*</span></label>
-                        <select name="substitute_id" class="form-select" required>
+                        <select id="user-select" name="substitute_id" class="form-select" required>
                             <option value="" selected>---------</option>
                             {% for user in users %}
                                 <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
                             {% endfor %}
                         </select>
                     </div>
-                    {%endif%}
+                </div>
+                <div class="pt-3" id="permissions-container" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="mt-5" id="permissions" style="display: none;">
+                    <!-- Checkboxes will be inserted here by JavaScript -->
                 </div>
                 <button class="w-100 btn btn-primary btn-lg mt-5 mb-5" type="submit">ذخیره</button>
             </form>
-            
-
         </div>
     </div>
 </div>
 
 {% block script %}
-
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-
 <script>
-    $(document).ready(function () {
-        $("#in_id").change(function () {
-            const url = $("#mainForm").attr("data-indicators-url");
-            const indicatorsId = $(this).val();
-            $.ajax({
-                url: url,
-                data: {
-                    'in_id': indicatorsId
-                },
-                success: function (data) {
-                    let html_data = '<option value>---------</option>';
-                    data.forEach(function (indicator) {
-                        html_data += `<option value="${indicator.id}">${indicator.item}</option>`;
-                    });
-                    $("#it_id").html(html_data);
-                }
-            });
-        });
+    document.getElementById('user-select').addEventListener('change', function() {
+        var userId = this.value;
+        var permissionsContainer = document.getElementById('permissions-container');
+        var permissionsDiv = document.getElementById('permissions');
 
-        $("#it_id").change(function () {
-            const url = $("#mainForm").attr("data-indicator-range-url");
-            const indicatorId = $(this).val();
-            $.ajax({
-                url: url,
-                data: {
-                    'it_id': indicatorId
-                },
-                success: function (data) {
-                    if (data.length > 0) {
-                        const item = data[0];
-                        const minEffect = item.min_effect;
-                        const maxEffect = item.max_effect;
-                        const defaultEffect = item.default_effect;
+        if (userId) {
+            permissionsContainer.style.display = 'block';
+            permissionsDiv.style.display = 'none';
 
-                        $("#score").attr("min", minEffect);
-                        $("#score").attr("max", maxEffect);
-                        $("#score").val(defaultEffect);
+            fetch(`{% url 'get_user_permissions' %}?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched permissions:', data);
 
-                        $("#range-min").text(minEffect);
-                        $("#seperator").text("تا");
-                        $("#range-max").text(maxEffect);
+                    var permissionsHtml = '<h3 class="mt-3">انتخاب دسترسی ها</h3>';
+                    if (data.permissions.daily_evaluation) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="daily_evaluation">
+                                <span>ارزیابی روزانه</span>
+                            </label>
+                        `;
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                }
-            });
-        });
-
-        jalaliDatepicker.startWatch();
-
-        $("#personnel").autocomplete({
-            source: "{% url 'autocomplete' %}"
-        });
-
-        // Set the Jalali month in the dropdown
-        const currentDate = new Date();
-        const month = currentDate.getMonth() + 1; // getMonth() returns 0-11
-        const year = currentDate.getFullYear();
-        const day = currentDate.getDate();
-
-        const jalaliDate = jalaali.toJalaali(year, month, day);
-        const jalaliYear = jalaliDate.jy;
-        var jalaliMonth = jalaliDate.jm;
-        var jalaliDay = jalaliDate.jd;
-
-        $("#forecastEffectTime").val(jalaliMonth);
-
-        jalaliMonth = String(jalaliDate.jm).padStart(2, '0');
-        jalaliDay = String(jalaliDate.jd).padStart(2, '0');
-
-        $("#occure_date").val(`${jalaliYear}/${jalaliMonth}/${jalaliDay}`);
-        $("#record_id").val("{{user.id}}");
-
-        $('.js-example-basic-single').select2();
-        $('.js-example-basic-single1').select2();
-        $('.js-example-basic-single2').select2();
+                    if (data.permissions.personnel) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="personnel">
+                                <span>پرسنل</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.overheads) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="overheads">
+                                <span>مدیران بالاسری</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.groups) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="groups">
+                                <span>گروه ها</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.indicators) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="indicators">
+                                <span>شاخص ها</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.substitute) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="substitute">
+                                <span>جانشین ها</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.logs) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="logs">
+                                <span>گزارش ها</span>
+                            </label>
+                        `;
+                    }
+                    if (data.permissions.reports) {
+                        permissionsHtml += `
+                            <label class="list-group-item d-flex gap-2">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="reports">
+                                <span>کارنامه ها</span>
+                            </label>
+                        `;
+                    }
+                    
+                    permissionsDiv.innerHTML = permissionsHtml;
+                    permissionsDiv.style.display = 'block';
+                    permissionsContainer.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error fetching permissions:', error);
+                    permissionsContainer.style.display = 'none';
+                });
+        } else {
+            permissionsContainer.style.display = 'none';
+            permissionsDiv.style.display = 'none';
+        }
     });
 </script>
-
 {% endblock %}
 {% endblock %}
