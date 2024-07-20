@@ -22,8 +22,20 @@ def index(request):
 
 @login_required
 def daily_evaluation_complete(request):
-    assessments = Assessments.objects.filter(Q(status="عدم تایید") | Q(status="2"))
-    
+    if request.user.is_superuser:
+        assessments = Assessments.objects.filter(Q(status="عدم تایید") | Q(status="2"))
+    else:
+        assessments = Assessments.objects.filter(
+            (Q(status="عدم تایید") | Q(status="2")) & Q(assessor_id=request.user.id)
+        )
+    return render(request, "dashboard/daily-evaluation/index.html", {"data": assessments, "current":"2"})
+
+@login_required
+def daily_evaluation_all(request):
+    if request.user.is_superuser:
+        assessments = Assessments.objects.all()
+    else:
+        assessments = Assessments.objects.filter(assessor_id=request.user.id)
     return render(request, "dashboard/daily-evaluation/index.html", {"data": assessments, "current":"0"})
 
 def get_local_time():

@@ -7,6 +7,7 @@ urlpatterns = [
     
     path("daily-evaluation/", daily_evaluation , name="daily-evaluation"),
     path("daily-evaluation/complete", daily_evaluation_complete , name="daily-evaluation-complete"),
+    path("daily-evaluation/all", daily_evaluation_all , name="daily-evaluation-all"),
     path("daily-evaluation/details/<int:id>", daily_evaluation_details , name="daily-evaluation-details"),
     path("daily-evaluation/create", daily_evaluation_create , name="daily-evaluation-create"),
     path("daily-evaluation/edit/<int:id>", daily_evaluation_edit , name="daily-evaluation-edit"),
