@@ -5,7 +5,7 @@ from users.models import users
 
 
 class Groups(models.Model):
-    g_code = models.CharField(max_length=10)
+    g_code = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=500)
     description = models.TextField(default="", blank=True, null=True)
 
