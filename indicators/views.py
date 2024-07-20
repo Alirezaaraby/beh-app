@@ -18,7 +18,7 @@ def indicators_create(request):
             in_id = form.cleaned_data['in_id']
             duplicate = Indicators.objects.filter(in_id=in_id).exists()
             if duplicate:
-                messages.error(request, 'کد نوع تکراری')
+                messages.error(request, 'کدشاخص  تکراری')
             else:
                 form.save()
             messages.success(request, 'با موفقیت ذخیره شد')

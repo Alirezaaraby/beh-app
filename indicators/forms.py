@@ -7,7 +7,7 @@ class IndicatorsForm(forms.ModelForm):
     in_id = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "کد نوع"}
+            attrs={"class": "form-control", "placeholder": "کدشاخص "}
         ),
     )
 

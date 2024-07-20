@@ -92,7 +92,7 @@
                                 </li>
                                 {%if i.status != "0"%}
                                 {%if i.overhead_level != 1%}
-                                <li><a class="dropdown-item text-warning" href="{% url 'daily-evaluation-modify' i.id %}">نیازمند اصلاح</a>
+                                <li><a class="dropdown-item text-warning" href="{% url 'daily-evaluation-modify' i.id %}"> اصلاح سطح پایین تر</a>
                                 </li>{%endif%}
                                 <li><a class="dropdown-item text-danger" href="{% url 'daily-evaluation-reject' i.id %}">عدم تایید</a>
                                 </li>
