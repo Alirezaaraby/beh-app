@@ -108,40 +108,23 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="personnel" class="form-label">از تاریخ<span style="color: red;">*</span></label>
-                        <select id="user-select" name="pid" class="form-select" required>
-                            <option value="" selected>---------</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_from_date" class="form-label">از تاریخ<span style="color: red;">*</span></label>
+                        <input type="text" name="from_date" class="form-control" placeholder="1400-01-01" data-jdp maxlength="10" required id="id_from_date">
                     </div>
+    
                     <div class="col-md-6">
-                        <label for="personnel" class="form-label">تا تاریخ<span style="color: red;">*</span></label>
-                        <select id="user-select" name="substitute_id" class="form-select" required>
-                            <option value="" selected>---------</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_to_date" class="form-label">تا تاریخ</label>
+                        <input type="text" name="to_date" class="form-control" placeholder="1400-01-01" data-jdp="" maxlength="10" id="id_to_date">
                     </div>
+
                     <div class="col-md-6">
-                        <label for="personnel" class="form-label">انتخاب کاربر<span style="color: red;">*</span></label>
-                        <select id="user-select" name="pid" class="form-select" required>
-                            <option value="" selected>---------</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_from_time" class="form-label">از زمان</label>
+                        <input type="text" name="from_time" class="form-control" placeholder="00:00:00" data-jdp data-jdp data-jdp-option-1 maxlength="10" id="id_from_time">
                     </div>
+                    
                     <div class="col-md-6">
-                        <label for="personnel" class="form-label">انتخاب جانشین<span style="color: red;">*</span></label>
-                        <select id="user-select" name="substitute_id" class="form-select" required>
-                            <option value="" selected>---------</option>
-                            {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.name }} {{ user.f_name }} ({{ user.username }})</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_to_time" class="form-label">تا زمان</label>
+                        <input type="text" name="to_time" class="form-control" placeholder="12:00:00" data-jdp data-jdp data-jdp-option-1 maxlength="10" id="id_to_time">
                     </div>
                 </div>
                 <div class="pt-3" id="permissions-container" style="display: none;">
@@ -183,7 +166,7 @@
                     if (data.permissions.daily_evaluation) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="daily_evaluation">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="daily_evaluation">
                                 <span>ارزیابی روزانه</span>
                             </label>
                         `;
@@ -191,7 +174,7 @@
                     if (data.permissions.personnel) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="personnel">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="personnel">
                                 <span>پرسنل</span>
                             </label>
                         `;
@@ -199,7 +182,7 @@
                     if (data.permissions.overheads) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="overheads">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="overheads">
                                 <span>مدیران بالاسری</span>
                             </label>
                         `;
@@ -207,7 +190,7 @@
                     if (data.permissions.groups) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="groups">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="groups">
                                 <span>گروه ها</span>
                             </label>
                         `;
@@ -215,7 +198,7 @@
                     if (data.permissions.indicators) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="indicators">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="indicators">
                                 <span>شاخص ها</span>
                             </label>
                         `;
@@ -223,7 +206,7 @@
                     if (data.permissions.substitute) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="substitute">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="substitute">
                                 <span>جانشین ها</span>
                             </label>
                         `;
@@ -231,7 +214,7 @@
                     if (data.permissions.logs) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="logs">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="logs">
                                 <span>گزارش ها</span>
                             </label>
                         `;
@@ -239,7 +222,7 @@
                     if (data.permissions.reports) {
                         permissionsHtml += `
                             <label class="list-group-item d-flex gap-2">
-                                <input class="form-check-input flex-shrink-0" type="checkbox" value="1" name="reports">
+                                <input class="form-check-input flex-shrink-0" type="checkbox" name="reports">
                                 <span>کارنامه ها</span>
                             </label>
                         `;
@@ -257,6 +240,38 @@
             permissionsContainer.style.display = 'none';
             permissionsDiv.style.display = 'none';
         }
+    });
+
+    $(document).ready(function () {
+
+        jalaliDatepicker.startWatch({
+            autoShow: false
+          }); 
+          var inputList=document.querySelectorAll("input[data-jdp]");
+          for(i=0;i<inputList.length;i++)
+          {
+              inputList[i].addEventListener('focus',function(){
+                 var defaults={
+                      hideAfterChange: true,
+                      useDropDownYears: true,
+                      separatorChars: {
+                          date: "-",
+                          between: " ",
+                          time: ":"
+                      }
+                 };
+                 if(this.hasAttribute("data-jdp-option-1")){
+                   jalaliDatepicker.updateOptions({
+                      date:false,
+                      time:true
+                   });
+                 }
+                 else{
+                   jalaliDatepicker.updateOptions(defaults);
+                 }
+                 jalaliDatepicker.show(this);
+              });
+          }                  
     });
 </script>
 {% endblock %}

@@ -44,9 +44,37 @@ class UpdateProfileForm(forms.ModelForm):
         ),
     )
 
+    password = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "رمز عبور"}),
+    )
+
+    password_confirmation = forms.CharField(
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "تأیید رمز عبور"}),
+    )
+
     class Meta:
         model = users
-        fields = ["f_name", "username", "name"]
+        fields = ["f_name", "username", "name", "password", "password_confirmation"]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirmation = cleaned_data.get("password_confirmation")
+        if password and password != password_confirmation:
+            raise forms.ValidationError("رمز عبور و تأیید رمز عبور مطابقت ندارند")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get("password")
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
+
 
 class PermissionsForm(forms.ModelForm):
     class Meta:

@@ -69,7 +69,6 @@
     </div>
     {% endif %}
     <div class="row">
-
         <form class="needs-validation" novalidate="" method="POST">
             {%csrf_token%}
             <div class="row g-3">
@@ -88,6 +87,15 @@
                     {{form.f_name}}
                 </div>
 
+                <div class="col-md-6">
+                    <label for="password" class="form-label">رمز عبور</label>
+                    {{form.password}}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="password_confirmation" class="form-label">تأیید رمز عبور</label>
+                    {{form.password_confirmation}}
+                </div>
             </div>
 
             <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">ذخیره</button>

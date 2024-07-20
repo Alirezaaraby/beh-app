@@ -1,5 +1,7 @@
 from django.db import models
 from users.models import users
+from django_jalali.db import models as jmodels
+
 # Create your models here.
 
 class Substitute(models.Model):
@@ -16,4 +18,6 @@ class Substitute(models.Model):
     logs = models.BooleanField()
     reports = models.BooleanField()
 
-    # from_time = date
+    from_date = jmodels.jDateField()
+    to_date= jmodels.jDateField()
+

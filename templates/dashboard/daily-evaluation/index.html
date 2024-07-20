@@ -4,22 +4,39 @@
 <div class="container">
     <div class="shadow p-3 mb-5 bg-body rounded d-flex justify-content-between"><span class="mr-3">
             ارزیابی روزانه         <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary btn-sm mr-3">جدید</a>
-            {% if current == "1"%}
             <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary btn-sm mr-3">سوابق</a>
-            {%else%}
             <a href="{% url 'daily-evaluation'%}" class="btn btn-outline-primary btn-sm mr-3">همه</a>
-            {%endif%} </span>
 
         <a href="{% url 'home'%}" class="btn btn-outline-primary btn-sm">بازگشت</a>
     </div>
 
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary">کارتابل</button> <!-- دسترسی دار ها -->
-        <button type="button" class="btn btn-outline-primary">سوابق</button> <!--  -->
-        <button type="button" class="btn btn-outline-primary">در دست بررسی</button> <!--  -->
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="text-center">
+            <div class="btn-group mx-auto " role="group">
+                {% if current == "1"%}
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-primary">کارتابل</a> <!-- دسترسی دار ها -->
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary">سوابق</a> <!--  -->
+
+                <a href="{% url 'daily-evaluation'%}" class="btn btn-outline-primary">همه</a> <!--  -->
+
+                {%elif current == "2"%}
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary">کارتابل</a> <!-- دسترسی دار ها -->
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-primary">سوابق</a> <!--  -->
+
+                <a href="{% url 'daily-evaluation'%}" class="btn btn-outline-primary">همه</a> <!--  -->
+                
+                {%else%}
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary">کارتابل</a> <!-- دسترسی دار ها -->
+                <a href="{% url 'daily-evaluation-complete'%}" class="btn btn-outline-primary">سوابق</a> <!--  -->
+
+                <a href="{% url 'daily-evaluation'%}" class="btn btn-primary">همه</a> <!--  -->
+                {%endif%}
+              </div>
+        </div>
       </div>
 
-    <input class="form-control" id="myInput" type="text" placeholder="جستجو">
+
+    <input class="form-control mt-4" id="myInput" type="text" placeholder="جستجو">
     <br>
     <div class="table-responsive small">
         <table class="table table-striped table-sm">

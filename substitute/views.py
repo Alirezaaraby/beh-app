@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from users.models import users, Permissions
-from .forms import SubstituteForm
+from .models import Substitute
 
 def substitute(request):
     # Exclude the current user and superusers from the queryset
@@ -11,11 +11,27 @@ def substitute(request):
 
     if request.method == 'POST':
         substitute_id = request.POST.get("substitute_id")
+        pid = request.POST.get("pid")
+        daily_evaluation = bool(request.POST.get("daily_evaluation"))
+        personnel = bool(request.POST.get("personnel"))
+        overheads = bool(request.POST.get("overheads"))
+        groups = bool(request.POST.get("groups"))
+        indicators = bool(request.POST.get("indicators"))
+        substitute = bool(request.POST.get("substitute"))
+        logs = bool(request.POST.get("logs"))
+        reports = bool(request.POST.get("reports"))
+        from_date = request.POST.get("from_date")
+        to_date = request.POST.get("to_date")
+
         if substitute_id:
+            # if pid == substitute_id:
+            return HttpResponse(f"{pid,substitute_id}")
+                # return messages.error(request, 'کاربر و جانشین یکسان میباشند')
             try:
                 substitute_user = users.objects.get(id=substitute_id)
+                pid_user = users.objects.get(id=pid)
                 permissions = Permissions.objects.get(pid_id=request.user.id)
-
+                
                 # Use update_or_create with defaults
                 Permissions.objects.update_or_create(
                     pid=substitute_user,
@@ -30,6 +46,23 @@ def substitute(request):
                         'reports': permissions.reports,
                     }
                 )
+                substitute_instance = Substitute(
+                    pid=pid_user,
+                    substitute_id=substitute_user,
+                    daily_evaluation=daily_evaluation,
+                    personnel=personnel,
+                    overheads=overheads,
+                    groups=groups,
+                    indicators=indicators,
+                    substitute=substitute,
+                    logs=logs,
+                    reports=reports,
+                    from_date=from_date,
+                    to_date=to_date
+                )
+
+                substitute_instance.save()
+
                 messages.success(request, 'Permissions successfully copied to the substitute user.')
                 return HttpResponseRedirect(request.get_full_path())  # Reload the current URL
             except Permissions.DoesNotExist:
@@ -37,7 +70,7 @@ def substitute(request):
             except users.DoesNotExist:
                 messages.error(request, 'Substitute user does not exist.')
 
-    return render(request, "dashboard/substitute/index.html", {"users": users_list, "permissions": permissions})
+    return render(request, "dashboard/substitute/index.html", {"users": users_list})
 
 from django.http import JsonResponse
 

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'substitute',
     'logs',
     'reports',
+    'django_jalali',
 ]
 
 MIDDLEWARE = [

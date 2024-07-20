@@ -9,18 +9,24 @@ from .decorators import superuser_required
 def register(request):
     if request.user.is_authenticated:
         if request.user.is_superuser:
-            latestid = users.objects.order_by('-username').first()
-            latestid = latestid.__repr__()
+            latest_user = users.objects.order_by('-username').first()
+            latestid = int(latest_user.username) if latest_user else 0
             if request.method == "POST":
                 form = UserRegistrationForm(request.POST)
                 if form.is_valid():
-                    form.save()
-                    messages.success(request, "با موفقیت ایجاد شد")
+                    user = form.save(commit=False)
+                    password = request.POST.get("password1")
+                    user.set_password(password)
+                    user.save()
+                    user.set_password(password)
+                    user.save()
+                    messages.success(request, "کاربر با موفقیت ایجاد شد")
+                    return redirect('personnel')
                 else:
                     messages.error(request, form.errors)
             else:
                 form = UserRegistrationForm()
-            return render(request, "registration/register.html", {"form": form, "latestid": latestid, "currentid": int(latestid) + 1})
+            return render(request, "registration/register.html", {"form": form, "latestid": latestid, "currentid": latestid + 1})
         else:
             return redirect("dashboard")
     else:
@@ -33,11 +39,15 @@ def edit(request, id):
         form = UpdateProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
+            messages.success(request, "پروفایل با موفقیت به روز شد.")
+        else:
+            messages.error(request, "خطایی رخ داده است. لطفاً دوباره تلاش کنید.")
     else:
         form = UpdateProfileForm(instance=user)
     return render(
         request, "dashboard/personnel/edit.html", {"form": form, "user": user}
     )
+
 
 @superuser_required
 def delete(request, id):
