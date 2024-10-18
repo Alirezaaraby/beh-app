@@ -45,8 +45,7 @@ def indicator_items_create(request):
                 messages.error(request, 'شماره شاخص تکراری')
             else:
                 form.save()
-
-            messages.success(request, 'با موفقیت ذخیره شد')
+                messages.success(request, 'با موفقیت ذخیره شد')
         else:
             messages.error(request, 'داده ها به درستی ذخیره نشدند')
     else:

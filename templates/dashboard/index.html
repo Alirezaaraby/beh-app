@@ -1,5 +1,102 @@
-{% extends 'dashboard/base.html'%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
 
-{% block content %}
-<h1 class="text-center">به سامانه بِه اَپ خوش آمدید</h1>
-{%endblock%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard RTL</title>
+
+    {% load bootstrap5 %}
+    {% bootstrap_javascript %}
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jalalidatepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            height: 100vh;
+            direction: rtl;
+            font-family: "Vazirmatn", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 56px); /* Adjust this if your navbar height is different */
+            justify-content: center;
+            align-items: center ;
+            margin: auto;
+        }
+
+        .sidenav {
+            width: 250px;
+            background-color: white;
+            color: black;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .sidenav a {
+            color: black;
+        }
+
+        .content {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+        }
+
+        .collapse-inner {
+            padding-left: 15px;
+        }
+
+        .table-responsive {
+            padding-bottom: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    {% include 'dashboard/nav.html' %}
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Main content -->
+        <div class="content d-flex flex-column">
+            <!-- Page Content -->
+            <div class="container-fluid mt-3">
+                <h1>به سامانه بِه اپ خوش آمدید</h1>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

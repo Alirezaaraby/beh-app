@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse
 from users.models import users, Permissions
 from .models import Substitute
-
 
 def substitute(request):
     # Exclude the current user and superusers from the queryset
@@ -75,11 +75,11 @@ def substitute(request):
 
                     messages.success(
                         request,
-                        "Permissions successfully copied to the substitute user.",
+                        "جانشین با موفقیت انتخاب شد. تغییرات برای کاربر جانشین اعمال شد.",
                     )
                     return HttpResponseRedirect(
                         request.get_full_path()
-                    )  # Reload the current URL
+                    )
                 except Permissions.DoesNotExist:
                     messages.error(
                         request, "No permissions found for the current user."
@@ -88,10 +88,6 @@ def substitute(request):
                     messages.error(request, "Substitute user does not exist.")
 
     return render(request, "dashboard/substitute/index.html", {"users": users_list})
-
-
-from django.http import JsonResponse
-
 
 def get_user_permissions(request):
     has_perm = Permissions.objects.get(pid=request.user)

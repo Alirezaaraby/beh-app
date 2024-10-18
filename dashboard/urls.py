@@ -17,6 +17,9 @@ urlpatterns = [
     path("daily-evaluation/reject/<int:id>", daily_evaluation_reject , name="daily-evaluation-reject"),
     path("daily-evaluation/history/<int:id>", history , name="history"),
 
+    path("daily-evaluation/sub/", substitute_show, name="daily-substitute-show"),
+    path("daily-evaluation/substitute/create/<int:id>", substitute_create, name="daily-substitute-create"),
+
     path("editor", editor , name="editor"),
 
     path("personnel/", personnel , name="personnel"),

@@ -143,18 +143,18 @@
         {% endif %}
         {% endif %}
 
-        {% if menu_permissions and menu_permissions.substitute %}
-        {% if "substitute" in request.path %}
+        <!-- {% if menu_permissions and menu_permissions.substitute %} -->
+        <!-- {% if "substitute" in request.path %}
 
         <li class="nav-item">
             <a class="nav-link active" href="{% url 'substitute' %}">جانشین</a>
-        </li>
-        {%else%}
-        <li class="nav-item">
+        </li> -->
+        <!-- {%else%} -->
+        <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'substitute' %}">جانشین</a>
-        </li>
-        {% endif %}
-        {% endif %}
+        </li> -->
+        <!-- {% endif %} -->
+        <!-- {% endif %} -->
 
         {% if menu_permissions and menu_permissions.logs %}
         {% if "logs" in request.path %}

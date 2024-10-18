@@ -14,6 +14,7 @@ from django.db.models import OuterRef, Subquery, Max
 from substitute.models import Substitute
 from evaluation.models import History
 from django.db.models import Q
+from users.models import users
 
 @login_required
 def index(request):
@@ -495,3 +496,23 @@ def history(request,id):
     item = History.objects.filter(uid=id)
 
     return render(request,"dashboard/daily-evaluation/history.html", {"history":item})
+
+def substitute_show(request):
+    user = request.user
+    substitutes = Substitute.objects.filter(substitute_id=user).values_list('pid_id', flat=True)
+    substitutes = list(substitutes)
+    
+    user_ids = users.objects.filter(id__in=substitutes)
+    
+    return render(request, "dashboard/daily-evaluation/substitute/index.html", {"substitutes":user_ids})
+
+def substitute_create(request, id):
+    
+    if request.method == "POST":
+        sub = Assessments.objects.create(substitute_id=request.user, pid_id=id)
+        sub.save()
+        return redirect("daily-substitute-show")
+    else:
+        return render(request, "dashboard/daily-evaluation/substitute/create.html")
+    
+    substitute_id_id

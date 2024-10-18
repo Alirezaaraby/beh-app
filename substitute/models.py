@@ -1,8 +1,9 @@
 from django.db import models
 from users.models import users
-from django_jalali.db import models as jmodels
+from django.core.validators import RegexValidator
 
-# Create your models here.
+date_regex = r'^\d{4}-\d{2}-\d{2}$'
+time_regex = r'^([01]\d|2[0-3]):[0-5]\d$'
 
 class Substitute(models.Model):
     pid = models.ForeignKey(users, on_delete=models.CASCADE, related_name='users_as_pid')
@@ -18,6 +19,26 @@ class Substitute(models.Model):
     logs = models.BooleanField()
     reports = models.BooleanField()
 
-    from_date = jmodels.jDateField()
-    to_date= jmodels.jDateField()
+    from_date = models.CharField(
+        validators=[RegexValidator(regex=date_regex, message="Date must be in the format YYYY-MM-DD")],
+        max_length=10,
+        null=True, blank=True
+    )
+    to_date = models.CharField(
+        validators=[RegexValidator(regex=date_regex, message="Date must be in the format YYYY-MM-DD")],
+        max_length=10,
+        null=True, blank=True
+    )
 
+    from_time = models.CharField(
+        validators=[RegexValidator(regex=time_regex, message="Time must be in the format HH:MM")],
+        max_length=5,
+        blank=True,
+        null=True
+    )
+    to_time = models.CharField(
+        validators=[RegexValidator(regex=time_regex, message="Time must be in the format HH:MM")],
+        max_length=5,
+        blank=True,
+        null=True
+    )

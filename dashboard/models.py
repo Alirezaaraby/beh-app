@@ -6,7 +6,7 @@ from indicators.models import Indicators, IndicatorItems
 class Assessments(models.Model):
     pid = models.ForeignKey(users, on_delete=models.CASCADE, related_name='assessments_as_pid')
     assessor_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='assessments_as_assessor')
-    substitute_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='substitute_as_assessor')
+    substitute_id = models.ForeignKey(users, on_delete=models.CASCADE, related_name='substitute_as_assessor', null=True, blank=True)
 
     occure_date = models.CharField(max_length=25)
     occure_time = models.CharField(max_length=25, blank=True, null=True)
