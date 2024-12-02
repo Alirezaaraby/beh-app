@@ -4,10 +4,11 @@ dj-database-url==2.1.0
 Django==4.2.13
 django-bootstrap-v5==1.0.11
 django-ckeditor-5==0.2.13
+django-jalali==6.2.1
 jalali_core==1.0.0
 jdatetime==5.0.0
-mysqlclient==2.2.4
 pillow==10.3.0
+psycopg2==2.9.10
 python-dotenv==1.0.1
 pytz==2024.1
 soupsieve==2.5

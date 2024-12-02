@@ -88,22 +88,6 @@
     </ul>
     {% endif %}
 
-    <div class="btn-group mx-auto " role="group">
-
-    {% if "daily-evaluation/create" in request.path %}
-
-    <a href="{% url 'daily-evaluation-create'%}" class="btn btn-primary">کارتابل</a> <!-- دسترسی دار ها -->
-    <a href="{% url 'daily-evaluation-substitute'%}" class="btn btn-outline-primary">جانشین</a> <!--  -->
-
-    {%elif "create/substitute" in requesst.path%}
-    <a href="{% url 'daily-evaluation-create'%}" class="btn btn-outline-primary">کارتابل</a> <!-- دسترسی دار ها -->
-    <a href="{% url 'daily-evaluation-substitute'%}" class="btn btn-primary">جانشین</a> <!--  -->
-
-    
-
-    {%endif%}
-    </div>
-
     <div class="row g-3">
         <div class="col-md-5 col-lg-4 order-md-last">
 

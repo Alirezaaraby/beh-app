@@ -39,7 +39,11 @@ class UserManager(BaseUserManager):
 class users(AbstractBaseUser):
     name = models.CharField(max_length=50, blank=True)
     f_name = models.CharField(max_length=50, blank=True)
-    username = models.CharField(max_length=32, unique=True)
+    username = models.IntegerField(unique=True)
+
+    def clean(self):
+        if not isinstance(self.username, int):
+            raise ValueError("Username should be an integer")
 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -51,7 +55,7 @@ class users(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.name + " " + self.f_name + "(" + self.username + ")"
+        return self.name + " " + self.f_name + "(" + str(self.username) + ")"
     
     def __repr__(self) -> str:
         return self.username

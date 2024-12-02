@@ -18,12 +18,15 @@ def register(request):
                     password = request.POST.get("password1")
                     user.set_password(password)
                     user.save()
-                    user.set_password(password)
-                    user.save()
                     messages.success(request, "کاربر با موفقیت ایجاد شد")
                     return redirect('personnel')
                 else:
-                    messages.error(request, form.errors)
+                    # Custom error handling
+                    for field, errors in form.errors.items():
+                        for error in errors:
+                            if error == "This field is required.":
+                                error = f"وارد کردن {field} الزامی است."
+                            messages.error(request, error)
             else:
                 form = UserRegistrationForm()
             return render(request, "registration/register.html", {"form": form, "latestid": latestid, "currentid": latestid + 1})
