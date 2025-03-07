@@ -177,11 +177,11 @@ def daily_evaluation_create(request):
                 Viewers.objects.create(viewer= new_form.pid, assessment= new_form)
                 Viewers.objects.create(viewer= new_form.assessor_id, assessment= new_form)
 
-                messages.success(request, "با موفقیت ثبت شد")
-                return redirect("daily-evaluation-create")
+                messages.success(request, "با موفقیت ثبت شد", extra_tags="daily_evaluation")
+                # return redirect("daily-evaluation-create")
             else:
                 print(form.errors)
-                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
+                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید", extra_tags="daily_evaluation")
         else:
             form = AssessmentsForm(user_queryset=overheads)
         return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
@@ -233,11 +233,11 @@ def daily_evaluation_create(request):
                 Viewers.objects.create(viewer= request.user, assessment= new_form)
                 Viewers.objects.create(viewer= new_form.assessor_id, assessment= new_form)
 
-                messages.success(request, "با موفقیت ثبت شد")
-                return redirect("daily-evaluation-create")
+                messages.success(request, "با موفقیت ثبت شد", extra_tags="daily_evaluation")
+                # return redirect("daily-evaluation-create")
             else:
                 print(form.errors)
-                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید")
+                messages.error(request, "تمامی فیلد ها را به درستی پر نمایید", extra_tags="daily_evaluation")
         else:
             form = AssessmentsForm(user_queryset=overheads)
         return render(request, 'dashboard/daily-evaluation/create.html', {'form': form, "user":request.user, "overheads": overheads})
@@ -253,9 +253,9 @@ def daily_evaluation_edit(request, id):
         form = AssessmentsForm(request.POST, instance=assesment)
         if form.is_valid():
             form.save()
-            messages.success(request, 'با موفقیت ذخیره شد')
+            messages.success(request, 'با موفقیت ذخیره شد', extra_tags="daily_evaluation")
         else:
-            messages.error(request, 'داده ها به درستی ذخیره نشدند')
+            messages.error(request, 'داده ها به درستی ذخیره نشدند', extra_tags="daily_evaluation")
     else:
         form = AssessmentsForm(instance=assesment)
     
@@ -337,7 +337,7 @@ def daily_evaluation_accept(request, id):
 
             elif current_overhead == None:
                 messages.success(request, "خطا در دریافت بالاسری")
-                return redirect('daily-evaluation')
+                # return redirect('daily-evaluation')
             
             else:
                 item.assessor_id = item.assessor_id

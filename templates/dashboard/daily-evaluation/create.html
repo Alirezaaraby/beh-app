@@ -79,11 +79,15 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %} alert-dismissible fade show"
-            role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            {{ message }}
-        </div>
+            {% if "daily_evaluation" in message.tags %}
+            <div class="alert 
+                {% if 'success' in message.tags %}alert-success{% elif 'error' in message.tags %}alert-danger{% endif %} 
+                alert-dismissible fade show" role="alert">
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{ message }}
+            </div>
+            {% endif %}
         {% endfor %}
     </ul>
     {% endif %}
@@ -92,8 +96,7 @@
         <div class="col-md-5 col-lg-4 order-md-last">
 
             <div class="bg-white p-5 rounded shadow-sm border">
-                <form id="mainForm"
-                    data-indicators-url="{% url 'ajax-load-indicator-items' %}"
+                <form id="mainForm" data-indicators-url="{% url 'ajax-load-indicator-items' %}"
                     data-indicator-range-url="{% url 'ajax-load-indicator-item-range' %}" method="POST">
                     {% csrf_token %}
 
