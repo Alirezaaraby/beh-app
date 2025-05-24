@@ -30,14 +30,15 @@ def overheads_create(request):
                 messages.error(request, 'بالاسری تکراری')
                 return render(request, 'dashboard/overheads/modify.html', {'form': form})
             
-            last_overhead_level = Overheads.objects.filter(pid=pid).first()
+            last_overhead_level = Overheads.objects.filter(pid=pid)
+            overhead_levels = list(last_overhead_level.values_list('overhead_level', flat=True))
+
             if last_overhead_level == None:
                 # messages.error(request, 'شماره بالاسری تکراری')
                 # return render(request, 'dashboard/overheads/modify.html', {'form': form})
                 pass
-            
             else:
-                if int(last_overhead_level.overhead_level)  + 1  < overhead_level:
+                if int(max(overhead_levels))  + 1  < overhead_level:
                     messages.error(request, f'ترتیب را رعایت کنید')
                     return render(request, 'dashboard/overheads/modify.html', {'form': form})
                 
@@ -86,7 +87,7 @@ def overheads_delete(request, id):
 
     item = get_object_or_404(Overheads, pk=id)
     item.delete()
-    return HttpResponseRedirect(request.get_full_path())
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 def overheads_details(request, id):
     overheads = Overheads.objects.filter(pid=id)
     user_data = users.objects.get(id=id)
